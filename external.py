@@ -18,7 +18,7 @@ class External:
     def hitObstacle(p_input):
         #get inputs from existing sensor
 
-    def getPoistion(self.l,self.p):
+    def getPosition(self.l,self.p):
         #This function returns p and also the actual geometry of the arm, i.e. the coor-dinates of the joints. 
         #This can be computed using p and L, assuming that the first joint is in the origin (0, 0).
 
