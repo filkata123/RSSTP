@@ -4,7 +4,6 @@ cwd = os.getcwd()
 import sys
 sys.path.append(cwd+'/src/')
 
-
 import internal
 obj = internal.Internal()
 
