@@ -1,25 +1,32 @@
 import os
-cwd = os.getcwd()
-
 import sys
+cwd = os.getcwd()
 sys.path.append(cwd+'/src/')
-
 import internal
+
 obj = internal.Internal()
 
-n = 0
-
 def test_split():
+    n = 0
     assert (obj.split(n) == [[['A','B','C','D'],['A','B','C','D']],[['A','B','C','D'],['A','B','C','D']]]).all
 
 def test_merge():
-    assert (obj.merge(n,n) == [[['A','B','C','D'],['A','B','C','D']],[['A','B','C','D'],['A','B','C','D']]]).all
+    n = 0
+    m = 0
+    assert (obj.merge(n,m) == [[['A','B','C','D'],['A','B','C','D']],[['A','B','C','D'],['A','B','C','D']]]).all
 
 def test_add():
-    assert (obj.add(n,n,n) == [[['A','B','C','D'],['A','B','C','D']],[['A','B','C','D'],['A','B','C','D']]]).all
+    n = 0
+    m = 0
+    k = 0
+    assert (obj.add(n,m,k) == [[['A','B','C','D'],['A','B','C','D']],[['A','B','C','D'],['A','B','C','D']]]).all
 
 def test_delete():
-    assert (obj.delete(n,n,n) == [[['A','B','C','D'],['A','B','C','D']],[['A','B','C','D'],['A','B','C','D']]]).all
+    n = 0
+    m = 0
+    k = 0
+    assert (obj.delete(n,m,k) == [[['A','B','C','D'],['A','B','C','D']],[['A','B','C','D'],['A','B','C','D']]]).all
 
 def test_transition():
-    assert (obj.transition(n) == [[['A','B','C','D'],['A','B','C','D']],[['A','B','C','D'],['A','B','C','D']]]).all
+    k = 0
+    assert (obj.transition(k) == [[['A','B','C','D'],['A','B','C','D']],[['A','B','C','D'],['A','B','C','D']]]).all

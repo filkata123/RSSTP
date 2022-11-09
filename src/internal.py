@@ -27,3 +27,4 @@ class Internal:
         #This is a non-deterministic transition.
         A = np.array([[['A','B','C','D'],['A','B','C','D']],[['A','B','C','D'],['A','B','C','D']]])
         return A
+        
