@@ -32,17 +32,24 @@ class Internal:
         self.transition_matrix = np.delete(self.transition_matrix,m, axis=1)                        #remove column m                                                     
         return self.transition_matrix
 
-    #TODO implement functions (remaining: add, delete, transition)
     def add(self,n,m,k):
         #add a connection from n to m with label k, meaning that anm := anm ∪ {k}.
-        A = np.array([[['A11','B11','C11','D11'],['A12','B12','C12','D12']],[['A21','B21','C21','D21'],['A22','B22','C22','D22']]])
-        return A
+        self.transition_matrix[n,m] += (k,)                                                         #add k to Amn
+        self.transition_matrix[n,m] = tuple(set(self.transition_matrix[n,m]))                       #sort elements in Amn
+        return self.transition_matrix
+
     def delete(self,n,m,k):
         #remove the connection from n to m, if it has label k, meaning that anm := anm \ {k}.
-        A = np.array([[['A11','B11','C11','D11'],['A12','B12','C12','D12']],[['A21','B21','C21','D21'],['A22','B22','C22','D22']]])
-        return A
+        temp = list(self.transition_matrix[n,m])                                                    #extract Amn as a list
+        try:
+            temp.remove(k)                                                                          #remove k from Amn if found
+        except ValueError:
+            print("Specified path does not exist")                                                  #if not  k is not in Amn print message 
+        self.transition_matrix[n,m] = tuple(temp)                                                   #update Amn in transition matrix
+        return self.transition_matrix
+    
+    #TODO implement functions (remaining: transition)
     def transition(self,k):
         #This is a non-deterministic transition.
         A = np.array([[['A11','B11','C11','D11'],['A12','B12','C12','D12']],[['A21','B21','C21','D21'],['A22','B22','C22','D22']]])
         return A
-        
