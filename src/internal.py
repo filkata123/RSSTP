@@ -1,4 +1,5 @@
 import numpy as np
+import random
 class Internal:
     
     #Constructor of Internal class
@@ -48,8 +49,14 @@ class Internal:
         self.transition_matrix[n,m] = tuple(temp)                                                   #update Amn in transition matrix
         return self.transition_matrix
     
-    #TODO implement functions (remaining: transition)
     def transition(self,k):
         #This is a non-deterministic transition.
-        A = np.array([[['A11','B11','C11','D11'],['A12','B12','C12','D12']],[['A21','B21','C21','D21'],['A22','B22','C22','D22']]])
-        return A
+        possible_transitions= list()                                                                #initiate a list of possible next states
+        for i in range (np.shape(self.transition_matrix)[0]):                                       #iterate through all tuples in current row   
+            if k in self.transition_matrix[self.current_state,i]:                                   # if k is a tuple add its column to possible transitions
+                possible_transitions.append(i)
+        try:
+            self.current_state = random.choice(possible_transitions)                                #update current state to one of the possible transitions
+        except:
+            print("This transition is not possible")                                                #if k is not found in any tuple print this message
+        return self.current_state

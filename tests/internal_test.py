@@ -159,9 +159,41 @@ def test_delete():
                          [(2,4),(1,2,3),(1,)]], dtype = object)
     assert (np.array_equal(obj.delete(n,m,k) , expected))
 
-# TODO test examples (remaining: transition)
 def test_transition():
     k = 0
-    assert (obj.transition(k) == [[['A11','B11','C11','D11'],['A12','B12','C12','D12']],[['A21','B21','C21','D21'],['A22','B22','C22','D22']]]).all
+    obj.current_state = 0
+    obj.transition_matrix = np.array([[(0,1),(2,3),(4,3)],
+                                      [(1,2),(),(3,)],
+                                      [(2,4),(1,2,3),(1,)]], dtype = object)
 
+    expected = (0,)
+    assert (obj.transition(k) in expected)
+
+# TODO test examples (remaining: transition)
+    k = 3
+    obj.current_state = 0
+    obj.transition_matrix = np.array([[(0,1),(2,3),(4,3)],
+                                      [(1,2),(),(3,)],
+                                      [(2,4),(1,2,3),(1,)]], dtype = object)
+
+    expected = (1,2)
+    assert (obj.transition(k) in expected)
+
+    k = 2
+    obj.current_state = 2
+    obj.transition_matrix = np.array([[(0,1),(2,3),(4,3)],
+                                      [(1,2),(),(3,)],
+                                      [(2,4),(1,2,3),(1,)]], dtype = object)
+
+    expected = (0,1)
+    assert (obj.transition(k) in expected)
+
+    k = 0
+    obj.current_state = 1
+    obj.transition_matrix = np.array([[(0,1),(2,3),(4,3)],
+                                      [(1,2),(),(3,)],
+                                      [(2,4),(1,2,3),(1,)]], dtype = object)
+
+    expected = (1,)
+    assert (obj.transition(k) in expected)
 retcode = pytest.main()
