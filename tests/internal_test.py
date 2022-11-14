@@ -169,7 +169,6 @@ def test_transition():
     expected = (0,)
     assert (obj.transition(k) in expected)
 
-# TODO test examples (remaining: transition)
     k = 3
     obj.current_state = 0
     obj.transition_matrix = np.array([[(0,1),(2,3),(4,3)],
