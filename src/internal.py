@@ -46,6 +46,3 @@ class Internal:
         A = np.array([[['A11','B11','C11','D11'],['A12','B12','C12','D12']],[['A21','B21','C21','D21'],['A22','B22','C22','D22']]])
         return A
         
-obj = Internal(np.array([[(0,1,2,3,4)]], dtype = object),0)
-obj.transition_matrix = np.array([[(0,1),(2,3),(4,3)],[(1,2),(),(3,)],[(2,4),(1,2,3),(1,)]], dtype = object)
-print(obj.split(2))
