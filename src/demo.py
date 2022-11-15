@@ -2,7 +2,7 @@ import numpy as np
 import internal
 
 print('-'*15 + "demo matrix" +'-'*15)
-demo = internal.Internal(np.array([[(0,1),(1,2,3,4)],
+demo = internal.Internal(np.array([[(0,1),(1,2,4,3)],
                                    [(1,3,4),(0,2)]], dtype = object),0)
 print(demo.transition_matrix)
 

@@ -6,6 +6,10 @@ class Internal:
     def __init__(self, mt, st):
         self.transition_matrix = mt
         self.current_state = st
+        for n in range(np.shape(self.transition_matrix)[0]):
+            for m in range(np.shape(self.transition_matrix)[1]):
+                self.transition_matrix[n,m] = tuple(set(self.transition_matrix[n,m]))
+
     
     def split(self,n):
         #this function changes the transition graph G by splitting a node into two nodes. All the incoming and outgoing transitions are dublicated.
