@@ -24,7 +24,7 @@ class TestCalc():
     def test_Hit_Obs(self):
         assert obj.hitObstacle((1.0,2.0)) == True
     def test_feedback(self):
-        assert obj.getSensoryData((0.0,2.0)) == 1
+        assert obj.getSensoryData((-0.14,2.0)) == 1
 
     def test_update_left(self):
         obj.p=90.0
