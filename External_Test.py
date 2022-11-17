@@ -20,7 +20,7 @@ class TestCalc():
         assert obj.update(0) == 91.0
     def test_get_position_to_the_right(self):
         obj.l=2.0
-        assert obj.getPosition(91.0) == (0.0,2.0)
+        assert obj.getPosition(91.0) == (-0.03,2.0)
     def test_Hit_Obs(self):
         assert obj.hitObstacle((1.0,2.0)) == True
     def test_feedback(self):
@@ -31,7 +31,7 @@ class TestCalc():
         assert obj.update(1) == 89.0
     def test_get_position_to_the_left(self):
         obj.l=2.0
-        assert obj.getPosition(91) == (0.0,2.0)
+        assert obj.getPosition(89) == (0.03,2.0)
     def test_Miss_Obs(self):
         assert obj.hitObstacle((1.6,1.2)) == False #p=36.86
     def test_no_feedback(self):
