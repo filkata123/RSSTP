@@ -4,8 +4,9 @@ from shapely.geometry import LineString, Point
 
 #pip install shapely
 
-decision = (0,0)  # will be used to store which new position to move to
+  # will be used to store which new position to move to
 class External:
+    decision = (0,0)
     #Constructor of External
     def __init__(self, n,p,l,o):
         self.n = n
@@ -17,7 +18,7 @@ class External:
         #get inputs from existing sensor
         #Function with no input. The output is given by get_S().
          # definition of sensory feedback point on a plane
-        feedback = (0.0,2.0) 
+        feedback = (-0.14,2.0) 
         if (coordinate == feedback):      
             return 1
         else:
@@ -25,7 +26,7 @@ class External:
 
         
 
-    def hitObstacle(self, coordinate, decision):
+    def hitObstacle(self, coordinate):
         # this will create 2 circles at (1,2) and (-1,-2) with radii 1
         # idealy when we create instance of class we fill in obstacles 
         # make use of self.o to create obs
@@ -42,10 +43,10 @@ class External:
         obstacle2 = circle2.intersects(line)
 
         if (obstacle1 or obstacle2):
-            self.p = decision[0] # reset position to old position
+            self.p = self.decision[0] # reset position to old position
             return True
         else:
-            self.p = decision[1] # move arm to new position
+            self.p = self.decision[1] # move arm to new position
             return False
 
     def getPosition(self,p):
@@ -55,8 +56,8 @@ class External:
         length = self.l
         position = p
 
-        x = round(length*math.cos(math.radians(position)))
-        y = round(length*math.sin(math.radians(position)))
+        x = round(length*math.cos(math.radians(position)),2)
+        y = round(length*math.sin(math.radians(position)),2)
         coordinate = (x,y)
         return coordinate
 
@@ -76,7 +77,7 @@ class External:
             new_position = (new_position - 1) % 360
 
         # list with new and old position, decision to move arm will be made in hit_obstacle()
-        decision = (old_position,new_position)
+        self.decision = (old_position,new_position)
         p = new_position
 
         # return new potential position of arm with which joint to move
