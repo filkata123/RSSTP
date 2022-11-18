@@ -1,12 +1,9 @@
-import os
-import sys
 import numpy as np
 import pytest
-cwd = os.getcwd()
-sys.path.append(cwd+'/src/')
-import internal
 
-obj = internal.Internal(np.array([[(0,1,2,3,4)]], dtype = object),0)
+from src.internal import Internal
+
+obj = Internal(np.array([[(0,1,2,3,4)]], dtype = object),0)
 # -------------------------------------------------------------Tests-------------------------------------------------------------------------------------------
 def test_split():
     n = 0

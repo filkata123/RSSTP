@@ -1,8 +1,9 @@
 import numpy as np
-import internal
+
+from internal import Internal
 
 print('-'*15 + "demo matrix" +'-'*15)
-demo = internal.Internal(np.array([[(0,1),(1,2,4,3)],
+demo = Internal(np.array([[(0,1),(1,2,4,3)],
                                    [(1,3,4),(0,2)]], dtype = object),0)
 print(demo.transition_matrix)
 
