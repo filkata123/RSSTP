@@ -190,6 +190,6 @@ def test_transition():
                                       [(1,2),(),(3,)],
                                       [(2,4),(1,2,3),(1,)]], dtype = object)
 
-    expected = (1,)
+    expected = (-1,)
     assert (obj.transition(k) in expected)
 retcode = pytest.main()
