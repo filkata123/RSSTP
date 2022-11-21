@@ -6,16 +6,16 @@ class Internal:
     def __init__(self, mt, st):
         self.transition_matrix = mt
         self.current_state = st
-        for n in range(np.shape(self.transition_matrix)[0]):
-            for m in range(np.shape(self.transition_matrix)[1]):
-                self.transition_matrix[n,m] = tuple(set(self.transition_matrix[n,m]))
+        for element in self.transition_matrix:
+            element.sort()
 
     
     def split(self,n):
         #this function changes the transition graph G by splitting a node into two nodes. All the incoming and outgoing transitions are dublicated.
-        row = self.transition_matrix[n,:].reshape(1,np.shape(self.transition_matrix)[1])             #extract desired row
+        row = np.array([self.transition_matrix[n,:]])                                                #extract desired row
         self.transition_matrix = np.vstack((self.transition_matrix,row))                             #add it to the matrix
-        col = self.transition_matrix[:,n].reshape(np.shape(self.transition_matrix)[0],1)             #extract desired col
+        col = np.array(self.transition_matrix[:,n])                                                  #extract desired col
+        col = np.expand_dims(col, axis = 1)                                                          #convert it to correct shape
         self.transition_matrix = np.hstack((self.transition_matrix,col))                             #add it to the matrix
         return self.transition_matrix
 
@@ -55,7 +55,7 @@ class Internal:
     
     def transition(self,k):
         #This is a non-deterministic transition.
-        possible_transitions = list()                                                                #initiate a list of possible next states
+        possible_transitions = list()                                                               #initiate a list of possible next states
         for i in range (np.shape(self.transition_matrix)[0]):                                       #iterate through all tuples in current row   
             if k in self.transition_matrix[self.current_state,i]:                                   # if k is a tuple add its column to possible transitions
                 possible_transitions.append(i)
