@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from internal import Internal
+from src.internal import Internal
 
 obj = Internal(np.array([[[0,1,2,3,4]]], dtype = object),0)
 
