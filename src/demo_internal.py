@@ -3,17 +3,17 @@ import numpy as np
 from internal import Internal
 
 print('-'*15 + "demo matrix" +'-'*15)
-demo = Internal(np.array([[(0,1),(1,2,4,3)],
-                                   [(1,3,4),(0,2)]], dtype = object),0)
+demo = Internal(np.array([[[0,1],[1,2,4,3]],
+                                   [[1,3,4],[0,2]]], dtype = object),0)
 print(demo.transition_matrix)
 
 print('-'*15 + "split(n) demonstration" +'-'*15)
 print(demo.split(0))
 
 print('-'*15 + "demo matrix" +'-'*15)
-demo.transition_matrix = np.array([[(1,),(2,4),(2,)],
-                                   [(),(),(1,)],
-                                   [(0,),(),()]], dtype = object)
+demo.transition_matrix = np.array([[[1],[2,4],[2]],
+                                   [[1],[],[1]],
+                                   [[0,],[],[]]], dtype = object)
 print(demo.transition_matrix)
 print('-'*15 + "merge(n,m) demonstration" +'-'*15)
 print(demo.merge(0,1))
