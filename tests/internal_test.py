@@ -174,7 +174,7 @@ def test_delete_4():
     expected = -1
     assert (np.array_equal(obj.delete(n,m,k) , expected))
 
-# -------------------------------------------------------------transition-----------------------------------------------------------------------------------------
+# -------------------------------------------------------------transition---------------------------------------------------------------------------------------
 def test_transition_1():
     k = 0
     obj.current_state = 0
@@ -214,3 +214,4 @@ def test_transition_4():
 
     expected = [-1]
     assert (obj.transition(k) in expected)
+    
