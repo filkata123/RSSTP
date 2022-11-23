@@ -1,20 +1,20 @@
 import numpy as np
 import random
+import copy
 class Internal:
     
     #Constructor of Internal class
     def __init__(self, mt, st):
-        self.transition_matrix = mt
         self.current_state = st
-        for element in self.transition_matrix:
-            element.sort()
-
+        self.transition_matrix = np.ndarray(shape= (1,1), dtype= object)                            #create initial 1x1 matrix
+        self.transition_matrix[0,0] = mt                                                            #fill matrix with list of possible actions
+        self.transition_matrix[0,0].sort()                                                          #sort matrix
     
     def split(self,n):
         #this function changes the transition graph G by splitting a node into two nodes. All the incoming and outgoing transitions are dublicated.
-        row = np.array([self.transition_matrix[n,:]])                                               #extract desired row
+        row = copy.deepcopy([self.transition_matrix[n,:]])                                          #extract desired row
         self.transition_matrix = np.vstack((self.transition_matrix,row))                            #add it to the matrix
-        col = np.array(self.transition_matrix[:,n])                                                 #extract desired col
+        col = copy.deepcopy(self.transition_matrix[:,n])                                            #extract desired col
         col = np.expand_dims(col, axis = 1)                                                         #convert it to correct shape
         self.transition_matrix = np.hstack((self.transition_matrix,col))                            #add it to the matrix
         return self.transition_matrix
@@ -39,20 +39,23 @@ class Internal:
 
     def add(self,n,m,k):
         #add a connection from n to m with label k, meaning that anm := anm ∪ {k}.
-        self.transition_matrix[n,m] += [k]                                                         #add k to Amn
-        self.transition_matrix[n,m] = list(set(self.transition_matrix[n,m]))                       #sort elements in Amn
-        return self.transition_matrix
+        if k not in self.transition_matrix[n,m]:                                                    #check if connection already exists
+            self.transition_matrix[n,m].append(k)                                                   #if not add k to Amn
+            self.transition_matrix[n,m].sort()                                                      #sort elements in Amn
+            return self.transition_matrix
+        else:
+            print("this connection already exists")                                                 #if yes print this message
+            return -1
 
     def delete(self,n,m,k):
         #remove the connection from n to m, if it has label k, meaning that anm := anm \ {k}.
-        temp = list(self.transition_matrix[n,m])                                                    #extract Amn as a list
-        try:
-            temp.remove(k)                                                                          #remove k from Amn if found
-        except ValueError:
+        if k in self.transition_matrix[n,m]:                                                        #check if connection exists
+            self.transition_matrix[n,m].remove(k)                                                   #if yes remove k from Amn if found
+            return self.transition_matrix
+        else:
             print("Specified path does not exist")                                                  #if not  k is not in Amn print message 
-        self.transition_matrix[n,m] = list(temp)                                                   #update Amn in transition matrix
-        return self.transition_matrix
-    
+            return -1
+
     def transition(self,k):
         #This is a non-deterministic transition.
         possible_transitions = list()                                                               #initiate a list of possible next states

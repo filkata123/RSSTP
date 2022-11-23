@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from src.internal import Internal
 
-obj = Internal(np.array([[[0,1,2,3,4]]], dtype = object),0)
+obj = Internal(list([0,1,2,3,4]),0)
 
 # -------------------------------------------------------------split--------------------------------------------------------------------------------------------
 def test_split_1():
@@ -171,12 +171,10 @@ def test_delete_4():
                                       [[1,2],[],[3]],
                                       [[2,4],[1,2,3],[1]]], dtype = object)
 
-    expected = np.array([[[0,1],[2,3],[4,3]],
-                         [[1,2],[],[3]],
-                         [[2,4],[1,2,3],[1]]], dtype = object)
+    expected = -1
     assert (np.array_equal(obj.delete(n,m,k) , expected))
 
-# -------------------------------------------------------------transition-----------------------------------------------------------------------------------------
+# -------------------------------------------------------------transition---------------------------------------------------------------------------------------
 def test_transition_1():
     k = 0
     obj.current_state = 0
@@ -216,5 +214,4 @@ def test_transition_4():
 
     expected = [-1]
     assert (obj.transition(k) in expected)
-
-retcode = pytest.main()
+    
