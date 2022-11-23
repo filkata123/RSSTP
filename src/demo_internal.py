@@ -3,8 +3,9 @@ import numpy as np
 from internal import Internal
 
 print('-'*15 + "demo matrix" +'-'*15)
-demo = Internal(np.array([[[0,1],[1,2,4,3]],
-                                   [[1,3,4],[0,2]]], dtype = object),0)
+demo = Internal(list([0,1,2,3,4]),0)
+demo.transition_matrix = np.array([[[0,1],[1,2,4,3]],
+                                   [[1,3,4],[0,2]]], dtype = object)
 print(demo.transition_matrix)
 
 print('-'*15 + "split(n) demonstration" +'-'*15)
