@@ -26,7 +26,7 @@ class robot_arm:
             print("Updated position: " + str(self.get_arm_position())) 
 
             if self.is_desired_position_reached():
-                print("Desired positon reached")
+                print("Home positon reached")
 
     def get_arm_position(self):
         return self.ext.get_position()
@@ -39,10 +39,10 @@ class robot_arm:
         print(self.int.split(n))
 
     def merge_nodes(self, n, m):
-        self.int.merge(n, m)
+        print(self.int.merge(n, m))
 
     def add_connection_between_nodes(self, n, m, k):
-        self.int.add(n, m, k)
+        print(self.int.add(n, m, k))
 
     def delete_conection_between_nodes(self, n, m, k):
         print(self.int.delete(n,m,k))
