@@ -22,13 +22,19 @@ class External:
         if self.__hit_obstacle(self.p):
             raise Exception("Initial position must not intersect with obstacles")
 
-    # Private methods 
+    # Private methods
 
-    def _calculate_coordinates(self, length, position,joint_nbr):
-        x,y=0
+    def _calculate_coordinates(self, new_position,joint_nbr):
+        x=0
+        y=0
+        lengths=[]
         for i in range(joint_nbr):
-            temp_x = round(length[i]*math.cos(math.radians(position[i])),2)
-            temp_y = round(length[i]*math.sin(math.radians(position[i])),2)
+            lengths.append(self.l[i])
+        for i in range(joint_nbr):
+            print(type(new_position))
+            print(new_position)
+            temp_x = round(lengths[i]*math.cos(math.radians(new_position[i])),2)
+            temp_y = round(lengths[i]*math.sin(math.radians(new_position[i])),2)
             x+= temp_x
             y+= temp_y
 
@@ -43,6 +49,10 @@ class External:
         obstacle=[]
         center=[]
         circle=[]
+        lines = []
+        i=0
+        for i in range(self.n):
+            lines.append(self.l[i])
         nbr_of_obstacles = len(self.o)/2
         nbr_of_lines = self.n
         size_of_bool = nbr_of_lines * nbr_of_obstacles
@@ -54,21 +64,21 @@ class External:
         else:    
             for i in range(len(self.o),2):
 
-                center[i] = Point(self.o[i][0],self.o[i][1])
-                circle[i] = center[i].buffer(self.o[i+1]).boundary
+                center.append(Point(self.o[i][0],self.o[i][1]))
+                circle.append(center[i].buffer(self.o[i+1]).boundary)
 
 
         for i in range(self.n):
             #constructing of 1 arm with 1 node at origin  with length l
-            coordinates_2[i] = self._calculate_coordinates(self.l[i],new_position[i],i) 
+            coordinates_2.append(self._calculate_coordinates(new_position[i],i))
             if i > 1:
-                line[i] = LineString([(coordinates_2[i-1][0], coordinates_2[i-1][1]), (coordinates_2[i][0], coordinates_2[i][1])])
+                line.append(LineString([(coordinates_2[i-1][0], coordinates_2[i-1][1]), (coordinates_2[i][0], coordinates_2[i][1])]))
             else:
-                line[i] = LineString((0,0), (coordinates_2[i][0], coordinates_2[i][1]))
+                line.append(LineString([(0,0), (coordinates_2[i][0], coordinates_2[i][1])]))
 
         for i in range(nbr_of_obstacles):
             for j in range(nbr_of_lines):
-                obstacle[nbr_of_lines*i+j] = circle[i].intersects(line[j])   
+                obstacle.append(circle[i].intersects(line[j]) )  
             #checks if line and any of the circles intersect
 
         for i in range(size_of_bool): #nbr of obstacles * nbr of lines/arms
@@ -82,7 +92,7 @@ class External:
         #get inputs from existing sensor
         #Function with no input. The output is given by get_S().
         #TODO: Figure out what is feedback for n joints
-        if self._calculate_coordinates(self.l, self.p) == self.feedback:      
+        if self._calculate_coordinates( self.p,self.n) == self.feedback:      
             return 1
         else:
             return 0 
@@ -93,14 +103,14 @@ class External:
         coordinates=()
         #TODO: coordinates for multiple joints #Done
         for i in range(self.n):
-            coordinates[i] = self._calculate_coordinates(self.l, self.p,i)
+            coordinates.append(self._calculate_coordinates( self.p,i))
             return (self.p, coordinates)
 
 
     def update(self, a):
         new_position=[]
         for i in range(self.n):
-            new_position[i]=self.p[i]
+            new_position.append(self.p[i])
         # This function takes as an input an action a from internal library.
         # The action a is an integer such that 0 ≤ a < 2n. If a = 2k for some k, then the k:th joint moves counterclockwise, 
         # and if a = 2k + 1 for some k, then the k:th joint moves clockwise.
@@ -113,9 +123,11 @@ class External:
             k = int((a-1)/2)
             new_position[k] = (new_position[k] - 1) % 360
 
-        coordinates_after_move = self._calculate_coordinates(self.l, new_position,k)
+        coordinates_after_move = self._calculate_coordinates(new_position,k)
 
         if not self.__hit_obstacle(new_position):
             self.p[k] = new_position[k] # move joint to new position
         else:
             print('Position of joint '+ k +' is (' + str(coordinates_after_move) + ') unreachable due to object! \n')
+
+        

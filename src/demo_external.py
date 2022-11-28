@@ -1,8 +1,8 @@
 from external import External
 
-n = 1
-p = 95
-l = 2
+n = 2
+p = [95,80]
+l = [2,3]
 o = [[1,2],1,[-1,-2],1]
 feedback = (-0.14,2.0)
 obj = External(n, p, l, o, feedback)
