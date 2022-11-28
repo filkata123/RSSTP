@@ -4,7 +4,7 @@ n = 2
 p = [95,80]
 l = [2,3]
 o = [[1,2],1,[-1,-2],1]
-feedback = (-0.14,2.0)
+feedback = (0.38, 4.95)
 obj = External(n, p, l, o, feedback)
 
 for x in range (11):
