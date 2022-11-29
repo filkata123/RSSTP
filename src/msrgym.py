@@ -18,12 +18,12 @@ class robot_arm:
 
     def update_position(self, action : int):
         """
-        action = e.g. 0 = left 1 =r ight 
+        -action = e.g. 0 = left 1 = right 
         """
         if self.int.transition(action) >= 0:
             self.ext.update(action)
 
-            print("Updated position: " + str(self.get_arm_position())) 
+            print("Updated position: " + str(self.get_arm_position()) + " Internal state after update: " + str(self.get_current_internal_state()))
 
             if self.is_desired_position_reached():
                 print("Home positon reached")
@@ -34,17 +34,44 @@ class robot_arm:
     def is_desired_position_reached(self):
         return self.ext.get_sensory_data()
 
+    def get_current_internal_state(self):
+        return self.int.get_current_state()
+        
     # Helper functions
     def split_node(self, n):
-        print(self.int.split(n))
+        """
+        -n = Node number to split
+        """
+        return self.int.split(n)
 
     def merge_nodes(self, n, m):
-        print(self.int.merge(n, m))
+        """
+        -n = Node 1
+        -m = Node 2 
+
+        Merge node 1 and 2
+        """
+        return self.int.merge(n, m)
 
     def add_connection_between_nodes(self, n, m, k):
-        print(self.int.add(n, m, k))
+        """
+        -n = Node 1
+        -m = Node 2 
+        -k = action
+        
+        Create a connection between node 1 and 2 through action k.
+        """
+        return self.int.add(n, m, k)
 
     def delete_conection_between_nodes(self, n, m, k):
-        print(self.int.delete(n,m,k))
+        """
+        -n = Node 1
+        -m = Node 2 
+        -k = action
+        
+        Delete a connection between node 1 and 2 of action k.
+        """
+        return self.int.delete(n,m,k)
+    
 
 

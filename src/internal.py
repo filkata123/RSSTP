@@ -68,3 +68,6 @@ class Internal:
         except:
             print("This transition is not possible")                                                #if k is not found in any tuple print this message
             return -1
+
+    def get_current_state(self):
+        return self.current_state
