@@ -7,6 +7,10 @@ o = [[1.5,1],0.5,[1.5,-1.5],0.5]
 feedback = [(3.0, 0.0),(1.0,0.07),(2.0,0.1)]
 obj = External(n, p, l, o, feedback)
 
+print("Moved to position: ")
+print(obj.get_position())
+print("Reached destination: ")
+print(obj.get_sensory_data())
 print( "moving up until about to hit obstacle 0")
 for x in range (13):
 
