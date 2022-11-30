@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from src.internal import Internal
+from internal import Internal
 
 obj = Internal(list([0,1,2,3,4]),0)
 
