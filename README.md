@@ -14,7 +14,7 @@ Check [requirements.txt](requirements.txt) for libraries needed by the developer
 
 Check [setup.py](setup.py) for libraries needed for the software to run.
 
-Ensure that installation has been succesfull by navigating to ```src/demos/``` and running the ```mmsrgym.py``` demo with python:
+Ensure that installation has been succesfull by navigating to ```src/demos/``` and running the ```msrgym.py``` demo with python:
 
 ```shell
 python msrgym.py
@@ -22,7 +22,7 @@ python msrgym.py
 
 
 ## How to use
-#TODO
+Demos located in ```src/demos``` provide a practical explanation of the library usage.
 ## Testing
 Testing is done using ```pytest```. 
 To run the tests navigate to the ```tests``` folder and run pytest (after installation step):
