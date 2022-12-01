@@ -1,18 +1,20 @@
 from external import External
 
 n = 3
-p = [0,178,2]
+p = [0,178,182]
 l = [3,2,1]
 o = [[1.5,1],0.5,[1.5,-1.5],0.5]
-feedback = [(3.0, 0.0),(1.0,0.07),(2.0,0.1)]
-obj = External(n, p, l, o, feedback)
+d = 5
+feedback = [(3.0, 0.0),(1.0,0.07),(2.0,0.07)]
+obj = External(n, p, l, o,d, feedback)
 
 print("Moved to position: ")
 print(obj.get_position())
 print("Reached destination: ")
 print(obj.get_sensory_data())
+
 print( "moving up until about to hit obstacle 0")
-for x in range (13):
+for x in range (3):
 
     if x%3 == 0:
         print("------------------move joint 0 Left------------------")
@@ -21,16 +23,36 @@ for x in range (13):
         print("------------------move joint 1 Right------------------")
         obj.update(3)
     elif x%3==2:
-        print("------------------move joint 2 Left------------------")
+        print("------------------move joint 2 left------------------")
         obj.update(4)
     
     print("Moved to position: ")
     print(obj.get_position())
     print("Reached destination: ")
     print(obj.get_sensory_data())
+print(obj.p)   
 
+'''
+print( "moving up until about to hit obstacle 0")
+for x in range (24):
 
-print("going back down until collide with self")
+    if x%3 == 0:
+        print("------------------move joint 0 Left------------------")
+        obj.update(0)
+    elif x%3 ==1:
+        print("------------------move joint 1 Right------------------")
+        obj.update(3)
+    elif x%3==2:
+        print("------------------move joint 2 left------------------")
+        obj.update(4)
+    
+    print("Moved to position: ")
+    print(obj.get_position())
+    print("Reached destination: ")
+    print(obj.get_sensory_data())
+print(obj.p)'''
+'''
+ print("going back down until collide with self")
 for x in range(13):
     if x%3 == 0:
         print("------------------move joint 0 Right------------------")
@@ -142,3 +164,4 @@ for x in range(53):
     print(obj.get_position())
     print("Reached destination: ")
     print(obj.get_sensory_data())
+'''
