@@ -19,6 +19,7 @@ class Internal:
         elif isinstance(new_matrix,np.ndarray):
             if len(np.shape(new_matrix)) <= 1:
                 return -1
+            # TODO msh uncomment this
             # if np.shape(new_matrix)[0] != np.shape(new_matrix)[1]:
             #     return -1
             if isinstance(new_matrix[0,0],np.ndarray):
@@ -39,6 +40,8 @@ class Internal:
         return self.__current_state
 
     def set_current_state(self,new_state):                                                          #setter for current state
+        if not (isinstance(new_state, int)):
+            return -1
         if new_state < np.shape(self.__transition_matrix)[0] and new_state >= 0:
             self.__current_state = new_state
         else:

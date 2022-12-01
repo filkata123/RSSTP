@@ -33,7 +33,7 @@ def test_set_transition_matrix_3():
     expected[0,0] = list([1,2]);expected[0,1] = list([1,3])
     expected[1,0] = list([2,3]);expected[1,1] = list([1,1])
     assert(np.array_equal(obj.get_transition_matrix(),expected))
-
+# TODO msh uncomment this
 # def test_set_transition_matrix_4(): #adding input validation to the setter makes this work but breaks shabbirs tests
 #     obj = Internal(list([0,1,2,3]))
 #     assert(obj.set_transition_matrix(np.array([[[0,1],[2,5],[4,3]],
