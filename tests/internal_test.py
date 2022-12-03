@@ -33,6 +33,7 @@ def test_set_transition_matrix_3():
     expected[0,0] = list([1,2]);expected[0,1] = list([1,3])
     expected[1,0] = list([2,3]);expected[1,1] = list([1,1])
     assert(np.array_equal(obj.get_transition_matrix(),expected))
+
 # TODO msh uncomment this
 # def test_set_transition_matrix_4(): #adding input validation to the setter makes this work but breaks shabbirs tests
 #     obj = Internal(list([0,1,2,3]))
@@ -78,15 +79,15 @@ def test_split_abnormal_2():
 
     assert (np.array_equal(obj.split(n) , -1))
     
-# def test_split_abnormal_3():  #Mourad: this matrix is not a proper matrix so set_transition_matrix() blocks it
-#     # Number of col is not equal to specific row
-#     n = 0
-#     obj = Internal(np.array([[[0,1],[2,5],[4,3]],
-#                              [[1,2], [3]],
-#                              [[1,2],[], [3]],
-#                              [[2,4],[1,2,3],[1]]], dtype = object))
-
-#     assert (np.array_equal(obj.split(n) , -1))
+#def test_split_abnormal_3():  #Mourad: this matrix is not a proper matrix so set_transition_matrix() blocks it
+#    # Number of col is not equal to specific row
+#    n = 0
+#    obj = Internal(np.array([[[0,1],[2,5],[4,3]],
+#                             [[1,2], [],[3]],
+#                             [[1,2], [3]],
+#                             [[2,4],[1,2,3],[1]]], dtype = object))
+#
+#    assert (np.array_equal(obj.split(n) , -1))
  
 def test_split_abnormal_4():
      # Out of boundary state or stage
@@ -107,14 +108,7 @@ def test_split_abnormal_5():
 
     assert (np.array_equal(obj.split(n) , -1))
 
-# def test_split_abnormal_6():
-#      # Empty row check
 
-#     n = 0
-#     obj = Internal(np.array([[]], dtype = object)) #Mourad: this is not a 1x1 array, use the next line to make an empty 1x1 array
-#     obj = Internal(np.ndarray(shape= (2,2), dtype= object)) #Mourad: but again set_transition_matrix() blocks this matrix and does not create the object 
-
-#     assert (np.array_equal(obj.split(n) , -1))
 
 def test_split_abnormal_7():
      # Boundary test already done in normal test mode

@@ -48,22 +48,14 @@ class Internal:
             return -1
     
     def split(self,n):
-        #input validation
+
+        if(self.transition_matrix_validation() == -1):                                               #validating transition matrix
+            return -1
+        
         row_length = len(self.__transition_matrix)
         col_length = len(self.__transition_matrix[0])
-
-        if (row_length == 0) | (col_length == 0):                                                   #checking if transition matrix is empty
-            return -1
         
-        if row_length != col_length:                                                                #checking Overall matrix size
-            return -1
-        
-        for row_index in range(row_length):                                                         #checking intermediate column wrt row
-            intermediate_col_length = len(self.__transition_matrix[row_index])
-            if row_length != intermediate_col_length:
-                return -1
-        
-        if (n >= row_length) | (n >= col_length):                                                   #checking the operation is inside N x M matix
+        if (n >= row_length) | (n >= col_length):                                                  #checking is argument n is less then the N or M of transition matix       
             return -1
         
         #this function changes the transition graph G by splitting a node into two nodes. All the incoming and outgoing transitions are dublicated.
@@ -75,25 +67,17 @@ class Internal:
         return self.__transition_matrix
 
     def merge(self,n,m):
-        #input validation
+       
+        if(self.transition_matrix_validation() == -1):                                              #checking is argument n and m is less then the N & M of transition matix
+            return -1
+        
         row_length = len(self.__transition_matrix)
         col_length = len(self.__transition_matrix[0])
-
-        if (row_length == 0) | (col_length == 0):                                                   #checking if transition matrix is empty
-            return -1
-        
-        if row_length != col_length:                                                                #checking Overall matrix size
-            return -1
-        
-        for row_index in range(row_length):                                                         #checking intermediate column wrt row
-            intermediate_col_length = len(self.__transition_matrix[row_index])
-            if row_length != intermediate_col_length:
-                return -1
  
-        if (n >= row_length) | (n >= col_length) | (m >= row_length)| (m >= col_length):            #checking the operation is inside N x M matix
+        if (n >= row_length) | (n >= col_length) | (m >= row_length)| (m >= col_length):            #checking the argurment n and m is less then the N x M of transition matix
             return -1
         
-        if (n == m):                                                                                #checking if n and m are same
+        if (n == m):                                                                                #checking if n and m are same (invalid arguments)
             return -1
 
         #Opposite of split. Remove columns n, m and rows n, m and add instead one row and one column which are obtained by taking unions of elements of original rows/columns.
@@ -114,22 +98,14 @@ class Internal:
         return self.__transition_matrix
 
     def add(self,n,m,k):
-        #input validation
+        
+        if(self.transition_matrix_validation() == -1):                                               #validating transition matrix
+            return -1
+
         row_length = len(self.__transition_matrix)
         col_length = len(self.__transition_matrix[0])
-
-        if (row_length == 0) | (col_length == 0):                                                   #checking if transition matrix is empty
-            return -1
-        
-        if row_length != col_length:                                                                #checking Overall matrix size
-            return -1
-        
-        for row_index in range(row_length):                                                         #checking intermediate column wrt row
-            intermediate_col_length = len(self.__transition_matrix[row_index])
-            if row_length != intermediate_col_length:
-                return -1
  
-        if (n >= row_length) | (m >= col_length):                                                   #checking the operation is inside N x M matix
+        if (n >= row_length) | (m >= col_length):                                                  #checking the argument n and m is less then the N x M of transition matix
             return -1
         
         #add a connection from n to m with label k, meaning that anm := anm ∪ {k}.
@@ -142,22 +118,14 @@ class Internal:
             return -1
 
     def delete(self,n,m,k):
-        #input validation
+        
+        if(self.transition_matrix_validation() == -1):                                               #validating transition matrix
+            return -1
+       
         row_length = len(self.__transition_matrix)
         col_length = len(self.__transition_matrix[0])
 
-        if (row_length == 0) | (col_length == 0):                                                   #checking if transition matrix is empty
-            return -1
-        
-        if row_length != col_length:                                                                #checking Overall matrix size
-            return -1
-        
-        for row_index in range(row_length):                                                         #checking intermediate column wrt row
-            intermediate_col_length = len(self.__transition_matrix[row_index])
-            if row_length != intermediate_col_length:
-                return -1
- 
-        if (n >= row_length) | (m >= col_length):                                                   #checking the operation is inside N x M matix
+        if (n >= row_length) | (m >= col_length):                                                   #checking is argument n and m is less then the N & M of transition matix
             return -1
 
         #remove the connection from n to m, if it has label k, meaning that anm := anm \ {k}.
@@ -167,24 +135,12 @@ class Internal:
         else:
             print("Specified path does not exist")                                                  #if not  k is not in Amn print message 
             return -1
+    
 
     def transition(self,k):
-        #input validation
-        row_length = len(self.__transition_matrix)
-        col_length = len(self.__transition_matrix[0])
-
-        if (row_length == 0) | (col_length == 0):                                                   #checking if transition matrix is empty
+               
+        if(self.transition_matrix_validation() == -1):                                               #validating transition matrix
             return -1
-        
-        if row_length != col_length:                                                                #checking Overall matrix size
-            return -1
-        
-        for row_index in range(row_length):                                                         #checking intermediate column wrt row
-            intermediate_col_length = len(self.__transition_matrix[row_index])
-            if row_length != intermediate_col_length:
-                return -1
-        if (self.__current_state >= row_length):
-            return -1 
         
         #This is a non-deterministic transition.
         possible_transitions = list()                                                               #initiate a list of possible next states
@@ -197,3 +153,22 @@ class Internal:
         except:
             print("This transition is not possible")                                                #if k is not found in any tuple print this message
             return -1
+
+    def transition_matrix_validation(self):
+        #Validating transition martix before any manipulation 
+        row_length = len(self.__transition_matrix)                                                  #extracting rows of transition matrix
+        col_length = len(self.__transition_matrix[0])                                               #extracting rows of transition matrix
+
+        if (row_length == 0) | (col_length == 0):                                                   #checking if transition matrix is empty
+            return -1
+        
+        if row_length != col_length:                                                                #checking square matrix
+            return -1
+        
+        for row_index in range(row_length):                                                         #checking size of rows inside each intermediate column wrt row or column
+            intermediate_col_length = len(self.__transition_matrix[row_index])
+            if row_length != intermediate_col_length:
+                return -1
+        return 1
+
+    
