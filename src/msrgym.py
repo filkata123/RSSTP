@@ -4,13 +4,15 @@ from external import External
 class robot_arm:
     
     def __init__(self, joints_n : int, arm_lengths : float, obstacles : list, initial_position: int, goal_position: tuple, actions):
-        """
-        -joints_n = number of joints : int : > 0
-        -arm_lengths = arm lenghts : float (TODO: List<float> with size n)
-        -obstacles = list of obstacles in the form [[x1,y1], radius_1, ..., [x_n,y_n], radius_n]
-        -initial_position = initial position of arm in degress : int 0-359 (TODO: List<int> with size n)
-        -goal_position = desired point for the arm to reach in coordinates [x,y] (TODO: in degrees?)
-        -actions = list of initial possible actions in the form [(0, 1, ... n)]
+        """Create a robot arm with charactersitics passed in arguments
+        
+        Args:
+            joints_n (int): number of joints : int : > 0
+            arm_lengths (float): arm lenghts : float (TODO: List<float> with size n)
+            obstacles (list): list of obstacles in the form [[x1,y1], radius_1, ..., [x_n,y_n], radius_n]
+            initial_position (int): initial position of arm in degress : int 0-359 (TODO: List<int> with size n)
+            goal_position (tuple): desired point for the arm to reach in coordinates [x,y] (TODO: in degrees?)
+            actions (_type_): list of initial possible actions in the form [(0, 1, ... n)]
         """
 
         self.ext = External(joints_n, initial_position, arm_lengths, obstacles, goal_position)

@@ -29,3 +29,9 @@ To run the tests navigate to the ```tests``` folder and run pytest (after instal
 ``` shell
 pytest
 ```
+## Documentation
+To see the ```pdoc``` auto-generated documentation run the following command while in the RSTTP folder:
+```
+pdoc --html --output-dir build src
+```
+Then navigate to ```build/src``` and open ```index.html``` with your favourite browser.
