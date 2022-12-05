@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from src.internal import Internal
+from internal import Internal
 
 # ----------------------------------------------------transition matrix getter and setter--------------------------------------------------------------------------
 def test_get_transition_matrix():

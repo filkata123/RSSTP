@@ -12,11 +12,11 @@ class Internal:
 
     def set_transition_matrix(self,new_matrix):                                                     #setter for transition matrix
         #TODO check shape of matrix
-        if isinstance(new_matrix,list):
+        if isinstance(new_matrix, list):
             self.__transition_matrix = np.ndarray(shape= (1,1), dtype= object)                      #create initial 1x1 matrix
             self.__transition_matrix[0,0] = new_matrix                                              #fill matrix with list of possible actions
             self.__transition_matrix[0,0].sort()                                                    #sort matrix
-        elif isinstance(new_matrix,np.ndarray):
+        elif isinstance(new_matrix, np.ndarray):
             if len(np.shape(new_matrix)) <= 1:
                 return -1
             # TODO msh uncomment this
@@ -28,7 +28,7 @@ class Internal:
                     for j in range(np.shape(new_matrix)[1]):
                         self.__transition_matrix[i,j] = new_matrix[i,j].tolist()
                         self.__transition_matrix[i,j].sort()
-            elif isinstance(new_matrix[0,0],list):
+            elif isinstance(new_matrix[0,0], list):
                 self.__transition_matrix = new_matrix
             else:
                 return -1
@@ -170,5 +170,3 @@ class Internal:
             if row_length != intermediate_col_length:
                 return -1
         return 1
-
-    

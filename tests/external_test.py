@@ -1,7 +1,7 @@
 # Get the current working directory
 import pytest
 
-from src.external import External
+from external import External
 
 # fixture resets all setings on use
 @pytest.fixture
