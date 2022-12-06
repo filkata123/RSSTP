@@ -14,6 +14,7 @@ class robot_arm:
             arm_steps (int): how many rotation steps should the hand(s) have
             goal_position (tuple): desired point for the arm to reach in coordinates [x,y]
             actions (list): list of initial possible actions in the form [(0, 1, ... n)]
+            visualise (bool - optional): Whether arm movement should be visualized. Default: False
         """
 
         self.ext = External(joints_n, initial_position, arm_lengths, obstacles, arm_steps, goal_position)
