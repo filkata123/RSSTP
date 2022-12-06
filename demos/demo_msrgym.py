@@ -2,18 +2,18 @@ import numpy as np
 from msrgym import robot_arm
 
 n = 1
-l = 2
+p = [95]
+l = [2]
 o = [[1,2],1,[-1,-2],1]
-p = 95
-feedback = (-0.35, 1.97)
+d = 1
+feedback = [(-0.35, 1.97)]
 
 left = 0
 right = 1
-
 actions = list([left,right])
 
 try:
-    arm = robot_arm(n, l, o, p, feedback, actions)
+    arm = robot_arm(n, p, l, o, d, feedback, actions)
 
     #TODO: Get matrix and show it
     

@@ -1,12 +1,36 @@
 from external import External
 
+
+print("------------------ONE ARM------------------")
+n = 1
+p = [95]
+l = [2]
+o = [[1,2],1,[-1,-2],1]
+d = 1
+feedback = [(-0.14,2.0)]
+one_arm = External(n, p, l, o, d, feedback)
+
+for x in range (11):
+    if x <= 7:
+        print("------------------move right------------------")
+        one_arm.update(1)
+    else:
+        print("------------------move left------------------")
+        one_arm.update(0)
+    print("Moved to position: ")
+    print(one_arm.get_position())
+    print("Reached destination: ")
+    print(one_arm.get_sensory_data())
+
+
+print("------------------THREE ARMS------------------")
 n = 3
 p = [0,178,182]
 l = [3,2,1]
 o = [[1.5,1],0.5,[1.5,-1.5],0.5]
 d = 5
 feedback = [(3.0, 0.0),(1.0,0.07),(2.0,0.07)]
-obj = External(n, p, l, o,d, feedback)
+obj = External(n, p, l, o, d, feedback)
 
 print("Moved to position: ")
 print(obj.get_position())
