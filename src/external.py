@@ -3,6 +3,7 @@ import math
 from shapely.geometry import LineString, Point
 
 import matplotlib.pyplot as plt
+import time
 import numpy as np
 
 #pip install shapely
@@ -41,15 +42,15 @@ class External:
 
 
         for i in range(self.n):
-                p = p + new_position[i]
+            p = p + new_position[i]
 
-                temp_x = round(lengths[i]*math.cos(math.radians(p)),2)
-                temp_y = round(lengths[i]*math.sin(math.radians(p)),2)
-                #print("temp :( "+ str(temp_x) + " , " + str(temp_y) +" )")
-                x = round((x + temp_x),2)
-                y = round((y + temp_y),2)
-                coordinates.append((x,y))
-                #print(" x for joint "+ str(i) +  " ( "+ str(x) + " , "+ str(y) +" )")
+            temp_x = round(lengths[i]*math.cos(math.radians(p)),2)
+            temp_y = round(lengths[i]*math.sin(math.radians(p)),2)
+            #print("temp :( "+ str(temp_x) + " , " + str(temp_y) +" )")
+            x = round((x + temp_x),2)
+            y = round((y + temp_y),2)
+            coordinates.append((x,y))
+            #print(" x for joint "+ str(i) +  " ( "+ str(x) + " , "+ str(y) +" )")
 
         return coordinates # this will always return x,y for joint i
     
@@ -70,10 +71,6 @@ class External:
         # range determiners
         nbr_of_obstacles = int(len(self.o)/2)
         nbr_of_lines = self.n
-
-        
-        
-
 
         if len(self.o) == 0:
             print ("No obstacles in environment")
@@ -182,23 +179,20 @@ class External:
             print('line '+ str(results[2]) +' intersects with line '+str(results[3])+'! \n')
 
     def plot(self, coordinates):
-
-            x_coordinates=[0]
-            y_coordinates=[0]
-
-            for coordinate in coordinates:
-                
-                x_coordinates.append(coordinate[0])
-                y_coordinates.append(coordinate[1])
-
-            plt.plot(x_coordinates, y_coordinates)
-            plt.axis([-3, 3.5, -3, 3])
-
-            for i in range(0,len(self.o),2):
-                circle = plt.Circle(self.o[i],self.o[i+1], color='#e2e2e2')
-                plt.gca().add_patch(circle)
-
-            plt.grid()
-            plt.show()
-
         
+        x_coordinates=[0]
+        y_coordinates=[0]
+
+        for coordinate in coordinates:
+            x_coordinates.append(coordinate[0])
+            y_coordinates.append(coordinate[1])
+        
+        plt.plot(x_coordinates, y_coordinates)
+        plt.axis([-3, 3.5, -3, 3])
+
+        for i in range(0,len(self.o),2):
+            circle = plt.Circle(self.o[i],self.o[i+1], color='#e2e2e2')
+            plt.gca().add_patch(circle)        
+
+        plt.grid()
+        plt.show()
