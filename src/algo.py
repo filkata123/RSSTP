@@ -1,7 +1,7 @@
 import numpy as np
 from msrgym import robot_arm
 
-def reset(labeling, number_of_states, state_hist, sense_hist, action_hist):
+def reset(number_of_states):
     labeling = dict(zip(range(number_of_states), [[]]*number_of_states))
     state_hist = []
     sense_hist = []
@@ -53,29 +53,29 @@ def split_node(arm, node, labeling,
     return arm, labeling
 
 def trim_transition_matrix(arm, labeling, new_nodes):
-    assert len(arm.int.transition_matrix) == len(labeling)
+    assert len(arm.int.get_transition_matrix) == len(labeling)
     for action in [0,1]:
-        for i in range(len(arm.int.transition_matrix)):
+        for i in range(len(arm.int.get_transition_matrix)):
             for j in new_nodes:
                 if not consistent_succ(labeling[i],labeling[j],action):
                     arm.delete_conection_between_nodes(i, j, action)
     return arm
 
 def untrim_transition_matrix(arm):
-    for i in range(len(arm.int.transition_matrix)):
-        actns = set(np.concatenate(arm.int.transition_matrix[i]))
+    for i in range(len(arm.int.get_transition_matrix)):
+        actns = set(np.concatenate(arm.int.get_transition_matrix[i]))
         for action in [0,1]:
             if action not in actns:
-                for j in range(len(arm.int.transition_matrix[i])):
+                for j in range(len(arm.int.get_transition_matrix[i])):
                     arm.add_connection_between_nodes(i,j,action)
     return arm
 
 def step(arm, labeling, state_hist, sense_hist, action_hist, action):
     state_hist.append(arm.get_current_internal_state())
-    sense_hist.append(arm.ext.get_sensory_data())
+    sense_hist.append(arm.is_desired_position_reached())
     labeling[state_hist[-1]].append(dict({'sensations': list([]),
                                           'actions':list([])}))
-    number_of_states = len(arm.int.transition_matrix)
+    number_of_states = len(arm.int.get_transition_matrix)
     for i in range(number_of_states):
         for SM_seq in labeling[i]:
             SM_seq['sensations'].append(sense_hist[-1])
@@ -83,8 +83,7 @@ def step(arm, labeling, state_hist, sense_hist, action_hist, action):
         for SM_seq in labeling[i]:
             SM_seq['actions'].append(action)
     action_hist.append(action)
-    arm.ext.update(action)
-    arm.int.transition(action)
+    arm.update_position(action)
     arm = trim_transition_matrix(arm, labeling, range(number_of_states))
     arm = untrim_transition_matrix(arm)
     for i in range(number_of_states):
@@ -98,12 +97,8 @@ def step(arm, labeling, state_hist, sense_hist, action_hist, action):
                                          number_of_states+len(contradicting_hists)-1))
             arm = trim_transition_matrix(arm, labeling, new_nodes)
             arm = untrim_transition_matrix(arm)
-            number_of_states = len(arm.int.transition_matrix)
-            labeling, state_hist, sense_hist, action_hist=reset(labeling,
-                                                                number_of_states,
-                                                                state_hist,
-                                                                sense_hist,
-                                                                action_hist)
+            number_of_states = len(arm.int.get_transition_matrix)
+            labeling, state_hist, sense_hist, action_hist=reset(1)
             return arm, labeling, state_hist, sense_hist, action_hist
     return arm, labeling, state_hist, sense_hist, action_hist
 
@@ -120,11 +115,7 @@ left = 0
 right = 1
 ACTIONS = list([left,right])
 arm = robot_arm(n, l, o, p, feedback, ACTIONS)
-labeling, state_hist, sense_hist, action_hist = reset(labeling,
-                                                      number_of_states,
-                                                      state_hist,
-                                                      sense_hist,
-                                                      action_hist)
+labeling, state_hist, sense_hist, action_hist = reset(1)
 
 
 # RUNNING THE ALGO:
