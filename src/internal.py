@@ -37,9 +37,6 @@ class Internal:
         elif isinstance(new_matrix, np.ndarray):
             if len(np.shape(new_matrix)) <= 1:
                 return -1
-            # TODO msh uncomment this
-            # if np.shape(new_matrix)[0] != np.shape(new_matrix)[1]:
-            #     return -1
             if isinstance(new_matrix[0,0],np.ndarray):
                 self.__transition_matrix = np.ndarray(shape= (np.shape(new_matrix)[0],np.shape(new_matrix)[1]), dtype= object)
                 for i in range(np.shape(new_matrix)[0]):
@@ -247,7 +244,6 @@ class Internal:
         Returns:
             int: 1 on success; -1 on failed validation
         """
-        #Validating transition martix before any manipulation 
         row_length = len(self.__transition_matrix)                                                  #extracting rows of transition matrix
         col_length = len(self.__transition_matrix[0])                                               #extracting rows of transition matrix
 

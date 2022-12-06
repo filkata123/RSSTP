@@ -34,12 +34,6 @@ def test_set_transition_matrix_3():
     expected[1,0] = list([2,3]);expected[1,1] = list([1,1])
     assert(np.array_equal(obj.get_transition_matrix(),expected))
 
-# TODO msh uncomment this
-# def test_set_transition_matrix_4(): #adding input validation to the setter makes this work but breaks shabbirs tests
-#     obj = Internal(list([0,1,2,3]))
-#     assert(obj.set_transition_matrix(np.array([[[0,1],[2,5],[4,3]],
-#                                                [[2,4],[1,2,3],[1]]], dtype = object)) == -1)
-
 def test_get_current_state():
     obj = Internal(list([0,1,2,3]))
     assert(obj.get_current_state() == 0)
@@ -78,16 +72,6 @@ def test_split_abnormal_2():
                              [[2,4],[1,2,3],[1]]], dtype = object))
 
     assert (np.array_equal(obj.split(n) , -1))
-    
-#def test_split_abnormal_3():  #Mourad: this matrix is not a proper matrix so set_transition_matrix() blocks it
-#    # Number of col is not equal to specific row
-#    n = 0
-#    obj = Internal(np.array([[[0,1],[2,5],[4,3]],
-#                             [[1,2], [],[3]],
-#                             [[1,2], [3]],
-#                             [[2,4],[1,2,3],[1]]], dtype = object))
-#
-#    assert (np.array_equal(obj.split(n) , -1))
  
 def test_split_abnormal_4():
      # Out of boundary state or stage
@@ -107,8 +91,6 @@ def test_split_abnormal_5():
                              [[2,4],[1,2,3],[1]]], dtype = object))
 
     assert (np.array_equal(obj.split(n) , -1))
-
-
 
 def test_split_abnormal_7():
      # Boundary test already done in normal test mode
@@ -191,18 +173,6 @@ def test_merge_abnormal_2():
                              [[2,4],[1,2,3],[1]]], dtype = object))
 
     assert (np.array_equal(obj.merge(n,m) , -1))
-    
-# def test_merge_abnormal_3(): #same as above improper matrix does not make it past set_transition_matrix()
-#      # Number of col is not equal to specific row
-
-#     n = 0
-#     m = 1
-#     obj = Internal(np.array([[[0,1],[2,5],[4,3]],
-#                              [[1,2], [3]],
-#                              [[1,2],[], [3]],
-#                              [[2,4],[1,2,3],[1]]], dtype = object))
-
-#     assert (np.array_equal(obj.merge(n,m) , -1))
  
 def test_merge_abnormal_4():
      # Merge comound out of boundary
@@ -236,17 +206,6 @@ def test_merge_abnormal_6():
                              [[2,4],[1,2,3],[1]]], dtype = object))
 
     assert (np.array_equal(obj.merge(n,m) , -1))
-
-
-
-# def test_merge_abnormal_7(): #Mourad: same as split case
-#      # Empty row check
-
-#     n = 0
-#     m = 2
-#     obj = Internal(np.array([[]], dtype = object)) #Mourad: again not a 1x1 matrix
-
-#     assert (np.array_equal(obj.merge(n,m) , -1))
 
 #-----------------------normal tests-------------------------
 def test_merge_1():
@@ -306,19 +265,6 @@ def test_add_abnormal_2():
                              [[2,4],[1,2,3],[1]]], dtype = object))
 
     assert (np.array_equal(obj.add(n,m,k) , -1))
-    
-# def test_add_abnormal_3():
-    # Number of col is not equal to specific row
-
-    # n = 0
-    # m = 1
-    # k = 0
-    # obj = Internal(np.array([[[0,1],[2,5],[4,3]],
-    #                                   [[1,2], [3]],
-    #                                   [[1,2],[], [3]],
-    #                                   [[2,4],[1,2,3],[1]]], dtype = object))
-
-    # assert (np.array_equal(obj.add(n,m,k) , -1))
  
 def test_add_abnormal_4():
      # Merge comound out of boundary
@@ -345,15 +291,6 @@ def test_add_abnormal_5():
     assert (np.array_equal(obj.add(n,m,k) , -1))
 
 
-# def test_add_abnormal_6():
-#      # Empty row check
-
-#     n = 0
-#     m = 0
-#     k = 0
-#     obj = Internal(np.array([[]], dtype = object))
-
-#     assert (np.array_equal(obj.add(n,m,k) , -1))
 #-----------------------normal tests-------------------------
 def test_add_1():
     n = 0
@@ -418,19 +355,6 @@ def test_delete_1_2():
                              [[2,4],[1,2,3],[1]]], dtype = object))
 
     assert (np.array_equal(obj.delete(n,m,k) , -1))
-    
-# def test_delete_1_3():
-#      # Number of col is not equal to specific row
-
-#     n = 0
-#     m = 1
-#     k = 0
-#     obj = Internal(np.array([[[0,1],[2,5],[4,3]],
-#                                       [[1,2], [3]],
-#                                       [[1,2],[], [3]],
-#                                       [[2,4],[1,2,3],[1]]], dtype = object))
-
-#     assert (np.array_equal(obj.delete(n,m,k) , -1))
  
 def test_delete_1_4():
      # Merge comound out of boundary
@@ -456,16 +380,6 @@ def test_delete_1_5():
 
     assert (np.array_equal(obj.delete(n,m,k) , -1))
 
-
-# def test_delete_1_6():
-#      # Empty row check
-
-#     n = 0
-#     m = 0
-#     k = 0
-#     obj = Internal(np.array([[]], dtype = object))
-
-#     assert (np.array_equal(obj.delete(n,m,k) , -1))
 #-----------------------normal tests-------------------------
 def test_delete_1():
     n = 0
@@ -538,18 +452,6 @@ def test_transition_abnormal_2():
     obj.set_current_state(0)
 
     assert (np.array_equal(obj.transition(k) , -1))
-    
-# def test_transition_1_3():
-#      # Number of col is not equal to specific row
-
-#     k = 0
-#     obj = Internal(np.array([[[0,1],[2,5],[4,3]],
-#                                       [[1,2], [3]],
-#                                       [[1,2],[], [3]],
-#                                       [[2,4],[1,2,3],[1]]], dtype = object))
-#     obj.set_current_state(0)
-
-#     assert (np.array_equal(obj.transition(k) , -1))
  
 def test_transition_abnormal_4():
      # Merge comound out of boundary
@@ -561,25 +463,6 @@ def test_transition_abnormal_4():
 
     assert (np.array_equal(obj.transition(k) , -1))
 
-# def test_transition_1_5(): this time the set_current_state() blocks invalid input
-#      # Invalid current state
-
-#     k = 0
-#     obj = Internal(np.array([[[0,1],[2,5],[4,3]],
-#                                       [[1,2],[], [3]],
-#                                       [[2,4],[1,2,3],[1]]], dtype = object))
-#     obj.set_current_state(5)
-
-#     assert (np.array_equal(obj.transition(k) , -1))
-    
-# def test_transition_1_6():
-#      # Empty row check
-
-#     k = 0
-#     obj = Internal(np.array([[]], dtype = object))
-#     obj.set_current_state(0)
-
-    assert (np.array_equal(obj.transition(k) , -1))
 #-----------------------normal tests-------------------------
 def test_transition_1():
     k = 0
