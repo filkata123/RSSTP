@@ -19,8 +19,10 @@ class robot_arm:
         self.int = Internal(actions)
 
     def update_position(self, action : int):
-        """
-        -action = e.g. 0 = left 1 = right 
+        """ Update position of robot arm through an action from the possible actions set in the constructor
+
+        Args:
+            action (int): e.g. 0 = left 1 = right 
         """
         if self.int.transition(action) >= 0:
             self.ext.update(action)
@@ -31,47 +33,92 @@ class robot_arm:
                 print("Home positon reached")
 
     def get_arm_position(self):
+        """ Get current arm position
+
+        Returns:
+            tuple(int, float): The position of the arm in degrees and coordinates (for end point of arm)
+        """
         return self.ext.get_position()
 
     def is_desired_position_reached(self):
+        """ Check whether the set desired position has been reached by the hand.
+
+        Returns:
+            int: 0 or 1 (acts as bool)
+        """
         return self.ext.get_sensory_data()
 
     def get_current_internal_state(self):
+        """ Get the current internal state
+
+        Returns:
+            int: Current state
+        """
         return self.int.get_current_state()
         
     # Helper functions
     def split_node(self, n):
-        """
-        -n = Node number to split
+        """ Split node n into two nodes, duplicating transitions.
+
+        Args:
+            n (int): Node number to split
+
+        Returns:
+            NDArray (on success): Resulting matrix after split
+
+            or
+
+            int (on failure): a -1 showing that some matrix validation has failed
         """
         return self.int.split(n)
 
     def merge_nodes(self, n, m):
-        """
-        -n = Node 1
-        -m = Node 2 
+        """ Merge nodes 1 and 2 by removing columns and rows n,m and creating one row and column with taking the union of the two nodes
 
-        Merge node 1 and 2
+        Args:
+            n (int): node 1
+            m (int): node 2
+
+        Returns:
+            NDArray (on success): Resulting matrix after merge
+
+            or
+
+            int (on failure): a -1 showing that some matrix validation has failed
         """
         return self.int.merge(n, m)
 
     def add_connection_between_nodes(self, n, m, k):
-        """
-        -n = Node 1
-        -m = Node 2 
-        -k = action
-        
-        Create a connection between node 1 and 2 through action k.
+        """Create a connection between node 1 and 2 through action k.
+
+        Args:
+            n (int): node 1
+            m (int): node 2
+            k (int): action
+
+        Returns:
+            NDArray (on success): Resulting matrix after add
+
+            or
+
+            int (on failure): a -1 showing that some matrix validation has failed
         """
         return self.int.add(n, m, k)
 
     def delete_conection_between_nodes(self, n, m, k):
-        """
-        -n = Node 1
-        -m = Node 2 
-        -k = action
-        
-        Delete a connection between node 1 and 2 of action k.
+        """Delete a connection between node 1 and 2 of action k.
+
+        Args:
+            n (int): node 1
+            m (int): node 2
+            k (int): action
+
+        Returns:
+            NDArray (on success): Resulting matrix after deletion
+
+            or
+            
+            int (on failure): a -1 showing that some matrix validation has failed
         """
         return self.int.delete(n,m,k)
     
