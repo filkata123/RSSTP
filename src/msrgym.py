@@ -3,7 +3,7 @@ from external import External
 
 class robot_arm:
     
-    def __init__(self, joints_n : int, initial_position: list, arm_lengths : list, obstacles : list, arm_steps : int, goal_position: tuple, actions):
+    def __init__(self, joints_n : int, initial_position: list, arm_lengths : list, obstacles : list, arm_steps : int, goal_position: tuple, actions, visualise = False):
         """Create a robot arm with charactersitics passed in arguments
         
         Args:
@@ -19,6 +19,8 @@ class robot_arm:
         self.ext = External(joints_n, initial_position, arm_lengths, obstacles, arm_steps, goal_position)
         self.int = Internal(actions)
 
+        self.visualise = visualise
+
     def update_position(self, action : int):
         """ Update position of robot arm through an action from the possible actions set in the constructor
 
@@ -27,6 +29,8 @@ class robot_arm:
         """
         if self.int.transition(action) >= 0:
             self.ext.update(action)
+            if(self.visualise):
+                self.ext.visualise_arm()
 
             print("Updated position: " + str(self.get_arm_position()) + " Internal state after update: " + str(self.get_current_internal_state()))
 

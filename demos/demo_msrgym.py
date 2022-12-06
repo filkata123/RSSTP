@@ -13,7 +13,7 @@ right = 1
 actions = list([left,right])
 
 try:
-    arm = robot_arm(n, p, l, o, d, feedback, actions)
+    arm = robot_arm(n, p, l, o, d, feedback, actions, True)
 
     #TODO: Get matrix and show it
     

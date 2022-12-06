@@ -49,6 +49,7 @@ for x in range (3):
     elif x%3==2:
         print("------------------move joint 2 left------------------")
         obj.update(4)
+    obj.visualise_arm()
     
     print("Moved to position: ")
     print(obj.get_position())

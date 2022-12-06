@@ -1,8 +1,7 @@
 import math
-from shapely.geometry import LineString, Point
 
+from shapely.geometry import LineString, Point
 import matplotlib.pyplot as plt
-import numpy as np
 
 class External:
     def __init__(self, n, p, l, o, d, feedback):
@@ -154,7 +153,7 @@ class External:
             if coordinates[i] == self.feedback[i]:      
                 joints_in_home_position = joints_in_home_position + 1
         
-        #TODO change to float in future implementations
+        #TODO change return to float in future implementations
         if joints_in_home_position == self.n:
             return True
         else:
@@ -168,8 +167,7 @@ class External:
         """
         coordinates = []
         
-        coordinates = self._calculate_coordinates(self.p)   
-        self.plot(coordinates)
+        coordinates = self._calculate_coordinates(self.p)
         return self.p, coordinates
 
 
@@ -209,8 +207,9 @@ class External:
         else:
             print('arm ' + str(collided_arm) + ' intersects with arm ' + str(collided_object) + '! \n')
 
-    def plot(self, coordinates):
+    def visualise_arm(self):
 
+        coordinates = self._calculate_coordinates(self.p)
         x_coordinates=[0]
         y_coordinates=[0]
 
@@ -218,6 +217,7 @@ class External:
             x_coordinates.append(coordinate[0])
             y_coordinates.append(coordinate[1])
 
+        plt.ion()
         plt.plot(x_coordinates, y_coordinates)
         plt.axis([-3, 3.5, -3, 3])
 
@@ -226,4 +226,5 @@ class External:
             plt.gca().add_patch(circle)        
 
         plt.grid()
-        plt.show()
+        plt.pause(1) # value can be changed
+        plt.clf()
