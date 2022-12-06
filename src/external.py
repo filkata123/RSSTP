@@ -181,7 +181,6 @@ class External:
         else:
             print('line '+ str(results[2]) +' intersects with line '+str(results[3])+'! \n')
 
-
     def plot(self, coordinates):
 
             x_coordinates=[0]
