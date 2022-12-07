@@ -3,24 +3,26 @@ from external import External
 
 class robot_arm:
     
-    def __init__(self, joints_n : int, initial_position: list, arm_lengths : list, obstacles : list, arm_steps : int, goal_position: tuple, actions, visualise = False):
+    def __init__(self, joints_n : int, initial_position: list, arm_lengths : list, obstacles : list, arm_steps : int, goal_position: tuple, actions, visualise_ext = False, visualise_int = False):
         """Create a robot arm with charactersitics passed in arguments
         
         Args:
             joints_n (int > 0): number of joints
-            initial_position (array<int>): initial position of arm in degress : int 0-359 (TODO: List<int> with size n)
+            initial_position (array<int>): initial position of arm in degress : int 0-359
             arm_lengths (array<int>): int with size n
             obstacles (list): list of obstacles in the form [[x1,y1], radius_1, ..., [x_n,y_n], radius_n]
             arm_steps (int): how many rotation steps should the hand(s) have
             goal_position (tuple): desired point for the arm to reach in coordinates [x,y]
             actions (list): list of initial possible actions in the form [(0, 1, ... n)]
-            visualise (bool - optional): Whether arm movement should be visualized. Default: False
+            visualise_ext (bool - optional): Whether arm movement should be visualized. Default: False
+            visualise_int (bool - optional): Whether transition matrix should be visualized. Default: False
         """
 
         self._ext = External(joints_n, initial_position, arm_lengths, obstacles, arm_steps, goal_position)
         self._int = Internal(actions)
 
-        self.visualise = visualise
+        self.visualise_ext = visualise_ext
+        self.visualise_int = visualise_int
 
     def update_position(self, action : int):
         """ Update position of robot arm through an action from the possible actions set in the constructor
@@ -30,10 +32,16 @@ class robot_arm:
         """
         if self._int.transition(action) >= 0:
             self._ext.update(action)
-            if(self.visualise):
-                self._ext.visualise_arm()
 
-            print("Updated position: " + str(self.get_arm_position()) + " Internal state after update: " + str(self.get_current_internal_state()))
+            print("______________________________________________________________________________")
+            if(self.visualise_ext):
+                self._ext.visualise_arm()
+            if(self.visualise_int):
+                print("Transition matrix: ") 
+                print(self.get_transition_matrix())
+            print("Updated position: " + str(self.get_arm_position()))
+            print("Internal state after update: " + str(self.get_current_internal_state()))
+            print("\n")
 
             if self.is_desired_position_reached():
                 print("Home positon reached")
