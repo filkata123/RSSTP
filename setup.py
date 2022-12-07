@@ -8,6 +8,7 @@ setup(
     package_dir={"": "src"},
     install_requires=[
         'numpy>=1.23.4',
-        'shapely>=1.8.5.post1'
+        'shapely>=1.8.5.post1',
+        'matplotlib>=3.6.2'
     ],
 )

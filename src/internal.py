@@ -3,14 +3,32 @@ import random
 import copy
 class Internal:
     def __init__(self, actions):
-        #Constructor of Internal class
+        """ Internal constructor
+
+        Args:
+            actions (list): list of initial possible actions e.g. list([0,1,2,3,4])
+        """
         self.set_transition_matrix(actions)
         self.set_current_state(0)
 
-    def get_transition_matrix(self):                                                                #getter for transition matrix
+    def get_transition_matrix(self):
+        """ Transition matrix getter
+
+        Returns:
+            NDArray : Transition matrix
+        """
         return self.__transition_matrix
 
-    def set_transition_matrix(self,new_matrix):                                                     #setter for transition matrix
+    def set_transition_matrix(self,new_matrix):
+        """ Transition matrix setter
+
+        Args:
+            new_matrix (list):  list of actions e.g. list([0,1,2,3,4])
+
+        Returns:
+            int: -1 if setter fails due to failed validation
+        """
+
         #TODO check shape of matrix
         if isinstance(new_matrix, list):
             self.__transition_matrix = np.ndarray(shape= (1,1), dtype= object)                      #create initial 1x1 matrix
@@ -19,9 +37,6 @@ class Internal:
         elif isinstance(new_matrix, np.ndarray):
             if len(np.shape(new_matrix)) <= 1:
                 return -1
-            # TODO msh uncomment this
-            # if np.shape(new_matrix)[0] != np.shape(new_matrix)[1]:
-            #     return -1
             if isinstance(new_matrix[0,0],np.ndarray):
                 self.__transition_matrix = np.ndarray(shape= (np.shape(new_matrix)[0],np.shape(new_matrix)[1]), dtype= object)
                 for i in range(np.shape(new_matrix)[0]):
@@ -36,10 +51,23 @@ class Internal:
             print("invalid input, use a list or square numpy array with more than one element")
             return -1
 
-    def get_current_state(self):                                                                    #getter for current state
+    def get_current_state(self):
+        """ Current state getter
+
+        Returns:
+            int: Current state
+        """
         return self.__current_state
 
-    def set_current_state(self,new_state):                                                          #setter for current state
+    def set_current_state(self,new_state):
+        """Current state setter
+
+        Args:
+            new_state (int): A state from all possible states in matrix
+
+        Returns:
+            int: -1 if setter fails due to failed validation 
+        """
         if not (isinstance(new_state, int)):
             return -1
         if new_state < np.shape(self.__transition_matrix)[0] and new_state >= 0:
@@ -48,8 +76,19 @@ class Internal:
             return -1
     
     def split(self,n):
+        """ Split node n into two nodes, duplicating transitions.
 
-        if(self.transition_matrix_validation() == -1):                                               #validating transition matrix
+        Args:
+            n (int): Node number to split
+
+        Returns:
+            NDArray (on success): Resulting matrix after split
+
+            or
+
+            int (on failure): a -1 showing that some matrix validation has failed
+        """
+        if(self.__transition_matrix_validation() == -1):                                               #validating transition matrix
             return -1
         
         row_length = len(self.__transition_matrix)
@@ -67,8 +106,20 @@ class Internal:
         return self.__transition_matrix
 
     def merge(self,n,m):
-       
-        if(self.transition_matrix_validation() == -1):                                              #checking is argument n and m is less then the N & M of transition matix
+        """ Merge nodes 1 and 2 by removing columns and rows n,m and creating one row and column with taking the union of the two nodes
+
+        Args:
+            n (int): node 1
+            m (int): node 2
+
+        Returns:
+            NDArray (on success): Resulting matrix after merge
+
+            or
+
+            int (on failure): a -1 showing that some matrix validation has failed
+        """
+        if(self.__transition_matrix_validation() == -1):                                              #checking is argument n and m is less then the N & M of transition matix
             return -1
         
         row_length = len(self.__transition_matrix)
@@ -98,8 +149,21 @@ class Internal:
         return self.__transition_matrix
 
     def add(self,n,m,k):
-        
-        if(self.transition_matrix_validation() == -1):                                               #validating transition matrix
+        """Create a connection between node 1 and 2 through action k.
+
+        Args:
+            n (int): node 1
+            m (int): node 2
+            k (int): action
+
+        Returns:
+            NDArray (on success): Resulting matrix after add
+
+            or
+
+            int (on failure): a -1 showing that some matrix validation has failed
+        """
+        if(self.__transition_matrix_validation() == -1):                                               #validating transition matrix
             return -1
 
         row_length = len(self.__transition_matrix)
@@ -118,8 +182,21 @@ class Internal:
             return -1
 
     def delete(self,n,m,k):
-        
-        if(self.transition_matrix_validation() == -1):                                               #validating transition matrix
+        """Delete a connection between node 1 and 2 of action k.
+
+        Args:
+            n (int): node 1
+            m (int): node 2
+            k (int): action
+
+        Returns:
+            NDArray (on success): Resulting matrix after deletion
+
+            or
+            
+            int (on failure): a -1 showing that some matrix validation has failed
+        """
+        if(self.__transition_matrix_validation() == -1):                                               #validating transition matrix
             return -1
        
         row_length = len(self.__transition_matrix)
@@ -138,8 +215,15 @@ class Internal:
     
 
     def transition(self,k):
-               
-        if(self.transition_matrix_validation() == -1):                                               #validating transition matrix
+        """ Transition between states through action k
+
+        Args:
+            k (int): Action
+
+        Returns:
+            int: New state after action or -1 on failed validation
+        """
+        if(self.__transition_matrix_validation() == -1):                                               #validating transition matrix
             return -1
         
         #This is a non-deterministic transition.
@@ -154,8 +238,12 @@ class Internal:
             print("This transition is not possible")                                                #if k is not found in any tuple print this message
             return -1
 
-    def transition_matrix_validation(self):
-        #Validating transition martix before any manipulation 
+    def __transition_matrix_validation(self):
+        """ Validate transition matrix
+
+        Returns:
+            int: 1 on success; -1 on failed validation
+        """
         row_length = len(self.__transition_matrix)                                                  #extracting rows of transition matrix
         col_length = len(self.__transition_matrix[0])                                               #extracting rows of transition matrix
 
@@ -170,3 +258,5 @@ class Internal:
             if row_length != intermediate_col_length:
                 return -1
         return 1
+
+    #TODO: Get list of all states
