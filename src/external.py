@@ -226,5 +226,5 @@ class External:
             plt.gca().add_patch(circle)        
 
         plt.grid()
-        plt.pause(1) # value can be changed
+        plt.pause(0.5) # value can be changed
         plt.clf()

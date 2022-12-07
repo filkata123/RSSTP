@@ -53,20 +53,20 @@ def split_node(arm, node, labeling,
     return arm, labeling
 
 def trim_transition_matrix(arm, labeling, new_nodes):
-    assert len(arm.int.get_transition_matrix) == len(labeling)
+    assert len(arm.get_transition_matrix()) == len(labeling)
     for action in [0,1]:
-        for i in range(len(arm.int.get_transition_matrix)):
+        for i in range(len(arm.get_transition_matrix())):
             for j in new_nodes:
                 if not consistent_succ(labeling[i],labeling[j],action):
                     arm.delete_conection_between_nodes(i, j, action)
     return arm
 
 def untrim_transition_matrix(arm):
-    for i in range(len(arm.int.get_transition_matrix)):
-        actns = set(np.concatenate(arm.int.get_transition_matrix[i]))
+    for i in range(len(arm.get_transition_matrix())):
+        actns = set(np.concatenate(arm.get_transition_matrix()[i]))
         for action in [0,1]:
             if action not in actns:
-                for j in range(len(arm.int.get_transition_matrix[i])):
+                for j in range(len(arm.get_transition_matrix()[i])):
                     arm.add_connection_between_nodes(i,j,action)
     return arm
 
@@ -75,7 +75,7 @@ def step(arm, labeling, state_hist, sense_hist, action_hist, action):
     sense_hist.append(arm.is_desired_position_reached())
     labeling[state_hist[-1]].append(dict({'sensations': list([]),
                                           'actions':list([])}))
-    number_of_states = len(arm.int.get_transition_matrix)
+    number_of_states = len(arm.get_transition_matrix())
     for i in range(number_of_states):
         for SM_seq in labeling[i]:
             SM_seq['sensations'].append(sense_hist[-1])
@@ -97,24 +97,24 @@ def step(arm, labeling, state_hist, sense_hist, action_hist, action):
                                          number_of_states+len(contradicting_hists)-1))
             arm = trim_transition_matrix(arm, labeling, new_nodes)
             arm = untrim_transition_matrix(arm)
-            number_of_states = len(arm.int.get_transition_matrix)
-            labeling, state_hist, sense_hist, action_hist=reset(1)
+            number_of_states = len(arm.get_transition_matrix())
+            labeling, state_hist, sense_hist, action_hist=reset(number_of_states)
             return arm, labeling, state_hist, sense_hist, action_hist
     return arm, labeling, state_hist, sense_hist, action_hist
 
 
-
-
 n = 1
-l = 2
-o = [[1000,1000],1,[1000,-1000],1]#[[1,2],1,[-1,-2],1]
+p = [95]
+l = [2]
+o = [] #[[1,2],1,[-1,-2],1] #o = [[1000,1000],1,[1000,-1000],1]
 # Does the external initialization assume that there are 2 obstacles?
-p = 95
-feedback = (-0.35, 1.97)
+d = 1
+feedback = [(-0.35, 1.97)]
+
 left = 0
 right = 1
 ACTIONS = list([left,right])
-arm = robot_arm(n, l, o, p, feedback, ACTIONS)
+arm = robot_arm(n, p, l, o, d, feedback, ACTIONS, True)
 labeling, state_hist, sense_hist, action_hist = reset(1)
 
 
