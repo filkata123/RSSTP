@@ -227,7 +227,7 @@ class External:
 
         plt.ion()
         plt.plot(x_coordinates, y_coordinates)
-        plt.axis([-3, 3.5, -3, 3])
+        plt.axis([-5, 5.5, -5, 5])
 
         for i in range(0,len(self.o),2):
             circle = plt.Circle(self.o[i],self.o[i+1], color='#e2e2e2')
