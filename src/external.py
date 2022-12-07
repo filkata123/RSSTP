@@ -25,12 +25,11 @@ class External:
         self.p = p
         self.d = d
         self.feedback = feedback
-        initialized = 0
         joint_to_move = 0   #none
-        collision, *_ ,no_obstacles = self.__hit_obstacle(self.p,initialized,joint_to_move)
+        collision, *_ ,no_obstacles = self.__hit_obstacle(self.p,joint_to_move)
         if collision:
             raise Exception("Initial position must not intersect with obstacles")
-        if no_obstacles :
+        if len(self.o) == 0:
             print("no obstacles in space")
 
     # Private methods
@@ -65,7 +64,7 @@ class External:
         return coordinates # this will always return x,y for joint i
     
 
-    def __hit_obstacle(self, position,state,joint):
+    def __hit_obstacle(self, position,joint):
         """ Check whether any collision will ocur at given position
         Args:
             position (int): Position to be checked
@@ -122,19 +121,15 @@ class External:
                             collided_arm = i
                             collided_object = j + 2
                             return collision, obstacle_collision, collided_arm, collided_object
-            if (self.p[joint] <= 181+self.d and self.p[joint] >= 179 - self.d):
-                if(position[joint] <= 181 + self.d and position[joint] >=179 - self.d):
+        if (self.p[joint] <= 181+self.d and self.p[joint] >= 179 - self.d):
+            if(position[joint] <= 181 + self.d and position[joint] >=179 - self.d):
                         collision = True
                         obstacle_collision = False
                         collided_arm = joint - 1
                         collided_object = joint
                         return collision, obstacle_collision, collided_arm, collided_object, no_obstacles
-        # create obstacles
-        if len(self.o) == 0:
-            no_obstacles = True
-            return collision, obstacle_collision, collided_arm, collided_object, no_obstacles
-        else: 
-            for i in range(0,len(self.o),2):
+        # create obstacles 
+        for i in range(0,len(self.o),2):
                 center.append(Point(self.o[i][0],self.o[i][1]))
                 circle.append(center[int(i/2)].buffer(self.o[i+1]).boundary)
 
@@ -209,7 +204,7 @@ class External:
             new_position[k] = (new_position[k] - self.d) % 360
         joint_to_move = k
         coordinates_after_move = self._calculate_coordinates(new_position)
-        collision, obstacle_collision, collided_arm, collided_object, *_  = self.__hit_obstacle(new_position,initialized,joint_to_move)
+        collision, obstacle_collision, collided_arm, collided_object, *_  = self.__hit_obstacle(new_position,joint_to_move)
 
         if not collision:
             # move joint to new position
@@ -231,7 +226,7 @@ class External:
 
         plt.ion()
         plt.plot(x_coordinates, y_coordinates)
-        plt.axis([-5, 5.5, -5, 5])
+        plt.axis([-3, 3.5, -3, 3])
 
         for i in range(0,len(self.o),2):
             circle = plt.Circle(self.o[i],self.o[i+1], color='#e2e2e2')

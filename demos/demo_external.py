@@ -188,25 +188,25 @@ for x in range (24):
 obj.visualise_arm()
 print(obj.p)
 
-'''
-print( "moving down about to hit obstacle 0")
-for x in range (24):
 
-    if x%3 == 0:
-        print("------------------move joint 0 Left------------------")
-        obj.update(0)
-    elif x%3 ==1:
-        print("------------------move joint 1 Right------------------")
-        obj.update(3)
-    elif x%3==2:
-        print("------------------move joint 2 left------------------")
+print( "moving down about to hit obstacle 0")
+
+for x in range (5):
+    
+ 
+    if x%2 == 0:
+        print("------------------move joint 2 right------------------")
         obj.update(4)
+    elif x%2 == 1:
+        print("------------------move joint 1 left------------------")
+        obj.update(2)
+    
     
     print("Moved to position: ")
     print(obj.get_position())
     print("Reached destination: ")
     print(obj.get_sensory_data())
-print(obj.p)'''
+obj.visualise_arm()
 '''
  print("going back down until collide with self")
 for x in range(13):
