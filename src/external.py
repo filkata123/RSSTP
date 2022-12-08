@@ -216,6 +216,8 @@ class External:
             print('arm ' + str(collided_arm) + ' intersects with arm ' + str(collided_object) + '! \n')
 
     def visualise_arm(self):
+        """ Visalise arm movement
+        """
 
         coordinates = self._calculate_coordinates(self.p)
         x_coordinates=[0]
