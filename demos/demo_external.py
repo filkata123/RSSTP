@@ -1,7 +1,7 @@
 from external import External
 
 
-print("------------------ONE ARM------------------")
+'''print("------------------ONE ARM------------------")
 n = 1
 p = [95]
 l = [2]
@@ -9,6 +9,7 @@ o = []
 d = 1
 feedback = [(-0.14,2.0)]
 one_arm = External(n, p, l, o, d, feedback)
+one_arm.visualise_arm()
 
 for x in range (11):
     if x <= 7:
@@ -17,20 +18,23 @@ for x in range (11):
     else:
         print("------------------move left------------------")
         one_arm.update(0)
-    #one_arm.visualise_arm()
+    one_arm.visualise_arm()
     print("Moved to position: ")
     print(one_arm.get_position())
     print("Reached destination: ")
     print(one_arm.get_sensory_data())
 
-
+one_arm.visualise_arm()
+print (one_arm.p)'''
 print("------------------THREE ARMS------------------")
 n = 3
-p = [0,178,182]
+p = [0,178,182]  #[0,178,182]
 l = [3,2,1]
 o = [[1.5,1],0.5,[1.5,-1.5],0.5]
 d = 5
 feedback = [(3.0, 0.0),(1.0,0.07),(2.0,0.07)]
+#feedback = [(2.6, -1.5), (4.38, -2.41), (5.25, -2.91)] 
+#([330, 3, 357], [(2.6, -1.5), (4.38, -2.41), (5.25, -2.91)])
 obj = External(n, p, l, o, d, feedback)
 
 print("Moved to position: ")
@@ -52,7 +56,7 @@ for x in range (3):
     elif x%3==2:
         print("------------------move joint 2 left------------------")
         obj.update(4)
-    
+    obj.visualise_arm()
     print("Moved to position: ")
     print(obj.get_position())
     print("Reached destination: ")
@@ -71,7 +75,7 @@ for x in range (3):
     elif x%3==0:
         print("------------------move joint 2 right------------------")
         obj.update(5)
-    
+    obj.visualise_arm()
     print("Moved to position: ")
     print(obj.get_position())
     print("Reached destination: ")
@@ -85,6 +89,7 @@ for x in range(9):
     print(obj.get_position())
     print("Reached destination: ")
     print(obj.get_sensory_data())
+    obj.visualise_arm()
 obj.visualise_arm()    
 
 print( "straightening th arm")
@@ -98,7 +103,7 @@ for x in range (70):
         print("------------------move joint 2 left------------------")
         obj.update(4)
     
-    
+    obj.visualise_arm()
     print("Moved to position: ")
     print(obj.get_position())
     print("Reached destination: ")
@@ -118,6 +123,7 @@ for x in range (24):
     print(obj.get_position())
     print("Reached destination: ")
     print(obj.get_sensory_data())
+    obj.visualise_arm()
 obj.visualise_arm()
 print(obj.p)   
 
@@ -131,6 +137,7 @@ for x in range(13):
     print(obj.get_position())
     print("Reached destination: ")
     print(obj.get_sensory_data())
+    obj.visualise_arm()
 obj.visualise_arm()
 print(obj.p)
 
@@ -145,6 +152,7 @@ for x in range (35):
     print(obj.get_position())
     print("Reached destination: ")
     print(obj.get_sensory_data())
+    obj.visualise_arm()
 obj.visualise_arm()
 print(obj.p) 
 
@@ -162,7 +170,7 @@ obj.visualise_arm()
 print(obj.p)
 
 print("flattening the arm")
-for x in range (24):
+for x in range (12):
 
     print("------------------move joint 2 right------------------")
     obj.update(5)
@@ -172,36 +180,22 @@ for x in range (24):
     print(obj.get_position())
     print("Reached destination: ")
     print(obj.get_sensory_data())
+    obj.visualise_arm()
 obj.visualise_arm()
 print(obj.p)
 
-for x in range (24):
 
-    print("------------------move joint 1 right------------------")
-    obj.update(3)
-    
-    
-    print("Moved to position: ")
-    print(obj.get_position())
-    print("Reached destination: ")
-    print(obj.get_sensory_data())
-obj.visualise_arm()
-print(obj.p)
 
 
 print( "moving down about to hit obstacle 0")
 
-for x in range (5):
+for x in range (2):
     
- 
-    if x%2 == 0:
-        print("------------------move joint 2 right------------------")
-        obj.update(4)
-    elif x%2 == 1:
-        print("------------------move joint 1 left------------------")
-        obj.update(2)
+    print("------------------move joint 0 right------------------")
+    obj.update(1)
+
     
-    
+    obj.visualise_arm()
     print("Moved to position: ")
     print(obj.get_position())
     print("Reached destination: ")

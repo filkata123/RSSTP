@@ -99,6 +99,15 @@ class External:
                 arms.append(LineString([(coordinates[i-1][0], coordinates[i-1][1]), (coordinates[i][0], coordinates[i][1])]))
 
         if (n_arms > 0):
+
+            # Ensure that arms are dont clip
+            if (self.p[joint] <= 181 + self.d and self.p[joint] >= 179 - self.d):
+                if(position[joint] <= 181 + self.d and position[joint] >= 179 - self.d):
+                    collision = True
+                    obstacle_collision = False
+                    collided_arm = joint 
+                    collided_object = joint - 1
+                    return collision, obstacle_collision, collided_arm, collided_object
             # checking collision between arms
             for i in range(n_arms):
 
@@ -120,14 +129,7 @@ class External:
                             collided_object = j + 2
                             return collision, obstacle_collision, collided_arm, collided_object
         
-            # Ensure that arms are in proper position
-            if (self.p[joint] <= 181 + self.d and self.p[joint] >= 179 - self.d):
-                if(position[joint] <= 181 + self.d and position[joint] >= 179 - self.d):
-                    collision = True
-                    obstacle_collision = False
-                    collided_arm = joint - 1
-                    collided_object = joint
-                    return collision, obstacle_collision, collided_arm, collided_object
+            
 
         # create obstacles 
         for i in range(0,len(self.o),2):
@@ -234,5 +236,5 @@ class External:
             plt.gca().add_patch(circle)        
 
         plt.grid()
-        plt.pause(0.5) # value can be changed
+        plt.pause(0.1) # value can be changed
         plt.clf()
