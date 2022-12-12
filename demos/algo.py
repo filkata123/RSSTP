@@ -106,15 +106,14 @@ def step(arm, labeling, state_hist, sense_hist, action_hist, action):
 n = 1
 p = [95]
 l = [2]
-o = [] #[[1,2],1,[-1,-2],1] #o = [[1000,1000],1,[1000,-1000],1]
-# Does the external initialization assume that there are 2 obstacles?
+o = [] 
 d = 1
 feedback = [(-0.35, 1.97)]
 
 left = 0
 right = 1
 ACTIONS = list([left,right])
-arm = robot_arm(n, p, l, o, d, feedback, ACTIONS, True)
+arm = robot_arm(n, p, l, o, d, feedback, ACTIONS, True, True)
 labeling, state_hist, sense_hist, action_hist = reset(1)
 
 
