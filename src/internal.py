@@ -19,11 +19,11 @@ class Internal:
         """
         return self.__transition_matrix
 
-    def set_transition_matrix(self,new_matrix):
+    def set_transition_matrix(self, new_matrix):
         """ Transition matrix setter
 
         Args:
-            new_matrix (list):  list of actions e.g. list([0,1,2,3,4])
+            new_matrix (list):  list of actions e.g. list([0,1,2,3,4]) or an ND matrix
 
         Returns:
             int: -1 if setter fails due to failed validation
@@ -59,7 +59,7 @@ class Internal:
         """
         return self.__current_state
 
-    def set_current_state(self,new_state):
+    def set_current_state(self, new_state):
         """Current state setter
 
         Args:

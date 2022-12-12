@@ -13,9 +13,7 @@ right = 1
 actions = list([left,right])
 
 try:
-    arm = robot_arm(n, p, l, o, d, feedback, actions, True)
-
-    #TODO: Get matrix and show it
+    arm = robot_arm(n, p, l, o, d, feedback, actions, True, True)
     
     print("*" * 20 + " Initial set of actions: 1 state " + "*" * 20)
     for x in range (7):
