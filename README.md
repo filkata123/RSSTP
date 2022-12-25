@@ -14,7 +14,7 @@ Check [requirements.txt](requirements.txt) for libraries needed by the developer
 
 Check [setup.py](setup.py) for libraries needed for the software to run.
 
-Ensure that installation has been succesfull by navigating to ```demos/``` and running the ```demo_msrgym.py``` demo with python:
+Ensure that installation has been successful by navigating to ```demos/``` and running the ```demo_msrgym.py``` demo with python:
 
 ```shell
 python demo_msrgym.py
