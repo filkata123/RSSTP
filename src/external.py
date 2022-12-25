@@ -9,7 +9,7 @@ class External:
 
         Args:
             n (int > 0): number of joints
-            p (array<int>): arm lenghts with size n
+            p (array<int>): arm lengths with size n
             l (array<int>): initial position of arm
             o (array<...>): list of obstacles with form [[x,y], size, ... [x_n,y_n], size_n]
             d (int): arm step - rotate by how many angles
@@ -19,17 +19,17 @@ class External:
             Exception: Initial position intersects with obstacles
         """
 
-        self.n = n
-        self.l = l
-        self.o = o
-        self.p = p
-        self.d = d
-        self.feedback = feedback
+        self._n = n
+        self._l = l
+        self._o = o
+        self._p = p
+        self._d = d
+        self._feedback = feedback
         joint_to_move = 0   #none
-        collision, *_ = self.__hit_obstacle(self.p, joint_to_move)
+        collision, *_ = self.__hit_obstacle(self._p, joint_to_move)
         if collision:
             raise Exception("Initial position must not intersect with obstacles")
-        if len(self.o) == 0:
+        if len(self._o) == 0:
             print("no obstacles in space")
 
     # Private methods
@@ -45,14 +45,14 @@ class External:
         """
         lengths=[]
         coordinates=[]
-        for i in range(self.n):
-            lengths.append(self.l[i])
+        for i in range(self._n):
+            lengths.append(self._l[i])
         
         p=0
         x=0
         y=0
 
-        for i in range(self.n):
+        for i in range(self._n):
             p = p + position[i]
 
             temp_x = round(lengths[i]*math.cos(math.radians(p)),2)
@@ -86,8 +86,8 @@ class External:
         circle = []
 
         # range determiners
-        n_obstacles = int(len(self.o)/2)
-        n_arms = self.n
+        n_obstacles = int(len(self._o)/2)
+        n_arms = self._n
         
         coordinates = self._calculate_coordinates(position) 
         for i in range(n_arms):
@@ -101,8 +101,8 @@ class External:
         if (n_arms > 0):
 
             # Ensure that arms are dont clip
-            if (self.p[joint] <= 181 + self.d and self.p[joint] >= 179 - self.d):
-                if(position[joint] <= 181 + self.d and position[joint] >= 179 - self.d):
+            if (self._p[joint] <= 181 + self._d and self._p[joint] >= 179 - self._d):
+                if(position[joint] <= 181 + self._d and position[joint] >= 179 - self._d):
                     collision = True
                     obstacle_collision = False
                     collided_arm = joint 
@@ -132,9 +132,9 @@ class External:
             
 
         # create obstacles 
-        for i in range(0,len(self.o),2):
-                center.append(Point(self.o[i][0],self.o[i][1]))
-                circle.append(center[int(i/2)].buffer(self.o[i+1]).boundary)
+        for i in range(0,len(self._o),2):
+                center.append(Point(self._o[i][0],self._o[i][1]))
+                circle.append(center[int(i/2)].buffer(self._o[i+1]).boundary)
 
         # checking collision between arms and obstacles
         for i in range(n_obstacles):           
@@ -158,13 +158,13 @@ class External:
         """
 
         joints_in_home_position = 0
-        coordinates = self._calculate_coordinates(self.p)
-        for i  in range(self.n):
-            if coordinates[i] == self.feedback[i]:      
+        coordinates = self._calculate_coordinates(self._p)
+        for i  in range(self._n):
+            if coordinates[i] == self._feedback[i]:      
                 joints_in_home_position = joints_in_home_position + 1
         
         #TODO change return to float in future implementations
-        if joints_in_home_position == self.n:
+        if joints_in_home_position == self._n:
             return True
         else:
             return False
@@ -177,8 +177,8 @@ class External:
         """
         coordinates = []
         
-        coordinates = self._calculate_coordinates(self.p)
-        return self.p, coordinates
+        coordinates = self._calculate_coordinates(self._p)
+        return self._p, coordinates
 
 
     def update(self, a):
@@ -190,28 +190,28 @@ class External:
             a (int): Action a; 0 ≤ a < 2n
         """
         new_position=[]
-        for i in range(self.n):
-            new_position.append(self.p[i])
+        for i in range(self._n):
+            new_position.append(self._p[i])
         initialized = 1
         #move clockwise
         if a % 2 == 0: 
             k = int(a/2) 
-            while (new_position[k] + self.d < 0):
+            while (new_position[k] + self._d < 0):
                 new_position[k] = new_position[k] + 360
-            new_position[k] = (new_position[k] + self.d) % 360
+            new_position[k] = (new_position[k] + self._d) % 360
         #move counterclockwise
         else: 
             k = int((a-1)/2)
-            while (new_position[k] - self.d < 0):
+            while (new_position[k] - self._d < 0):
                 new_position[k] = new_position[k] + 360
-            new_position[k] = (new_position[k] - self.d) % 360
+            new_position[k] = (new_position[k] - self._d) % 360
         joint_to_move = k
         coordinates_after_move = self._calculate_coordinates(new_position)
         collision, obstacle_collision, collided_arm, collided_object = self.__hit_obstacle(new_position, joint_to_move)
 
         if not collision:
             # move joint to new position
-            self.p[k] = new_position[k] 
+            self._p[k] = new_position[k] 
         elif obstacle_collision:
             print('Position of joint ' + str(collided_arm) +' (' + str(coordinates_after_move[k]) + ') is unreachable due to object ' + str(collided_object)+'! \n')
         else:
@@ -221,7 +221,7 @@ class External:
         """ Visalise arm movement
         """
 
-        coordinates = self._calculate_coordinates(self.p)
+        coordinates = self._calculate_coordinates(self._p)
         x_coordinates=[0]
         y_coordinates=[0]
 
@@ -233,8 +233,8 @@ class External:
         plt.plot(x_coordinates, y_coordinates)
         plt.axis([-5, 5.5, -5, 5])
 
-        for i in range(0,len(self.o),2):
-            circle = plt.Circle(self.o[i],self.o[i+1], color='#e2e2e2')
+        for i in range(0,len(self._o),2):
+            circle = plt.Circle(self._o[i],self._o[i+1], color='#e2e2e2')
             plt.gca().add_patch(circle)        
 
         plt.grid()

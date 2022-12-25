@@ -7,9 +7,9 @@ class robot_arm:
         """Create a robot arm with charactersitics passed in arguments
         
         Args:
-            joints_n (int > 0): number of joints
-            initial_position (array<int>): initial position of arm in degress : int 0-359
-            arm_lengths (array<int>): int with size n
+            joints_n (int): number of joints - joints_n > 0
+            initial_position (array): array of initial positions of the arms in degress : int 0-359
+            arm_lengths (array): aray of ints with size n
             obstacles (list): list of obstacles in the form [[x1,y1], radius_1, ..., [x_n,y_n], radius_n]
             arm_steps (int): how many rotation steps should the hand(s) have
             goal_position (tuple): desired point for the arm to reach in coordinates [x,y]

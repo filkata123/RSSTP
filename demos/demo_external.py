@@ -61,7 +61,6 @@ for x in range (3):
     print(obj.get_position())
     print("Reached destination: ")
     print(obj.get_sensory_data())
-print(obj.p)
 obj.visualise_arm()
 print( "moving down until about to hit obstacle 0")
 for x in range (3):
@@ -80,7 +79,6 @@ for x in range (3):
     print(obj.get_position())
     print("Reached destination: ")
     print(obj.get_sensory_data())
-print(obj.p)
 obj.visualise_arm()
 for x in range(9):
     print("------------------move joint 0 Right------------------")
@@ -109,7 +107,6 @@ for x in range (70):
     print("Reached destination: ")
     print(obj.get_sensory_data())
 obj.visualise_arm()
-print(obj.p)   
 
 print("crooking the arm")
 
@@ -125,7 +122,6 @@ for x in range (24):
     print(obj.get_sensory_data())
     obj.visualise_arm()
 obj.visualise_arm()
-print(obj.p)   
 
 print("going up until collide with obj 0")
 
@@ -139,7 +135,6 @@ for x in range(13):
     print(obj.get_sensory_data())
     obj.visualise_arm()
 obj.visualise_arm()
-print(obj.p)
 
 print("put the arm together")
 
@@ -154,7 +149,6 @@ for x in range (35):
     print(obj.get_sensory_data())
     obj.visualise_arm()
 obj.visualise_arm()
-print(obj.p) 
 
 print("flattening the arm")
 
@@ -167,7 +161,6 @@ print(obj.get_position())
 print("Reached destination: ")
 print(obj.get_sensory_data())
 obj.visualise_arm()
-print(obj.p)
 
 print("flattening the arm")
 for x in range (12):
@@ -182,7 +175,6 @@ for x in range (12):
     print(obj.get_sensory_data())
     obj.visualise_arm()
 obj.visualise_arm()
-print(obj.p)
 
 
 
