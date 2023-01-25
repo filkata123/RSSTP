@@ -22,7 +22,7 @@ python demo_msrgym.py
 
 
 ## How to use
-Demos located in ```src/demos``` provide a practical explanation of the library usage.
+Demos located in ```demos/``` provide a practical explanation of the library usage.
 ## Testing
 Testing is done using ```pytest```. 
 To run the tests navigate to the ```tests``` folder and run pytest (after installation step):
