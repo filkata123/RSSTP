@@ -9,8 +9,8 @@ class External:
 
         Args:
             n (int > 0): number of joints
-            p (array<int>): arm lengths with size n
-            l (array<int>): initial position of arm
+            p (array<int>): initial position of arm
+            l (array<int>): arm lengths with size n
             o (array<...>): list of obstacles with form [[x,y], size, ... [x_n,y_n], size_n]
             d (int): arm step - rotate by how many angles
             feedback (list<tuple<floats>>): points, which will create sensory feedback when reached
@@ -192,7 +192,6 @@ class External:
         new_position=[]
         for i in range(self._n):
             new_position.append(self._p[i])
-        initialized = 1
         #move clockwise
         if a % 2 == 0: 
             k = int(a/2) 
