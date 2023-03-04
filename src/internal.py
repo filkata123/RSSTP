@@ -260,3 +260,17 @@ class Internal:
         return 1
 
     #TODO: Get list of all states
+
+class Memory:
+    def __init__(self, steps, prevaction, intstate, sensation):
+        self.steps = steps
+        self.prevaction = prevaction
+        self.intstate = intstate
+        self.sensation = sensation
+
+    #def addtolist()   
+
+muistiaskel = Memory(steps=1, prevaction=1, intstate=0, sensation=0)
+muisti = [1,2,3]
+muisti.append(muistiaskel.steps)
+print(muisti)
