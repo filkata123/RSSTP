@@ -25,21 +25,26 @@ class Memory():
         #print(data_list)
         return data_list
     
+    def testmethod(self):
+        print("test")
+
+
+
         #update_memory(self):
         '''
         Called after every move. Adds memorystep to the memory list.
         '''
-        print("update_memory kutsuttu")
-        memorystep = Memory(prevaction=1, intstate=0, sensation=0)
-        Memory.memory.append(memorystep)
+        #print("update_memory kutsuttu")
+        #memorystep = Memory(prevaction=1, intstate=0, sensation=0)
+        #Memory.memory.append(memorystep)
 
 
 #make instance
 
 #call method from class
 #memorystep.make_list_from_data()
-memory = []
-memorystep = Memory(prevaction=1, intstate=0, sensation=0)
-memory.append(memorystep)
-print(memory[0].make_list_from_data())
+#memory = []
+#memorystep = Memory(prevaction=1, intstate=0, sensation=0)
+#memory.append(memorystep)
+#print(memory[0].make_list_from_data())
 #print(memory)

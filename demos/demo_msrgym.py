@@ -1,6 +1,8 @@
 import numpy as np
 from msrgym import robot_arm
-from memory import Memory
+import sys
+sys.path.append('../')
+from src.memory import Memory
 
 
 n = 1
@@ -20,6 +22,8 @@ try:
     print("*" * 20 + " Initial set of actions: 1 state " + "*" * 20)
     for x in range (7):
         arm.update_position(right)
+        #test = Memory(0, arm.get_current_internal_state(), 1)
+        test.testmethod()
     for x in range (9):
         arm.update_position(left)
 
