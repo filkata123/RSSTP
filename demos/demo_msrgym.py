@@ -1,5 +1,7 @@
 import numpy as np
 from msrgym import robot_arm
+from memory import Memory
+
 
 n = 1
 p = [95]

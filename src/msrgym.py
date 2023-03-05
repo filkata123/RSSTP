@@ -1,4 +1,4 @@
-from internal import Internal
+from internal import*
 from external import External
 
 class robot_arm:
