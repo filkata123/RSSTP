@@ -21,9 +21,7 @@ try:
     
     print("*" * 20 + " Initial set of actions: 1 state " + "*" * 20)
     for x in range (7):
-        arm.update_position(right)
-        #test = Memory(0, arm.get_current_internal_state(), 1)
-        test.testmethod()
+        arm.update_position(right)    
     for x in range (9):
         arm.update_position(left)
 

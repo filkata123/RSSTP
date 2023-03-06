@@ -1,5 +1,6 @@
 from internal import Internal
 from external import External
+from src.memory import Memory
 
 class robot_arm:
     
@@ -33,19 +34,27 @@ class robot_arm:
         if self._int.transition(action) >= 0:
             self._ext.update(action)
 
-            print("______________________________________________________________________________")
+            print("_________________________test_____________________________________________________")
             if(self.visualise_ext):
                 self._ext.visualise_arm()
+                print("test")
+                memory_step = Memory(action, self.get_current_internal_state(), self.is_desired_position_reached())
+                Memory.memory.append(memory_step.make_list_from_data())
+                memory_step.print_memory()
             if(self.visualise_int):
                 print("Transition matrix: ") 
                 print(self.get_transition_matrix())
-            print("Updated position: " + str(self.get_arm_position()))
-            print("Internal state after update: " + str(self.get_current_internal_state()))
+            print("testUpdated position: " + str(self.get_arm_position()))
+            print("testInternal state after update: " + str(self.get_current_internal_state()))
             print("\n")
 
             if self.is_desired_position_reached():
                 print("Home positon reached")
+            
+            
 
+    
+            
     def get_arm_position(self):
         """ Get current arm positions
 
@@ -144,5 +153,4 @@ class robot_arm:
         """
         return self._int.delete(n,m,k)
     
-
 
