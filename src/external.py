@@ -168,6 +168,24 @@ class External:
             return True
         else:
             return False
+        '''#Teemu: Get sensory feedback as a float between 0-1. Idea is to calculate the distance between the joint and its home position.
+        #Then scale the distance between 0-1 using maximum possible distance.
+        #1 = joint is at its home position, 0 = joint is as far away from its home position as possible.
+        #(mistake: max_difference is not accurate with multiple joints.)
+        total_difference = 0 #for all joints combined
+        for i  in range(self._n):
+            max_difference = 0
+            j = i
+            while (j>=0):
+                max_difference = max_difference + self._l[j]
+                j = j - 1
+            difference_x = self._feedback[i][0] - coordinates[i][0]
+            difference_y = self._feedback[i][1] - coordinates[i][1]
+            difference_total = math.sqrt(difference_x**2 + difference_y**2)
+            difference_total_scaled = difference_total/max_difference
+            total_difference = total_difference + difference_total_scaled
+        return 1 - total_difference/self._n
+        '''
 
     def get_position(self):
         """ Get p and also the actual geometry of the arm, i.e. the coordinates of the joints. 
