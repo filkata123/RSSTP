@@ -1,8 +1,5 @@
 import numpy as np
 from msrgym import robot_arm
-import sys
-sys.path.append('../')
-from src.memory import Memory
 
 
 n = 1
