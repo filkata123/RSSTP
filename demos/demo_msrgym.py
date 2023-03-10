@@ -1,6 +1,7 @@
 import numpy as np
 from msrgym import robot_arm
-
+import pandas as pd
+from memory import Memory
 
 n = 1
 p = [95]
@@ -56,4 +57,13 @@ try:
     print(arm.add_connection_between_nodes(0, 0, right))
     arm.update_position(right)
 except Exception as e:
-    print("Exception encountered: " + str(e))    
+    print("Exception encountered: " + str(e))  
+
+#Memory.make_dataframe(1, Memory.memory)
+
+'''
+df = pd.DataFrame(Memory.memory, columns=['Previous action', 'Internal state', 'Sensation'])
+print(df)
+df_slice = df.loc[2:10]
+print(df_slice)
+'''

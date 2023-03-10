@@ -53,9 +53,10 @@ class robot_arm:
             """Initialize Memory() class and update data to memory list"""
             memory_step = Memory(action, self.get_current_internal_state(), self.is_desired_position_reached())
             Memory.memory.append(memory_step.make_list_from_data())      #updates data_list element data to memory list
-            memory_step.print_memory()       #calling print_memory method form Memory() class for printing memory list elements
+            #memory_step.print_memory()       #calling print_memory method form Memory() class for printing memory list elements
 
-    
+            dataframe = memory_step.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
+            memory_step.compare(3,11, dataframe)
             
     def get_arm_position(self):
         """ Get current arm positions
