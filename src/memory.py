@@ -43,8 +43,8 @@ class Memory():
             return
         
         print(n, m, sub_memory_length)
-        sub_list_1 = dataframe.loc[n:sub_memory_length-1]
-        sub_list_2 = dataframe.loc[m:sub_memory_length-1]
+        sub_list_1 = dataframe.loc[n:n+sub_memory_length-1]
+        sub_list_2 = dataframe.loc[m:m+sub_memory_length-1]
 
         print(sub_list_1)
         print(sub_list_2)
