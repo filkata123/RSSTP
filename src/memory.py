@@ -53,17 +53,9 @@ class Memory():
         sub_memory_1 = dataframe.loc[n:n+sub_memory_length-1].reset_index(drop=True)
         sub_memory_2 = dataframe.loc[m:m+sub_memory_length-1].reset_index(drop=True)
 
-        print(sub_memory_1)
-        print(sub_memory_2)
+        #print(sub_memory_1)
+        #print(sub_memory_2)
         
-        print("_pd.notnull():  np.nan, False, True, 1.0 , 0.0__________")
-        print(pd.notnull(np.nan))
-        print(pd.notnull(False))
-        print(pd.notnull(True))
-        print(pd.notnull(1.0))
-        print(pd.notnull(0.0))
-        print("_____________")
-
         #make a comparison of the sub memories
         comparison = sub_memory_1.compare(sub_memory_2, keep_shape=True)
         print(comparison)
