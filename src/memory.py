@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 """Make a Memory() class for saving data"""
 class Memory():
@@ -23,7 +24,8 @@ class Memory():
         for element in enumerate(Memory.memory):
             print(element)
 
-    def make_dataframe(self, data):
+    @staticmethod
+    def make_dataframe(data):
         dataframe = pd.DataFrame(data, columns=['Previous action', 'Internal state', 'Sensation'])
         print(dataframe)
         return dataframe
@@ -32,26 +34,54 @@ class Memory():
 
 
 
+    @staticmethod
+    def compare(n, m, dataframe):
 
-    def compare(self, n, m, dataframe):
+        #set sub_memory_length
         if n > m:
-            sub_memory_length = len(dataframe.index) - n
+            sub_memory_length = len(dataframe) - n
         elif m > n:
-            sub_memory_length = len(dataframe.index) - m
+            sub_memory_length = len(dataframe) - m
         else:
             print("Can not compare the element to itself")
             return
         
         print(n, m, sub_memory_length)
-        sub_list_1 = dataframe.loc[n:n+sub_memory_length-1]
-        sub_list_2 = dataframe.loc[m:m+sub_memory_length-1]
+    
 
-        print(sub_list_1)
-        print(sub_list_2)
+        #make sub memories
+        sub_memory_1 = dataframe.loc[n:n+sub_memory_length-1].reset_index(drop=True)
+        sub_memory_2 = dataframe.loc[m:m+sub_memory_length-1].reset_index(drop=True)
+
+        print(sub_memory_1)
+        print(sub_memory_2)
         
+        print("_pd.notnull():  np.nan, False, True, 1.0 , 0.0__________")
+        print(pd.notnull(np.nan))
+        print(pd.notnull(False))
+        print(pd.notnull(True))
+        print(pd.notnull(1.0))
+        print(pd.notnull(0.0))
+        print("_____________")
 
+        #make a comparison of the sub memories
+        comparison = sub_memory_1.compare(sub_memory_2, keep_shape=True)
+        print(comparison)
 
-        pass
+        #Go through the comparison dataframe to find not 'NaN' value
+        for i in range(0, len(comparison), 1):
+            for j in range(0, 5, 2):
+                if pd.notnull(comparison.iloc[i, j]):
+                    print("Found a difference in index: {},{}".format(i,j))
+                    if j==0:
+                        print("Unknown: Previous action was different")
+                        return
+                    else: 
+                        print("Is different: Internal state or Sensation is different")
+                        return
+        print("Unknown: Sub memories are identical")
+        return
+
         
 
 

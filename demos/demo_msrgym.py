@@ -59,11 +59,4 @@ try:
 except Exception as e:
     print("Exception encountered: " + str(e))  
 
-#Memory.make_dataframe(1, Memory.memory)
-
-'''
-df = pd.DataFrame(Memory.memory, columns=['Previous action', 'Internal state', 'Sensation'])
-print(df)
-df_slice = df.loc[2:10]
-print(df_slice)
-'''
+robot_arm.compare_testing()

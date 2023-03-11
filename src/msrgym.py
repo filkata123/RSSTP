@@ -55,9 +55,15 @@ class robot_arm:
             Memory.memory.append(memory_step.make_list_from_data())      #updates data_list element data to memory list
             #memory_step.print_memory()       #calling print_memory method form Memory() class for printing memory list elements
 
-            dataframe = memory_step.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
-            memory_step.compare(3,11, dataframe)
-            
+            #dataframe = memory_step.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
+            #memory_step.compare(3,11, dataframe)
+    
+    @staticmethod
+    def compare_testing():
+        dataframe = Memory.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
+        Memory.compare(32,30, dataframe)
+        
+
     def get_arm_position(self):
         """ Get current arm positions
 
