@@ -61,7 +61,7 @@ class robot_arm:
     @staticmethod
     def compare_testing():
         dataframe = Memory.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
-        Memory.compare(32,30, dataframe)
+        Memory.compare(40,16, dataframe)
         
 
     def get_arm_position(self):

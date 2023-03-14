@@ -36,6 +36,11 @@ class Memory():
 
     @staticmethod
     def compare(n, m, dataframe):
+        '''
+        Makes two sub memories from memory (dataframe) at indexes n and m. Compares the sub memories to each other.
+        Prints 'Is different' if previous actions were the same but internal states or sensations are different.
+        Otherwise prints 'Unknown'.
+        '''
 
         #set sub_memory_length
         if n > m:
@@ -49,28 +54,29 @@ class Memory():
         print(n, m, sub_memory_length)
     
 
-        #make sub memories
+        #make sub memory dataframes
         sub_memory_1 = dataframe.loc[n:n+sub_memory_length-1].reset_index(drop=True)
         sub_memory_2 = dataframe.loc[m:m+sub_memory_length-1].reset_index(drop=True)
 
         #print(sub_memory_1)
         #print(sub_memory_2)
-        
-        #make a comparison of the sub memories
-        comparison = sub_memory_1.compare(sub_memory_2, keep_shape=True)
-        print(comparison)
+        if not (sub_memory_1.equals(sub_memory_2)): #if sub memories are not identical
 
-        #Go through the comparison dataframe to find not 'NaN' value
-        for i in range(0, len(comparison), 1):
-            for j in range(0, 5, 2):
-                if pd.notnull(comparison.iloc[i, j]):
-                    print("Found a difference in index: {},{}".format(i,j))
-                    if j==0:
-                        print("Unknown: Previous action was different")
-                        return
-                    else: 
-                        print("Is different: Internal state or Sensation is different")
-                        return
+            #make a comparison dataframe of the sub memories
+            comparison = sub_memory_1.compare(sub_memory_2, keep_shape=True)
+            print(comparison)
+
+            #Go through the comparison dataframe to find not 'NaN' value
+            for i in range(0, len(comparison), 1):
+                for j in range(0, 5, 2):
+                    if pd.notnull(comparison.iloc[i, j]):
+                        print("Found a difference in index: {},{}".format(i,j))
+                        if j==0:
+                            print("Unknown: Previous action was different")
+                            return
+                        else: 
+                            print("Is different: Internal state or Sensation is different")
+                            return
         print("Unknown: Sub memories are identical")
         return
 
