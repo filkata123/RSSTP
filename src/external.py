@@ -111,7 +111,7 @@ class External:
             # checking collision between arms
             for i in range(n_arms):
 
-                # make sure adjacent arms cant be on top of eachother
+                # make sure adjacent arms cant be on top of each other
                 if (position[i] <= 181 and position[i] >= 179):                   
                     collision = True
                     obstacle_collision = False
@@ -164,11 +164,12 @@ class External:
                 joints_in_home_position = joints_in_home_position + 1
         
         #TODO change return to float in future implementations
-        if joints_in_home_position == self._n:
-            return True
-        else:
-            return False
-        '''#Teemu: Get sensory feedback as a float between 0-1. Idea is to calculate the distance between the joint and its home position.
+        # if joints_in_home_position == self._n:
+        #     return True
+        # else:
+        #     return False
+
+        #Teemu: Get sensory feedback as a float between 0-1. Idea is to calculate the distance between the joint and its home position.
         #Then scale the distance between 0-1 using maximum possible distance.
         #1 = joint is at its home position, 0 = joint is as far away from its home position as possible.
         #(mistake: max_difference is not accurate with multiple joints.)
@@ -185,7 +186,7 @@ class External:
             difference_total_scaled = difference_total/max_difference
             total_difference = total_difference + difference_total_scaled
         return 1 - total_difference/self._n
-        '''
+
 
     def get_position(self):
         """ Get p and also the actual geometry of the arm, i.e. the coordinates of the joints. 
@@ -259,5 +260,23 @@ class External:
         plt.clf()
 
 # ---Teemu ja rafin koodi-----
-    # def distance_from_obstical(self):
-    #     print
+    def distance_from_obstical(self):
+        print("obstacle")
+        print(self._o)
+        coordinates = self._calculate_coordinates(self._p)
+        print("---cordinates---")
+        print(coordinates)
+
+        for i in range(0, len(coordinates)):
+            for k in range(0,len(self._o)+1, 2):
+                print(i)
+                difference_x = self._o[k][0] - coordinates[i][0]
+                difference_y = self._o[k][1] - coordinates[i][1]
+                difference_total = math.sqrt(difference_x**2 + difference_y**2) - self._o[1]
+
+        print("---difference total--")
+        print(difference_total)
+
+
+
+
