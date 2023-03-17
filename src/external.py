@@ -257,3 +257,7 @@ class External:
         plt.grid()
         plt.pause(0.1) # value can be changed
         plt.clf()
+
+# ---Teemu ja rafin koodi-----
+    # def distance_from_obstical(self):
+    #     print

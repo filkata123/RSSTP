@@ -60,3 +60,4 @@ except Exception as e:
     print("Exception encountered: " + str(e))  
 
 robot_arm.compare_testing()
+arm.is_deterministic()

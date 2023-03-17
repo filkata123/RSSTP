@@ -1,3 +1,4 @@
+
 from internal import Internal
 from external import External
 from memory import Memory
@@ -18,7 +19,6 @@ class robot_arm:
             visualise_ext (bool - optional): Whether arm movement should be visualized. Default: False
             visualise_int (bool - optional): Whether transition matrix should be visualized. Default: False
         """
-
         self._ext = External(joints_n, initial_position, arm_lengths, obstacles, arm_steps, goal_position)
         self._int = Internal(actions)
 
@@ -62,7 +62,37 @@ class robot_arm:
     def compare_testing():
         dataframe = Memory.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
         Memory.compare(40,16, dataframe)
-        
+    
+
+    def is_deterministic(self):
+        # test_matrix = [[[0,1],[1]],
+        #                [[0],[0,1]],
+        #                [[0,0],[1,0]]]
+
+        transition_metrix = self._int.get_transition_matrix()
+        print("------Transition metrix------")
+        print(transition_metrix)
+
+        # for i in test_matrix:
+        for i in transition_metrix:
+            for j in i:
+                counter_0 = 0
+                counter_1 = 0
+                for k in j:
+                    action = k
+                    if k == 0:
+                        counter_0 += 1
+                    elif k == 1:
+                        counter_1 += 1
+
+                if counter_0 >= 2 or counter_1 >= 2:
+                    print("Transition matrix is not deterministic")
+                    return False
+        print("Transition matrix is deterministic")
+        return True
+
+                    # print(self._int.actions)
+        # for i in transition_metrix:
 
     def get_arm_position(self):
         """ Get current arm positions
