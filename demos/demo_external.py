@@ -43,7 +43,7 @@ print("Reached destination: ")
 print(obj.get_sensory_data())
 
 #-----teemu ja rafin koodi----
-obj.distance_from_obstical()
+obj.distance_from_obstacle()
 #------
 
 

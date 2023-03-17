@@ -164,29 +164,42 @@ class External:
                 joints_in_home_position = joints_in_home_position + 1
         
         #TODO change return to float in future implementations
-        # if joints_in_home_position == self._n:
-        #     return True
-        # else:
-        #     return False
-
+        #RETURNS BOOLEAN:
+        
+        if joints_in_home_position == self._n:
+            return True
+        else:
+            return False
+        '''
+        #RETURNS FLOAT:
         #Teemu: Get sensory feedback as a float between 0-1. Idea is to calculate the distance between the joint and its home position.
         #Then scale the distance between 0-1 using maximum possible distance.
         #1 = joint is at its home position, 0 = joint is as far away from its home position as possible.
-        #(mistake: max_difference is not accurate with multiple joints.)
-        total_difference = 0 #for all joints combined
-        for i  in range(self._n):
-            max_difference = 0
+        #(mistake: max_distance is not accurate with multiple joints.)
+
+        total_distance = 0  #initialize total distance for all joints combined
+
+        for i  in range(self._n):   #for every joint
+            max_distance = 0    #used for scaling the distance between 0-1
+            # calculate: max_distance = arm length * 2 (arm means all the joints together)
+            # If the arm is not straight, then max_distance will be higher than the real maximum distance.
+            # As a result this method is not 100% accurate and will never return 0. This can be fixed if needed.
             j = i
             while (j>=0):
-                max_difference = max_difference + self._l[j]
+                max_distance = max_distance + (2 * self._l[j])  #add 2*joint length to max_distance
                 j = j - 1
-            difference_x = self._feedback[i][0] - coordinates[i][0]
-            difference_y = self._feedback[i][1] - coordinates[i][1]
-            difference_total = math.sqrt(difference_x**2 + difference_y**2)
-            difference_total_scaled = difference_total/max_difference
-            total_difference = total_difference + difference_total_scaled
-        return 1 - total_difference/self._n
 
+            #calculate distance between the joint and its home position:
+            distance_x = self._feedback[i][0] - coordinates[i][0]   # distance in x axis
+            distance_y = self._feedback[i][1] - coordinates[i][1]   # distance in y axis
+            #distance from joint's home position with Pythagoras' theorem:
+            distance_total = math.sqrt(distance_x**2 + distance_y**2)
+            #distance scaled between 0-1:
+            distance_total_scaled = distance_total/max_distance
+            #add the scaled distance to the total_difference; total_difference is a sum of all joints' scaled distance
+            total_distance = total_distance + distance_total_scaled
+        return 1 - total_distance/self._n   #return a value between 0-1 which tells how close the joints are to their home position on average
+        '''
 
     def get_position(self):
         """ Get p and also the actual geometry of the arm, i.e. the coordinates of the joints. 
@@ -260,22 +273,28 @@ class External:
         plt.clf()
 
 # ---Teemu ja rafin koodi-----
-    def distance_from_obstical(self):
-        print("obstacle")
-        print(self._o)
+    def distance_from_obstacle(self):
+        '''
+        Calculate the distance between the tip of the arm and obstacles.
+        Calculates and prints the distance for every joint and obstacle idividually.
+        '''
+        #get coordinates of the arm
         coordinates = self._calculate_coordinates(self._p)
-        print("---cordinates---")
-        print(coordinates)
 
-        for i in range(0, len(coordinates)):
-            for k in range(0,len(self._o)+1, 2):
-                print(i)
-                difference_x = self._o[k][0] - coordinates[i][0]
-                difference_y = self._o[k][1] - coordinates[i][1]
-                difference_total = math.sqrt(difference_x**2 + difference_y**2) - self._o[1]
+        #print("obstacle:")
+        #print(self._o)
+        #print("coordinates:")
+        #print(coordinates)
 
-        print("---difference total--")
-        print(difference_total)
+        for i in range(0, len(coordinates)):            #for every joint
+            for k in range(0, len(self._o), 2):         #for every obstacle
+                distance_x = self._o[k][0] - coordinates[i][0]        #distance in x axis
+                distance_y = self._o[k][1] - coordinates[i][1]        #distance in y axis
+                #calculate the distance with Pythagoras' theorem and subtract the radius of the obstacle
+                distance_total = math.sqrt(distance_x**2 + distance_y**2) - self._o[k+1]
+
+                print("Distance between joint {} and obstacle {}: {}".format(i, k, distance_total))#obstacles are numbered 0, 2, 4,...
+
 
 
 
