@@ -2,6 +2,7 @@
 from internal import Internal
 from external import External
 from memory import Memory
+from statistics import mode  # for counting charecter reappearence in is_deterministic() method
 
 class robot_arm:
     
@@ -65,8 +66,9 @@ class robot_arm:
     
 
     def is_deterministic(self):
-        # test_matrix = [[[0,1],[1]],
-        #                [[0],[0,1]],
+        # test_matrix = [[[0,1],[2]],
+        #                [[0],[4,3], [2,1]],
+        #                [[7],[0,7], [2,1]],
         #                [[0,0],[1,0]]]
 
         transition_metrix = self._int.get_transition_matrix()
@@ -75,17 +77,14 @@ class robot_arm:
 
         # for i in test_matrix:
         for i in transition_metrix:
+            action_by_matrix_row =[]
             for j in i:
-                counter_0 = 0
-                counter_1 = 0
                 for k in j:
-                    action = k
-                    if k == 0:
-                        counter_0 += 1
-                    elif k == 1:
-                        counter_1 += 1
+                    action_by_matrix_row.append(k)
 
-                if counter_0 >= 2 or counter_1 >= 2:
+                identical_action_counter = action_by_matrix_row.count(mode(action_by_matrix_row)) # counts how many times the mode actions have reappeared in each matrix row
+
+                if identical_action_counter >= 2:
                     print("Transition matrix is not deterministic")
                     return False
         print("Transition matrix is deterministic")
