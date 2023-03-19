@@ -3,6 +3,8 @@ from internal import Internal
 from external import External
 from memory import Memory
 from statistics import mode  # for counting charecter reappearence in is_deterministic() method
+import networkx as nx # for draw_graph_from_tm() method
+import matplotlib.pyplot as plt # for draw_graph_from_tm() method
 
 class robot_arm:
     
@@ -37,10 +39,11 @@ class robot_arm:
             self._ext.update(action)
 
             print("______________________________________________________________________________")
-            if(self.visualise_ext):
+            if(self.visualise_ext):                
                 self._ext.visualise_arm()
   
             if(self.visualise_int):
+                self.draw_graph_from_tm(self.get_transition_matrix())   # Teemu and Rafi
                 print("Transition matrix: ") 
                 print(self.get_transition_matrix())
             print("Updated position: " + str(self.get_arm_position()))
@@ -64,6 +67,32 @@ class robot_arm:
         dataframe = Memory.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
         Memory.compare(40,16, dataframe)
     
+    def draw_graph_from_tm(self, tm):
+        '''Check if the matrix index [i][j] is empty. If the index is empty, that means that
+            there is no link from i to j. If the index is not empty, 
+            there is a link from i to j -> add edge [i, j] to Graph.'''
+        G = nx.DiGraph()
+        for i in range(len(tm)):     #for every row
+            #print("i: {}".format(i))
+
+            for j in range(len(tm[i])):     #for every column
+                #print("j: {}".format(j))
+
+                if tm[i][j]:     #if index is not empty
+                    G.add_edge(i, j, a="    "+str(tm[i][j]))     #add edge: index (i, j) and actions (a) 
+
+        #initialize position to use edge_labels
+        pos = nx.spring_layout(G)
+        #edge_label=actions
+        edge_labels = nx.get_edge_attributes(G, "a")
+        #print (edge_labels)
+
+        nx.draw(G, pos, with_labels=1)
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.7, horizontalalignment="left")
+        plt.figure(2)
+        plt.clf()
+        
+
 
     def is_deterministic(self):
         # test_matrix = [[[0,1],[2]],

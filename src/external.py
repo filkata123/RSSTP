@@ -269,8 +269,10 @@ class External:
             plt.gca().add_patch(circle)        
 
         plt.grid()
-        plt.pause(0.1) # value can be changed
+        plt.figure(1)#Teemu and Rafi
+        plt.pause(1) # value can be changed
         plt.clf()
+
 
 # ---Teemu ja rafin koodi-----
     def distance_from_obstacle(self):
