@@ -99,35 +99,33 @@ class External:
                 arms.append(LineString([(coordinates[i-1][0], coordinates[i-1][1]), (coordinates[i][0], coordinates[i][1])]))
 
         if (n_arms > 0):
+                # Ensure that arms are dont clip
+                if (self._p[joint] <= 181 + self._d and self._p[joint] >= 179 - self._d):
+                    if(position[joint] <= 181 + self._d and position[joint] >= 179 - self._d):
+                        collision = True
+                        obstacle_collision = False
+                        collided_arm = joint 
+                        collided_object = joint - 1
+                        return collision, obstacle_collision, collided_arm, collided_object
+                # checking collision between arms
+                for i in range(n_arms):
+                    # make sure adjacent arms cant be on top of each other
+                    if (position[i] <= 181 and position[i] >= 179 ):
+                        collision = True
+                        obstacle_collision = False
+                        collided_arm = i - 1
+                        collided_object = i
+                        return collision, obstacle_collision, collided_arm, collided_object 
 
-            # Ensure that arms are dont clip
-            if (self._p[joint] <= 181 + self._d and self._p[joint] >= 179 - self._d):
-                if(position[joint] <= 181 + self._d and position[joint] >= 179 - self._d):
-                    collision = True
-                    obstacle_collision = False
-                    collided_arm = joint 
-                    collided_object = joint - 1
-                    return collision, obstacle_collision, collided_arm, collided_object
-            # checking collision between arms
-            for i in range(n_arms):
-
-                # make sure adjacent arms cant be on top of each other
-                if (position[i] <= 181 and position[i] >= 179):                   
-                    collision = True
-                    obstacle_collision = False
-                    collided_arm = i - 1
-                    collided_object = i
-                    return collision, obstacle_collision, collided_arm, collided_object 
-
-                # check intersection between arms
-                for j in range(i, n_arms):  
-                    if (n_arms - j > 2):
-                        if(arms[i].intersects(arms[j + 2])):
-                            collision = True
-                            obstacle_collision = False
-                            collided_arm = i
-                            collided_object = j + 2
-                            return collision, obstacle_collision, collided_arm, collided_object
+                    # check intersection between arms
+                    for j in range(i, n_arms):  
+                        if (n_arms - j > 2):
+                            if(arms[i].intersects(arms[j + 2])):
+                                collision = True
+                                obstacle_collision = False
+                                collided_arm = i
+                                collided_object = j + 2
+                                return collision, obstacle_collision, collided_arm, collided_object
         
             
 
@@ -270,7 +268,7 @@ class External:
 
         plt.grid()
         plt.figure(1)#Teemu and Rafi
-        plt.pause(1) # value can be changed
+        plt.pause(0.1) # value can be changed
         plt.clf()
 
 
