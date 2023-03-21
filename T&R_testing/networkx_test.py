@@ -1,6 +1,5 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-import pandas as pd
 
 transition_matrix = [[[0],[0,1],[],[]],
                      [[1],[0],[0,1],[]],
