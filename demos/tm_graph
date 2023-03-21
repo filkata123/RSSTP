@@ -1,0 +1,4 @@
+digraph transition_matrix_graph {
+	rankdir=LR size="8,5"
+	0 -> 0 [label="[0, 1]"]
+}

@@ -27,46 +27,43 @@ try:
     arm = robot_arm(n, p, l, o, d, feedback, actions, True, True)
     
     print("*" * 20 + " Initial set of actions: 1 state " + "*" * 20)
-    for x in range (1):
+    for x in range (20):
         arm.update_position(right)    
-    for x in range (30):
+    for x in range (60):
         arm.update_position(left)
 
-    print("*" * 20 + " Reset position " + "*" * 20)
-    # Reset
-    for x in range (5):
-        arm.update_position(right)
+#     print("*" * 20 + " Reset position " + "*" * 20)
+#     # Reset
+#     for x in range (5):
+#         arm.update_position(right)
 
-    print("*" * 20 + " Split initial node " + "*" * 20)
-    print(arm.split_node(0))
-    print("delete (0 -> 1) k = left")
-    print(arm.delete_conection_between_nodes(0, 1, left))
-    print("delete (1 -> 0) k = right")
-    print(arm.delete_conection_between_nodes(1, 0, right))
+#     print("*" * 20 + " Split initial node " + "*" * 20)
+#     print(arm.split_node(0))
+#     print("delete (0 -> 1) k = left")
+#     print(arm.delete_conection_between_nodes(0, 1, left))
+#     print("delete (1 -> 0) k = right")
+#     print(arm.delete_conection_between_nodes(1, 0, right))
 
-    print("*" * 20 + " Try same movement with new transition matrix " + "*" * 20)
-    for x in range (7):
-        arm.update_position(right)
-    for x in range (9):
-        arm.update_position(left)
+#     print("*" * 20 + " Try same movement with new transition matrix " + "*" * 20)
+#     for x in range (7):
+#         arm.update_position(right)
+#     for x in range (9):
+#         arm.update_position(left)
 
-    print("*" * 20 + "Merge nodes" + "*" * 20)
-    print(arm.merge_nodes(0, 1))
+#     print("*" * 20 + "Merge nodes" + "*" * 20)
+#     print(arm.merge_nodes(0, 1))
 
-    print("*" * 20 + " Reset position " + "*" * 20)
-    # Reset
-    for x in range (5):
-        arm.update_position(right)
+#     print("*" * 20 + " Reset position " + "*" * 20)
+#     # Reset
+#     for x in range (5):
+#         arm.update_position(right)
     
-    print("*" * 20 + " Remove right action " + "*" * 20)
-    print(arm.delete_conection_between_nodes(0, 0, right))
-    arm.update_position(right)
+#     print("*" * 20 + " Remove right action " + "*" * 20)
+#     print(arm.delete_conection_between_nodes(0, 0, right))
+#     arm.update_position(right)
 
-    print("*" * 20 + " Add right action " + "*" * 20)
-    print(arm.add_connection_between_nodes(0, 0, right))
-    arm.update_position(right)
+#     print("*" * 20 + " Add right action " + "*" * 20)
+#     print(arm.add_connection_between_nodes(0, 0, right))
+#     arm.update_position(right)
 except Exception as e:
     print("Exception encountered: " + str(e))  
-
-robot_arm.compare_testing()
-arm.is_deterministic()

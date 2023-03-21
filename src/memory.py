@@ -27,6 +27,7 @@ class Memory():
     @staticmethod
     def make_dataframe(data):
         dataframe = pd.DataFrame(data, columns=['Previous action', 'Internal state', 'Sensation'])
+        print("Full memory as a dataframe:")
         print(dataframe)
         return dataframe
         #print(dataframe.loc[1: ,'Sensation'])
@@ -48,10 +49,10 @@ class Memory():
         elif m > n:
             sub_memory_length = len(dataframe) - m
         else:
-            print("Can not compare the element to itself")
+            print("Invalid arguments n, m. n and m must be not equal integers between 0 and (dataframe length-1).")
             return
         
-        print(n, m, sub_memory_length)
+        print("Compare called with arguments; n = {}, m = {}".format(n, m))
     
 
         #make sub memory dataframes
@@ -64,7 +65,7 @@ class Memory():
 
             #make a comparison dataframe of the sub memories
             comparison = sub_memory_1.compare(sub_memory_2, keep_shape=True)
-            print(comparison)
+            #print(comparison)
 
             #Go through the comparison dataframe to find not 'NaN' value
             for i in range(0, len(comparison), 1):

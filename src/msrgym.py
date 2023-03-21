@@ -5,6 +5,8 @@ from memory import Memory
 from statistics import mode  # for counting charecter reappearence in is_deterministic() method
 import networkx as nx # for draw_graph_from_tm() method
 import matplotlib.pyplot as plt # for draw_graph_from_tm() method
+import graphviz
+from matplotlib import image as mpimg
 
 class robot_arm:
     
@@ -58,9 +60,10 @@ class robot_arm:
             memory_step = Memory(action, self.get_current_internal_state(), self.is_desired_position_reached())
             Memory.memory.append(memory_step.make_list_from_data())      #updates data_list element data to memory list
             #memory_step.print_memory()       #calling print_memory method form Memory() class for printing memory list elements
+            
+            self.is_deterministic()
+            self._ext.distance_from_obstacle()
 
-            #dataframe = memory_step.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
-            #memory_step.compare(3,11, dataframe)
     
     @staticmethod
     def compare_testing():
@@ -71,24 +74,19 @@ class robot_arm:
         '''Check if the matrix index [i][j] is empty. If the index is empty, that means that
             there is no link from i to j. If the index is not empty, 
             there is a link from i to j -> add edge [i, j] to Graph.'''
-        G = nx.DiGraph()
+        
+        G = graphviz.Digraph('transition_matrix_graph', filename='tm_graph', format="png")
+        G.attr(rankdir='LR', size='8,5')
+
         for i in range(len(tm)):     #for every row
-            #print("i: {}".format(i))
-
             for j in range(len(tm[i])):     #for every column
-                #print("j: {}".format(j))
-
                 if tm[i][j]:     #if index is not empty
-                    G.add_edge(i, j, a="    "+str(tm[i][j]))     #add edge: index (i, j) and actions (a) 
+                    G.edge(str(i), str(j), label=str(tm[i][j]))     #add edge: index (i, j) with label=actions 
 
-        #initialize position to use edge_labels
-        pos = nx.spring_layout(G)
-        #edge_label=actions
-        edge_labels = nx.get_edge_attributes(G, "a")
-        #print (edge_labels)
-
-        nx.draw(G, pos, with_labels=1)
-        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.7, horizontalalignment="left")
+        G.render()  #this makes the png file
+        image = mpimg.imread("tm_graph.png")
+        plt.imshow(image)
+        plt.show()
         plt.figure(2)
         plt.clf()
         
@@ -101,8 +99,8 @@ class robot_arm:
         #                [[0,0],[1,0]]]
 
         transition_metrix = self._int.get_transition_matrix()
-        print("------Transition metrix------")
-        print(transition_metrix)
+        # print("------Transition metrix------")
+        # print(transition_metrix)
 
         # for i in test_matrix:
         for i in transition_metrix:
