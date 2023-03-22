@@ -1,7 +1,5 @@
 import numpy as np
 from msrgym import robot_arm
-import pandas as pd
-from memory import Memory
 
 n = 1
 p = [95]
@@ -59,4 +57,4 @@ try:
 except Exception as e:
     print("Exception encountered: " + str(e))  
 
-robot_arm.compare_testing()
+robot_arm.compare_testing() #calls Memory.compare()

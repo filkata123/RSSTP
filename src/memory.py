@@ -1,18 +1,23 @@
 import pandas as pd
-import numpy as np
 
 """Make a Memory() class for saving data"""
 class Memory():
     # default attribute here (class object attrubute)
-    memory = []
+
+    memory = [] # This list works as the robotic arm's memory.
 
     def __init__(self, previous_action, internal_state, sensation):
-        # attribute initialize
+        ''' Initializes an instance of Memory class.
+        # attribute initialize'''
         self.previous_action = previous_action
         self.internal_state = internal_state
         self.sensation = sensation
 
-    def make_list_from_data(self): #method
+    def make_list_from_data(self):
+        '''
+        Makes a data list including of 3 values: previous action, internal state and sensation.
+        Returns data list which can be appended to memory list.
+        '''
         data_list = []
         data_list.append(self.previous_action)
         data_list.append(self.internal_state)
@@ -20,20 +25,21 @@ class Memory():
         return data_list
     
     def print_memory(self):
-        # Prints all elements of the memory by numbered 
+        '''
+          Prints all elements of the memory by numbered 
+        '''      
         for element in enumerate(Memory.memory):
             print(element)
 
     @staticmethod
     def make_dataframe(data):
+        '''
+        Makes Pandas dataframe from memory list. Memory dataframe is used later in compare() method.
+        '''
         dataframe = pd.DataFrame(data, columns=['Previous action', 'Internal state', 'Sensation'])
         print("Full memory as a dataframe:")
         print(dataframe)
         return dataframe
-        #print(dataframe.loc[1: ,'Sensation'])
-        #print(len(dataframe.index))
-
-
 
     @staticmethod
     def compare(n, m, dataframe):

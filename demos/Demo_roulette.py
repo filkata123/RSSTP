@@ -1,14 +1,12 @@
 import numpy as np
 from msrgym import robot_arm
-import pandas as pd
-from memory import Memory
 
 #ONE ARM
 n = 1
 p = [90]
 l = [2]
 o = []
-d = 10
+d = 20
 feedback = [(-1.64, 1.15)]
 
 #TWO ARMS

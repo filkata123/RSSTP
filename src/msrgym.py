@@ -3,7 +3,6 @@ from internal import Internal
 from external import External
 from memory import Memory
 from statistics import mode  # for counting charecter reappearence in is_deterministic() method
-import networkx as nx # for draw_graph_from_tm() method
 import matplotlib.pyplot as plt # for draw_graph_from_tm() method
 import graphviz
 from matplotlib import image as mpimg
@@ -55,25 +54,33 @@ class robot_arm:
             if self.is_desired_position_reached():
                 print("Home positon reached")
             
-            #Teemu's & Rafi's code
-            """Initialize Memory() class and update data to memory list"""
+            # -----------Teemu's & Rafi's code: --------------------------------------------------------
+
+            #Initialize Memory() class and update data to memory list
             memory_step = Memory(action, self.get_current_internal_state(), self.is_desired_position_reached())
             Memory.memory.append(memory_step.make_list_from_data())      #updates data_list element data to memory list
-            #memory_step.print_memory()       #calling print_memory method form Memory() class for printing memory list elements
             
-            self.is_deterministic()
-            self._ext.distance_from_obstacle()
+            self.is_deterministic()     #check and print determinism
+            self._ext.distance_from_obstacle()  #check and print distances from obstacles
 
     
     @staticmethod
     def compare_testing():
+        '''
+        Used for testing Memory.compare() method. Makes a dataframe from the memory and calls compare() with parameters.
+          Called at the end of demo_msrgym.py.
+        '''
         dataframe = Memory.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
         Memory.compare(40,16, dataframe)
     
     def draw_graph_from_tm(self, tm):
-        '''Check if the matrix index [i][j] is empty. If the index is empty, that means that
+        '''Draws and displays a graph from transition matrix.
+            Takes transition matrix (tm) as an argument.
+            Logic: 
+            Check if the matrix index [i][j] is empty. If the index is empty, that means that
             there is no link from i to j. If the index is not empty, 
-            there is a link from i to j -> add edge [i, j] to Graph.'''
+            there is a link from i to j -> add edge [i, j] to Graph labeled with the action(s).
+        '''
         
         G = graphviz.Digraph('transition_matrix_graph', filename='tm_graph', format="png")
         G.attr(rankdir='LR', size='8,5')
@@ -81,7 +88,7 @@ class robot_arm:
         for i in range(len(tm)):     #for every row
             for j in range(len(tm[i])):     #for every column
                 if tm[i][j]:     #if index is not empty
-                    G.edge(str(i), str(j), label=str(tm[i][j]))     #add edge: index (i, j) with label=actions 
+                    G.edge(str(i), str(j), label=str(tm[i][j])) #add edge: index (i, j) with label=actions 
 
         G.render()  #this makes the png file
         image = mpimg.imread("tm_graph.png")
@@ -89,36 +96,39 @@ class robot_arm:
         plt.show()
         plt.figure(2)
         plt.clf()
-        
 
 
     def is_deterministic(self):
+        '''
+        Checks if the matrix is deterministic and prints the result.
+        Returns:
+            True: if matrix is not deterministic
+            False: if matrix is not deterministic
+        '''
         # test_matrix = [[[0,1],[2]],
         #                [[0],[4,3], [2,1]],
         #                [[7],[0,7], [2,1]],
         #                [[0,0],[1,0]]]
 
-        transition_metrix = self._int.get_transition_matrix()
-        # print("------Transition metrix------")
-        # print(transition_metrix)
+        transition_matrix = self._int.get_transition_matrix()
 
         # for i in test_matrix:
-        for i in transition_metrix:
-            action_by_matrix_row =[]
+        for i in transition_matrix:
+            action_by_matrix_row =[] #this list keeps track of actions in a matrix row
             for j in i:
                 for k in j:
-                    action_by_matrix_row.append(k)
+                    action_by_matrix_row.append(k)  #add actions to the list
 
-                identical_action_counter = action_by_matrix_row.count(mode(action_by_matrix_row)) # counts how many times the mode actions have reappeared in each matrix row
+                # counts how many times the most common action has appeared in the matrix row
+                identical_action_counter = action_by_matrix_row.count(mode(action_by_matrix_row)) 
 
-                if identical_action_counter >= 2:
+                if identical_action_counter >= 2:   #if an action appears more than one time per row, that means that the matrix is not deterministic
                     print("Transition matrix is not deterministic")
                     return False
         print("Transition matrix is deterministic")
         return True
-
-                    # print(self._int.actions)
-        # for i in transition_metrix:
+    
+#----- Teemu's and Rafi's code ends here ---------------------------------------------  
 
     def get_arm_position(self):
         """ Get current arm positions

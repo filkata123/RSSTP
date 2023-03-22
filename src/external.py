@@ -275,16 +275,11 @@ class External:
 # ---Teemu ja rafin koodi-----
     def distance_from_obstacle(self):
         '''
-        Calculate the distance between the tip of the arm and obstacles.
-        Calculates and prints the distance for every joint and obstacle idividually.
+        Calculates the distance between the tip of the arm and obstacles.
+        Prints the distance for every joint and obstacle individually.
         '''
         #get coordinates of the arm
         coordinates = self._calculate_coordinates(self._p)
-
-        #print("obstacle:")
-        #print(self._o)
-        #print("coordinates:")
-        #print(coordinates)
 
         for i in range(0, len(coordinates)):            #for every joint
             for k in range(0, len(self._o), 2):         #for every obstacle

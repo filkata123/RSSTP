@@ -29,4 +29,4 @@ print (edge_labels)
 nx.draw(G, pos, with_labels=1)
 nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, label_pos=0.7, horizontalalignment="left")
 plt.show
-plt.pause(100)
+plt.pause(10)
