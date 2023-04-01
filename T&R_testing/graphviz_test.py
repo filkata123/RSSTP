@@ -2,10 +2,14 @@ import graphviz
 import matplotlib.pyplot as plt
 from matplotlib import image as mpimg
 
-transition_matrix = [[[0],[0,1],[],[]],
-                     [[1],[0],[0,1],[]],
-                     [[1],[],[],[0]],
-                     [[1],[0],[0,1],[]]]
+# transition_matrix = [[[0],[0,1],[],[]],
+#                      [[1],[0],[0,1],[]],
+#                      [[1],[],[],[0]],
+#                      [[1],[0],[0,1],[]]]
+
+transition_matrix = [[[1],[],[0]],
+                     [[1],[0],[]],
+                     [[],[0],[]]]
 
 G = graphviz.Digraph('transition_matrix_graph', filename='tm_graph', format="png")
 G.attr(rankdir='LR', size='8,5')
