@@ -47,8 +47,16 @@ class Memory():
         Makes two sub memories from memory (dataframe) at indexes n and m. Compares the sub memories to each other.
         Prints 'Is different' if previous actions were the same but internal states or sensations are different.
         Otherwise prints 'Unknown'.
+        Returns:
+            -1 if invalid argument
+            0 if "Unknown: Previous action was different"
+            1 if "Is different: Internal state or Sensation is different"
+            2 if "Unknown: Sub memories are identical"
         '''
-
+        if ((n > (len(dataframe)-1)) or (n < 0)) or ((m > (len(dataframe)-1)) or (m < 0)):
+            print("Invalid arguments n, m must be higher than 0 and lower than memory length.") 
+            return -1
+                
         #set sub_memory_length
         if n > m:
             sub_memory_length = len(dataframe) - n
@@ -56,7 +64,7 @@ class Memory():
             sub_memory_length = len(dataframe) - m
         else:
             print("Invalid arguments n, m. n and m must be not equal integers between 0 and (dataframe length-1).")
-            return
+            return -1
         
         print("Compare called with arguments; n = {}, m = {}".format(n, m))
     
@@ -80,12 +88,12 @@ class Memory():
                         print("Found a difference in index: {},{}".format(i,j))
                         if j==0:
                             print("Unknown: Previous action was different")
-                            return
+                            return 0
                         else: 
                             print("Is different: Internal state or Sensation is different")
-                            return
+                            return 1
         print("Unknown: Sub memories are identical")
-        return
+        return 2
 
         
 

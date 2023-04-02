@@ -57,4 +57,4 @@ try:
 except Exception as e:
     print("Exception encountered: " + str(e))  
 
-robot_arm.compare_testing() #calls Memory.compare()
+robot_arm.compare_testing(10, 30) #calls Memory.compare()

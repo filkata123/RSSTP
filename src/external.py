@@ -60,7 +60,6 @@ class External:
             x = round((x + temp_x),2)
             y = round((y + temp_y),2)
             coordinates.append((x,y))
-
         return coordinates # this will always return x,y for joint i
     
 
@@ -268,7 +267,7 @@ class External:
 
         plt.grid()
         plt.figure(1)#Teemu and Rafi
-        plt.pause(5) # value can be changed
+        plt.pause(1) # value can be changed
         plt.clf()
 
 

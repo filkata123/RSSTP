@@ -65,13 +65,15 @@ class robot_arm:
 
     
     @staticmethod
-    def compare_testing():
+    def compare_testing(n, m):
         '''
         Used for testing Memory.compare() method. Makes a dataframe from the memory and calls compare() with parameters.
           Called at the end of demo_msrgym.py.
         '''
         dataframe = Memory.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
-        Memory.compare(40,16, dataframe)
+        value = Memory.compare(n, m, dataframe)
+        return value
+
     
     def draw_graph_from_tm(self, tm):
         '''Draws and displays a graph from transition matrix.
