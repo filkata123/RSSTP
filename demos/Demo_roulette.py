@@ -1,5 +1,6 @@
 import numpy as np
 from msrgym import robot_arm
+from memory import Memory
 
 #ONE ARM
 n = 1
@@ -44,32 +45,41 @@ try:
             break
     print("the arm rotated a full circle.")
 
-    # x = muistin pituus
-    #
-    #for loop: (x --> x - state_counter, x--)
+    # Split nodes 3 times because full circle takes 4 movements meaning 3 nodes need to be added.
+    memory_length = len(Memory.memory)
+    split_counter = 0
+    for x in range(memory_length-1, memory_length-state_counter, -1):
+        print(x)  
+        compare_result = arm.compare_testing(x, x-1)
+        if (compare_result == 1):
+            print("split")
+            arm.split_node(split_counter)
+            print(x)
 
-        #compare_result = arm.compare_testing(x, x-1)
-        # if (compare_result == 1):
-        #     arm.split_node(1)
+        tm = arm.get_transition_matrix()
+        print(tm)
+        print("-----------------------------------")
+        split_counter += 1
+    
+
+    counter_test_x = 0
+    counter_test_y = 1
+    for i in range(len(arm.get_transition_matrix())):
+        for j in range(len(arm.get_transition_matrix())):
+            # print("tm length:")
+            # print(len(arm.get_transition_matrix()))
+            # print("i, j:")
+            # print(i, j)
+            if (i, j) != (counter_test_x, counter_test_y):
+                
+                arm.delete_conection_between_nodes(i, j, 1)
+
+        counter_test_x += 1
+        counter_test_y = (counter_test_y + 1) % 4
+
 
     tm = arm.get_transition_matrix()
     print(tm)
-
-
-    
-
-        
-
-        # sensory_feedback = arm._ext.get_sensory_data()
-        # print("Sensory for loopin alussa(rivi 32): {}".format(sensory_feedback))
-        # print("Get_data liikkumisen jälkeen(35): {}".format(arm._ext.get_sensory_data()))
-        # if (sensory_feedback != arm._ext.get_sensory_data()):
-        #     if (arm._ext.get_sensory_data() == True):
-        #         break
-        #     print(arm.split_node(0))   
-
-        #     print(sensory_feedback)
-        #     print(arm._ext.get_sensory_data())
 
 
 except Exception as e:
