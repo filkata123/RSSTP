@@ -7,7 +7,7 @@ n = 1
 p = [90]
 l = [2]
 o = []
-d = 90
+d = 30
 feedback = [(0.0, -2.0)]
 
 #TWO ARMS
@@ -36,7 +36,7 @@ try:
             break
     print("sensory feedback is True -> arm is in sensory feedback point")
 
-    # Move a full circle
+    # Move a full circle and count how many actions did it take in state_counter
     state_counter = 0
     for x in range (360):
         arm.update_position(right)
@@ -45,7 +45,7 @@ try:
             break
     print("the arm rotated a full circle.")
 
-    # Split nodes 3 times because full circle takes 4 movements meaning 3 nodes need to be added.
+    # Split nodes so there is as many nodes as how many actions it took to do a full circle.
     memory_length = len(Memory.memory)
     split_counter = 0
     for x in range(memory_length-1, memory_length-state_counter, -1):
@@ -61,7 +61,7 @@ try:
         print("-----------------------------------")
         split_counter += 1
     
-
+    #deletes all the connections between nodes except connections (0,1), (1,2), (2,3), ...
     counter_test_x = 0
     counter_test_y = 1
     for i in range(len(arm.get_transition_matrix())):
@@ -75,12 +75,12 @@ try:
                 arm.delete_conection_between_nodes(i, j, 1)
 
         counter_test_x += 1
-        counter_test_y = (counter_test_y + 1) % 4
+        counter_test_y = (counter_test_y + 1) % (len(arm.get_transition_matrix()))
 
 
     tm = arm.get_transition_matrix()
     print(tm)
-
+    arm.draw_graph_from_tm(tm)
 
 except Exception as e:
     print("Exception encountered: " + str(e))  
