@@ -7,7 +7,7 @@ n = 1
 p = [90]
 l = [2]
 o = []
-d = 30
+d = 90
 feedback = [(0.0, -2.0)]
 
 #TWO ARMS
@@ -76,6 +76,8 @@ try:
 
         counter_test_x += 1
         counter_test_y = (counter_test_y + 1) % (len(arm.get_transition_matrix()))
+    
+    
 
 
     tm = arm.get_transition_matrix()
