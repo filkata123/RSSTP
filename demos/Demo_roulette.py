@@ -8,7 +8,7 @@ p = [90]
 l = [2]
 o = []
 d = 90
-feedback = [(0.0, -2.0)]
+feedback = [(0.0, 2.0)]
 
 #TWO ARMS
 # n = 2
@@ -25,64 +25,59 @@ actions = list([right])
 try:
     arm = robot_arm(n, p, l, o, d, feedback, actions, True, True)
     
-    
-
     print("*" * 20 + " Initial set of actions: 1 state " + "*" * 20)
-    # Moving untill finding sensory feedback point.
-    for x in range (360):  
+
+    # Move 4 times (full circle)
+    for x in range (100):  
         arm.update_position(right)
-        print("x:{}".format(x))
-        if (arm._ext.get_sensory_data() == True):
-            break
-    print("sensory feedback is True -> arm is in sensory feedback point")
+        #print(Memory.memory)
 
-    # Move a full circle and count how many actions did it take in state_counter
-    state_counter = 0
-    for x in range (360):
-        arm.update_position(right)
-        state_counter += 1
-        if (arm._ext.get_sensory_data() == True):
-            break
-    print("the arm rotated a full circle.")
-
-    # Split nodes so there is as many nodes as how many actions it took to do a full circle.
-    memory_length = len(Memory.memory)
-    split_counter = 0
-    for x in range(memory_length-1, memory_length-state_counter, -1):
-        print(x)  
-        compare_result = arm.compare_testing(x, x-1)
-        if (compare_result == 1):
-            print("split")
-            arm.split_node(split_counter)
-            print(x)
-
-        tm = arm.get_transition_matrix()
-        print(tm)
-        print("-----------------------------------")
-        split_counter += 1
-    
-    #deletes all the connections between nodes except connections (0,1), (1,2), (2,3), ...
-    counter_test_x = 0
-    counter_test_y = 1
-    for i in range(len(arm.get_transition_matrix())):
-        for j in range(len(arm.get_transition_matrix())):
-            # print("tm length:")
-            # print(len(arm.get_transition_matrix()))
-            # print("i, j:")
-            # print(i, j)
-            if (i, j) != (counter_test_x, counter_test_y):
+        # Call compare_testing() as many times as there are element in Memory.memory
+        for y in range(len(Memory.memory)):
+            # Set arguments n and m for compare_testing()
+            n = x-y
+            m = x-y-1
+            if (n >= 0) and (m >= 0):
+                compare_value = arm.compare_testing(n, m)
+                print("compare done")
                 
-                arm.delete_conection_between_nodes(i, j, 1)
+                # Split node if a contradiction is found
+                if (compare_value == 2):
+                    transition_matrix = arm.get_transition_matrix()
+                    most_recent_node = len(transition_matrix) - 1
+                    arm.split_node(most_recent_node)
+                    print("splitted node")
 
-        counter_test_x += 1
-        counter_test_y = (counter_test_y + 1) % (len(arm.get_transition_matrix()))
-    
-    
+                    # Delete "wrong" transitions in transition matrix
+                    # Deletes all the transitions between states except transitions (0,1), (1,2), (2,3), etc.
+                    counter_test_x = 0
+                    counter_test_y = 1
+                    new_transition_matrix = arm.get_transition_matrix()
+                    for i in range(len(new_transition_matrix)-1):     # for every row except the last row
+                        for j in range(len(new_transition_matrix)):   # for every element in a row
+                            # print("i, j:")
+                            # print(i, j)
+                            if ((i, j) != (counter_test_x, counter_test_y)) and (len(new_transition_matrix[i][j]) > 0):
+                                arm.delete_conection_between_nodes(i, j, 1)
+                                print("deleted connection between nodes")
+                                
+                        counter_test_x += 1
+                        counter_test_y = (counter_test_y + 1)
 
+                    new_transition_matrix = arm.get_transition_matrix()
+                    max_index = len(new_transition_matrix)-1
+                    for j in range(len(new_transition_matrix)):       # for every element in the last row
+                        if (j != 0) and (j != max_index) and (len(new_transition_matrix[max_index][j]) > 0 ):
+                            arm.delete_conection_between_nodes(max_index, j, 1)
 
-    tm = arm.get_transition_matrix()
-    print(tm)
-    arm.draw_graph_from_tm(tm)
+                # If there is no contradiction, continue to the next action
+                else:
+                    break           
+
+    transition_matrix = arm.get_transition_matrix()
+    print(transition_matrix)  
+    arm.draw_graph_from_tm(transition_matrix)  
 
 except Exception as e:
     print("Exception encountered: " + str(e))  
+

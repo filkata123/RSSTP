@@ -50,8 +50,9 @@ class Memory():
         Returns:
             -1 if invalid argument
             0 if "Unknown: Previous action was different"
-            1 if "Is different: Internal state or Sensation is different"
-            2 if "Unknown: Sub memories are identical"
+            1 if "Is different: Internal state is different"
+            2 if "Is different: Sensation is different"
+            3 if "Unknown: Sub memories are identical"
         '''
         if ((n > (len(dataframe)-1)) or (n < 0)) or ((m > (len(dataframe)-1)) or (m < 0)):
             print("Invalid arguments n, m must be higher than 0 and lower than memory length.") 
@@ -85,15 +86,19 @@ class Memory():
             for i in range(0, len(comparison), 1):
                 for j in range(0, 5, 2):
                     if pd.notnull(comparison.iloc[i, j]):
-                        print("Found a difference in index: {},{}".format(i,j))
+                        #print("Found a difference in index: {},{}".format(i,j))
                         if j==0:
                             print("Unknown: Previous action was different")
                             return 0
-                        else: 
-                            print("Is different: Internal state or Sensation is different")
+                        if j==2:
+                            print("Is different: Internal state is different")
                             return 1
-        print("Unknown: Sub memories are identical")
-        return 2
+                        else: 
+                            print("Is different: Sensation is different")
+                            return 2
+        else:
+            print("Unknown: Sub memories are identical")       
+            return 3
 
         
 

@@ -38,7 +38,7 @@ try:
         arm.update_position(right)
         print(Memory.memory)
         compare_value = arm.compare_testing(x, x+1)
-        if (compare_value == 2):
+        if (compare_value == 3):
             break
     
     # Move #3
@@ -46,9 +46,9 @@ try:
         arm.update_position(right)
         print(Memory.memory)
         compare_value = arm.compare_testing(x+1, x+2)
-        if (compare_value == 2):
+        if (compare_value == 3):
             compare_value = arm.compare_testing(x, x+1)
-            if (compare_value == 2):
+            if (compare_value == 3):
                 break
     
     # Move #4
@@ -56,9 +56,9 @@ try:
         arm.update_position(right)
         print(Memory.memory)
         compare_value = arm.compare_testing(x+2, x+3)
-        if (compare_value == 2):
+        if (compare_value == 3):
             break
-        elif (compare_value == 1):
+        elif (compare_value == 2):
             #Split node
             transition_matrix = arm.get_transition_matrix()
             most_recent_node = len(transition_matrix) - 1
@@ -68,7 +68,7 @@ try:
             arm.delete_conection_between_nodes(most_recent_node, most_recent_node, 1)
 
             compare_value = arm.compare_testing(x+1, x+2)
-            if (compare_value == 1):
+            if (compare_value == 2):
                 #Split node
                 transition_matrix = arm.get_transition_matrix()
                 most_recent_node = len(transition_matrix) - 1
@@ -81,7 +81,7 @@ try:
                 arm.delete_conection_between_nodes(most_recent_node+1, most_recent_node, 1)
 
                 compare_value = arm.compare_testing(x, x+1)
-                if (compare_value == 1):
+                if (compare_value == 2):
                     #Split node
                     transition_matrix = arm.get_transition_matrix()
                     most_recent_node = len(transition_matrix) - 1
