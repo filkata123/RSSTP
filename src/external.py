@@ -267,7 +267,7 @@ class External:
 
         plt.grid()
         plt.figure(1)#Teemu and Rafi
-        plt.pause(2) # value can be changed
+        plt.pause(0.1) # value can be changed
         plt.clf()
 
 

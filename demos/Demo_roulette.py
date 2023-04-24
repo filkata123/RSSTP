@@ -32,13 +32,13 @@ try:
         arm.update_position(right)
         #print(Memory.memory)
 
-        # Call compare_testing() as many times as there are element in Memory.memory
+        # Call compare_memory() as many times as there are element in Memory.memory
         for y in range(len(Memory.memory)):
-            # Set arguments n and m for compare_testing()
+            # Set arguments n and m for compare_memory()
             n = x-y
             m = x-y-1
             if (n >= 0) and (m >= 0):
-                compare_value = arm.compare_testing(n, m)
+                compare_value = arm.compare_memory(n, m)
                 print("compare done")
                 
                 # Split node if a contradiction is found

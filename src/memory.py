@@ -100,6 +100,14 @@ class Memory():
             print("Unknown: Sub memories are identical")       
             return 3
 
-        
+    @staticmethod
+    def compare_memory(n, m):
+        '''
+        Used for testing Memory.compare() method. Makes a dataframe from the memory and calls compare() with parameters.
+          Called at the end of demo_msrgym.py.
+        '''
+        dataframe = Memory.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
+        value = Memory.compare(n, m, dataframe)
+        return value
 
 

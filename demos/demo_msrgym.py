@@ -54,7 +54,9 @@ try:
     print("*" * 20 + " Add right action " + "*" * 20)
     print(arm.add_connection_between_nodes(0, 0, right))
     arm.update_position(right)
+
+    arm.compare_memory(10, 30) #calls Memory.compare()
+    
 except Exception as e:
     print("Exception encountered: " + str(e))  
 
-robot_arm.compare_testing(10, 30) #calls Memory.compare()
