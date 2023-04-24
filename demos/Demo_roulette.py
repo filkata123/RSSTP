@@ -28,7 +28,7 @@ try:
     print("*" * 20 + " Initial set of actions: 1 state " + "*" * 20)
 
     # Move 4 times (full circle)
-    for x in range (100):  
+    for x in range (30):  
         arm.update_position(right)
         #print(Memory.memory)
 
@@ -64,10 +64,11 @@ try:
                         counter_test_x += 1
                         counter_test_y = (counter_test_y + 1)
 
+                    # Delete connections from last node except for thr self loop.
                     new_transition_matrix = arm.get_transition_matrix()
                     max_index = len(new_transition_matrix)-1
                     for j in range(len(new_transition_matrix)):       # for every element in the last row
-                        if (j != 0) and (j != max_index) and (len(new_transition_matrix[max_index][j]) > 0 ):
+                        if (j != max_index) and (len(new_transition_matrix[max_index][j]) > 0 ):
                             arm.delete_conection_between_nodes(max_index, j, 1)
 
                 # If there is no contradiction, continue to the next action
