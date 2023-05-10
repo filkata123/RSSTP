@@ -276,18 +276,27 @@ class External:
         '''
         Calculates the distance between the tip of the arm and obstacles.
         Prints the distance for every joint and obstacle individually.
+        Returns a list containing list of distances for evvry joint.
+        e.g. [[joint 0 obstacle 0, joint 0 obstacle 1], [joint 1 obstacle 0, joint 1 obstacle 1]]
         '''
         #get coordinates of the arm
         coordinates = self._calculate_coordinates(self._p)
+        distances = []#list of distances for all joints for all obstacles
 
         for i in range(0, len(coordinates)):            #for every joint
+            distance_for_joint = []#list of distances for a single joint for all obstacles.
+
             for k in range(0, len(self._o), 2):         #for every obstacle
                 distance_x = self._o[k][0] - coordinates[i][0]        #distance in x axis
                 distance_y = self._o[k][1] - coordinates[i][1]        #distance in y axis
                 #calculate the distance with Pythagoras' theorem and subtract the radius of the obstacle
                 distance_total = math.sqrt(distance_x**2 + distance_y**2) - self._o[k+1]
+                distance_for_joint.append(distance_total)
 
                 print("Distance between joint {} and obstacle {}: {}".format(i, k, distance_total))#obstacles are numbered 0, 2, 4,...
+            distances.append(distance_for_joint)
+
+        return distances
 
 
 

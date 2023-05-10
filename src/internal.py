@@ -277,6 +277,8 @@ class Internal:
             Check if the matrix index [i][j] is empty. If the index is empty, that means that
             there is no link from i to j. If the index is not empty, 
             there is a link from i to j -> add edge [i, j] to Graph labeled with the action(s).
+
+            Note: if a node has no links to or from any other nodes, then the node will not be drawn!
         '''
         
         G = graphviz.Digraph('transition_matrix_graph', filename='tm_graph', format="png")
@@ -315,11 +317,12 @@ class Internal:
                 for k in j:
                     action_by_matrix_row.append(k)  #add actions to the list
 
-            # counts how many times the most common action has appeared in the matrix row
-            identical_action_counter = action_by_matrix_row.count(mode(action_by_matrix_row)) 
+            if action_by_matrix_row:    # if list is not empty
+                # counts how many times the most common action has appeared in the matrix row
+                identical_action_counter = action_by_matrix_row.count(mode(action_by_matrix_row)) 
 
-            if identical_action_counter >= 2:   #if an action appears more than one time per row, that means that the matrix is not deterministic
-                print("Transition matrix is not deterministic")
-                return False
+                if identical_action_counter >= 2:   #if an action appears more than one time per row, that means that the matrix is not deterministic
+                    print("Transition matrix is not deterministic")
+                    return False
         print("Transition matrix is deterministic")
         return True

@@ -76,6 +76,7 @@ class robot_arm:
             Check if the matrix index [i][j] is empty. If the index is empty, that means that
             there is no link from i to j. If the index is not empty, 
             there is a link from i to j -> add edge [i, j] to Graph labeled with the action(s).
+            Note: if a node has no links to or from any other nodes, then the node will not be drawn!
         '''
         return self._int.draw_graph_from_tm(tm)
 

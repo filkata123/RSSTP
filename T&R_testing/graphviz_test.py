@@ -10,7 +10,7 @@ from matplotlib import image as mpimg
 transition_matrix = [[[],[1],[],[]],
                      [[],[],[1],[]],
                      [[],[],[],[1]],
-                     [[1],[],[],[1]]]
+                     [[],[],[],[1]]]
 
 G = graphviz.Digraph('transition_matrix_graph', filename='tm_graph', format="png")
 G.attr(rankdir='LR', size='8,5')
