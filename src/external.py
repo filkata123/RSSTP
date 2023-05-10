@@ -166,37 +166,7 @@ class External:
         if joints_in_home_position == self._n:
             return True
         else:
-            return False
-        '''
-        #RETURNS FLOAT:
-        #Teemu: Get sensory feedback as a float between 0-1. Idea is to calculate the distance between the joint and its home position.
-        #Then scale the distance between 0-1 using maximum possible distance.
-        #1 = joint is at its home position, 0 = joint is as far away from its home position as possible.
-        #(mistake: max_distance is not accurate with multiple joints.)
-
-        total_distance = 0  #initialize total distance for all joints combined
-
-        for i  in range(self._n):   #for every joint
-            max_distance = 0    #used for scaling the distance between 0-1
-            # calculate: max_distance = arm length * 2 (arm means all the joints together)
-            # If the arm is not straight, then max_distance will be higher than the real maximum distance.
-            # As a result this method is not 100% accurate and will never return 0. This can be fixed if needed.
-            j = i
-            while (j>=0):
-                max_distance = max_distance + (2 * self._l[j])  #add 2*joint length to max_distance
-                j = j - 1
-
-            #calculate distance between the joint and its home position:
-            distance_x = self._feedback[i][0] - coordinates[i][0]   # distance in x axis
-            distance_y = self._feedback[i][1] - coordinates[i][1]   # distance in y axis
-            #distance from joint's home position with Pythagoras' theorem:
-            distance_total = math.sqrt(distance_x**2 + distance_y**2)
-            #distance scaled between 0-1:
-            distance_total_scaled = distance_total/max_distance
-            #add the scaled distance to the total_difference; total_difference is a sum of all joints' scaled distance
-            total_distance = total_distance + distance_total_scaled
-        return 1 - total_distance/self._n   #return a value between 0-1 which tells how close the joints are to their home position on average
-        '''
+            return False    
 
     def get_position(self):
         """ Get p and also the actual geometry of the arm, i.e. the coordinates of the joints. 
@@ -297,6 +267,47 @@ class External:
             distances.append(distance_for_joint)
 
         return distances
+    
+    def get_sensory_data_float(self):
+        '''
+        Get sensory feedback as a float between 0-1. Calculate the distance between the joint and its home position and
+        scale the distance between 0-1. Returns the average result of every joint.
+        Returns:
+            float between 0 and 1
+            1 = joint is at its home position
+            0 = joint is as far away from its home position as possible
+        
+        '''
+        coordinates = self._calculate_coordinates(self._p)
+        all_results = []    # holds results for every joint individually
+
+        for i in range(self._n):   # for every joint
+            # max_distance is used for scaling the distance between 0-1
+            # max_distance = (sensory feedback point's distance from origo) + (full arm length)
+
+            # sensory feedback point's distance from origo:
+            max_distance = math.sqrt(self._feedback[i][0]**2 + self._feedback[i][1]**2)
+
+            # adding arm's length to max_distance up to current joint
+            j = i
+            while (j>=0):
+                max_distance = max_distance + self._l[j]  #add joint length to max_distance
+                j = j - 1
+
+            # calculate distance between the joint and its home position:
+            distance_x = self._feedback[i][0] - coordinates[i][0]   # distance in x axis
+            distance_y = self._feedback[i][1] - coordinates[i][1]   # distance in y axis
+            distance_total = math.sqrt(distance_x**2 + distance_y**2)
+            #distance scaled between 0-1:
+            distance_total_scaled = distance_total / max_distance
+            result = 1 - distance_total_scaled
+            # add the result to all_results
+            all_results.append(result)
+
+        # calculate the average result of every joint
+        average_result = sum(all_results) / self._n
+
+        return average_result   # return a value between 0-1 which tells how close the joints are to their home position on average
 
 
 

@@ -50,7 +50,7 @@ class robot_arm:
             print("Updated position: " + str(self.get_arm_position()))
             print("Internal state after update: " + str(self.get_current_internal_state()))
             print("\n")
-
+            print(f"Sensory feedback float: {self._ext.get_sensory_data_float()}")  # Teemu and Rafi
             if self.is_desired_position_reached():
                 print("Home positon reached")
             
@@ -88,6 +88,19 @@ class robot_arm:
             False: if matrix is not deterministic
         '''
         return self._int.is_deterministic()
+    
+    def get_sensory_data_float(self):
+        '''
+        Get sensory feedback as a float between 0-1. Calculate the distance between the joint and its home position and
+        scale the distance between 0-1. Returns the average result of every joint.
+
+        Returns:
+            float between 0 and 1
+            1 = joint is at its home position
+            0 = joint is as far away from its home position as possible
+        
+        '''
+        return self._ext.get_sensory_data_float()
 
 #----- Teemu's and Rafi's code ends here ---------------------------------------------  
 
