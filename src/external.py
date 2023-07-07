@@ -60,7 +60,6 @@ class External:
             x = round((x + temp_x),2)
             y = round((y + temp_y),2)
             coordinates.append((x,y))
-
         return coordinates # this will always return x,y for joint i
     
 
@@ -98,36 +97,34 @@ class External:
             else:
                 arms.append(LineString([(coordinates[i-1][0], coordinates[i-1][1]), (coordinates[i][0], coordinates[i][1])]))
 
-        if (n_arms > 0):
+        if (n_arms > 1):
+                # Ensure that arms are dont clip
+                if (self._p[joint] <= 181 + self._d and self._p[joint] >= 179 - self._d):
+                    if(position[joint] <= 181 + self._d and position[joint] >= 179 - self._d):
+                        collision = True
+                        obstacle_collision = False
+                        collided_arm = joint 
+                        collided_object = joint - 1
+                        return collision, obstacle_collision, collided_arm, collided_object
+                # checking collision between arms
+                for i in range(n_arms):
+                    # make sure adjacent arms cant be on top of each other
+                    if (position[i] <= 181 and position[i] >= 179 ):
+                        collision = True
+                        obstacle_collision = False
+                        collided_arm = i - 1
+                        collided_object = i
+                        return collision, obstacle_collision, collided_arm, collided_object 
 
-            # Ensure that arms are dont clip
-            if (self._p[joint] <= 181 + self._d and self._p[joint] >= 179 - self._d):
-                if(position[joint] <= 181 + self._d and position[joint] >= 179 - self._d):
-                    collision = True
-                    obstacle_collision = False
-                    collided_arm = joint 
-                    collided_object = joint - 1
-                    return collision, obstacle_collision, collided_arm, collided_object
-            # checking collision between arms
-            for i in range(n_arms):
-
-                # make sure adjacent arms cant be on top of eachother
-                if (position[i] <= 181 and position[i] >= 179):                   
-                    collision = True
-                    obstacle_collision = False
-                    collided_arm = i - 1
-                    collided_object = i
-                    return collision, obstacle_collision, collided_arm, collided_object 
-
-                # check intersection between arms
-                for j in range(i, n_arms):  
-                    if (n_arms - j > 2):
-                        if(arms[i].intersects(arms[j + 2])):
-                            collision = True
-                            obstacle_collision = False
-                            collided_arm = i
-                            collided_object = j + 2
-                            return collision, obstacle_collision, collided_arm, collided_object
+                    # check intersection between arms
+                    for j in range(i, n_arms):  
+                        if (n_arms - j > 2):
+                            if(arms[i].intersects(arms[j + 2])):
+                                collision = True
+                                obstacle_collision = False
+                                collided_arm = i
+                                collided_object = j + 2
+                                return collision, obstacle_collision, collided_arm, collided_object
         
             
 
@@ -164,10 +161,12 @@ class External:
                 joints_in_home_position = joints_in_home_position + 1
         
         #TODO change return to float in future implementations
+        #RETURNS BOOLEAN:
+        
         if joints_in_home_position == self._n:
             return True
         else:
-            return False
+            return False    
 
     def get_position(self):
         """ Get p and also the actual geometry of the arm, i.e. the coordinates of the joints. 
@@ -237,5 +236,80 @@ class External:
             plt.gca().add_patch(circle)        
 
         plt.grid()
+        plt.figure(1)#Teemu and Rafi
         plt.pause(0.1) # value can be changed
         plt.clf()
+
+
+# ---Teemu ja rafin koodi-----
+    def distance_from_obstacle(self):
+        '''
+        Calculates the distance between the tip of the arm and obstacles.
+        Prints the distance for every joint and obstacle individually.
+        Returns a list containing list of distances for evvry joint.
+        e.g. [[joint 0 obstacle 0, joint 0 obstacle 1], [joint 1 obstacle 0, joint 1 obstacle 1]]
+        '''
+        #get coordinates of the arm
+        coordinates = self._calculate_coordinates(self._p)
+        distances = []#list of distances for all joints for all obstacles
+
+        for i in range(0, len(coordinates)):            #for every joint
+            distance_for_joint = []#list of distances for a single joint for all obstacles.
+
+            for k in range(0, len(self._o), 2):         #for every obstacle
+                distance_x = self._o[k][0] - coordinates[i][0]        #distance in x axis
+                distance_y = self._o[k][1] - coordinates[i][1]        #distance in y axis
+                #calculate the distance with Pythagoras' theorem and subtract the radius of the obstacle
+                distance_total = math.sqrt(distance_x**2 + distance_y**2) - self._o[k+1]
+                distance_for_joint.append(distance_total)
+
+                print("Distance between joint {} and obstacle {}: {}".format(i, k, distance_total))#obstacles are numbered 0, 2, 4,...
+            distances.append(distance_for_joint)
+
+        return distances
+    
+    def get_sensory_data_float(self):
+        '''
+        Get sensory feedback as a float between 0-1. Calculate the distance between the joint and its home position and
+        scale the distance between 0-1. Returns the average result of every joint.
+        Returns:
+            float between 0 and 1
+            1 = joint is at its home position
+            0 = joint is as far away from its home position as possible
+        
+        '''
+        coordinates = self._calculate_coordinates(self._p)
+        all_results = []    # holds results for every joint individually
+
+        for i in range(self._n):   # for every joint
+            # max_distance is used for scaling the distance between 0-1
+            # max_distance = (sensory feedback point's distance from origo) + (full arm length)
+
+            # sensory feedback point's distance from origo:
+            max_distance = math.sqrt(self._feedback[i][0]**2 + self._feedback[i][1]**2)
+
+            # adding arm's length to max_distance up to current joint
+            j = i
+            while (j>=0):
+                max_distance = max_distance + self._l[j]  #add joint length to max_distance
+                j = j - 1
+
+            # calculate distance between the joint and its home position:
+            distance_x = self._feedback[i][0] - coordinates[i][0]   # distance in x axis
+            distance_y = self._feedback[i][1] - coordinates[i][1]   # distance in y axis
+            distance_total = math.sqrt(distance_x**2 + distance_y**2)
+            #distance scaled between 0-1:
+            distance_total_scaled = distance_total / max_distance
+            result = 1 - distance_total_scaled
+            # add the result to all_results
+            all_results.append(result)
+
+        # calculate the average result of every joint
+        average_result = sum(all_results) / self._n
+
+        return average_result   # return a value between 0-1 which tells how close the joints are to their home position on average
+
+
+
+
+

@@ -1,6 +1,12 @@
 import numpy as np
 import random
 import copy
+
+import matplotlib.pyplot as plt # for draw_graph_from_tm() method
+import graphviz
+from matplotlib import image as mpimg
+from statistics import mode  # for counting charecter reappearence in is_deterministic() method
+
 class Internal:
     def __init__(self, actions):
         """ Internal constructor
@@ -260,3 +266,63 @@ class Internal:
         return 1
 
     #TODO: Get list of all states
+
+
+# Teemu's and Rafi's code: -------------
+
+    def draw_graph_from_tm(self, tm):
+        '''Draws and displays a graph from transition matrix.
+            Takes transition matrix (tm) as an argument.
+            Logic: 
+            Check if the matrix index [i][j] is empty. If the index is empty, that means that
+            there is no link from i to j. If the index is not empty, 
+            there is a link from i to j -> add edge [i, j] to Graph labeled with the action(s).
+
+            Note: if a node has no links to or from any other nodes, then the node will not be drawn!
+        '''
+        
+        G = graphviz.Digraph('transition_matrix_graph', filename='tm_graph', format="png")
+        G.attr(rankdir='LR', size='20')
+
+        for i in range(len(tm)):     #for every row
+            for j in range(len(tm[i])):     #for every column
+                if tm[i][j]:     #if index is not empty
+                    G.edge(str(i), str(j), label=str(tm[i][j])) #add edge: index (i, j) with label=actions 
+
+        G.render()  #this makes the png file
+        image = mpimg.imread("tm_graph.png")
+        plt.imshow(image)
+        plt.show()
+        plt.figure(2)
+        plt.clf()
+
+    def is_deterministic(self):
+        '''
+        Checks if the matrix is deterministic and prints the result.
+        Returns:
+            True: if matrix is not deterministic
+            False: if matrix is not deterministic
+        '''
+        # test_matrix = [[[0,1],[2]],
+        #                [[0],[4,3], [2,1]],
+        #                [[7],[0,7], [2,1]],
+        #                [[0,0],[1,0]]]
+
+        transition_matrix = self.get_transition_matrix()
+
+        # for i in test_matrix:
+        for i in transition_matrix:
+            action_by_matrix_row =[] #this list keeps track of actions in a matrix row
+            for j in i:
+                for k in j:
+                    action_by_matrix_row.append(k)  #add actions to the list
+
+            if action_by_matrix_row:    # if list is not empty
+                # counts how many times the most common action has appeared in the matrix row
+                identical_action_counter = action_by_matrix_row.count(mode(action_by_matrix_row)) 
+
+                if identical_action_counter >= 2:   #if an action appears more than one time per row, that means that the matrix is not deterministic
+                    print("Transition matrix is not deterministic")
+                    return False
+        print("Transition matrix is deterministic")
+        return True

@@ -17,7 +17,7 @@ try:
     
     print("*" * 20 + " Initial set of actions: 1 state " + "*" * 20)
     for x in range (7):
-        arm.update_position(right)
+        arm.update_position(right)    
     for x in range (9):
         arm.update_position(left)
 
@@ -54,5 +54,9 @@ try:
     print("*" * 20 + " Add right action " + "*" * 20)
     print(arm.add_connection_between_nodes(0, 0, right))
     arm.update_position(right)
+
+    arm.compare_memory(10, 30) #calls Memory.compare()
+    
 except Exception as e:
-    print("Exception encountered: " + str(e))    
+    print("Exception encountered: " + str(e))  
+
