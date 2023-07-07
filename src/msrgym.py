@@ -1,5 +1,11 @@
+
 from internal import Internal
 from external import External
+from memory import Memory
+from statistics import mode  # for counting charecter reappearence in is_deterministic() method
+import matplotlib.pyplot as plt # for draw_graph_from_tm() method
+import graphviz
+from matplotlib import image as mpimg
 
 class robot_arm:
     
@@ -17,7 +23,6 @@ class robot_arm:
             visualise_ext (bool - optional): Whether arm movement should be visualized. Default: False
             visualise_int (bool - optional): Whether transition matrix should be visualized. Default: False
         """
-
         self._ext = External(joints_n, initial_position, arm_lengths, obstacles, arm_steps, goal_position)
         self._int = Internal(actions)
 
@@ -30,21 +35,74 @@ class robot_arm:
         Args:
             action (int): e.g. 0 = left 1 = right 
         """
+        
         if self._int.transition(action) >= 0:
             self._ext.update(action)
 
             print("______________________________________________________________________________")
-            if(self.visualise_ext):
+            if(self.visualise_ext):                
                 self._ext.visualise_arm()
+  
             if(self.visualise_int):
+                self.draw_graph_from_tm(self.get_transition_matrix())   # Teemu and Rafi
                 print("Transition matrix: ") 
                 print(self.get_transition_matrix())
             print("Updated position: " + str(self.get_arm_position()))
             print("Internal state after update: " + str(self.get_current_internal_state()))
             print("\n")
-
+            print(f"Sensory feedback float: {self._ext.get_sensory_data_float()}")  # Teemu and Rafi
             if self.is_desired_position_reached():
                 print("Home positon reached")
+            
+            # -----------Teemu's & Rafi's code: --------------------------------------------------------
+
+            #Initialize Memory() class and update data to memory list
+            memory_step = Memory(action, self.get_current_internal_state(), self.is_desired_position_reached())
+            Memory.memory.append(memory_step.make_list_from_data())      #updates data_list element data to memory list
+            self.is_deterministic()     #check and print determinism
+            self._ext.distance_from_obstacle()  #check and print distances from obstacles
+
+    def compare_memory(self, n, m):
+        '''
+        Used for testing Memory.compare() method. Makes a dataframe from the memory and calls compare() with parameters.
+          Called at the end of demo_msrgym.py.
+        '''
+        return Memory.compare_memory(n, m)
+
+    def draw_graph_from_tm(self, tm):
+        '''Draws and displays a graph from transition matrix.
+            Takes transition matrix (tm) as an argument.
+            Logic: 
+            Check if the matrix index [i][j] is empty. If the index is empty, that means that
+            there is no link from i to j. If the index is not empty, 
+            there is a link from i to j -> add edge [i, j] to Graph labeled with the action(s).
+            Note: if a node has no links to or from any other nodes, then the node will not be drawn!
+        '''
+        return self._int.draw_graph_from_tm(tm)
+
+    def is_deterministic(self):
+        '''
+        Checks if the matrix is deterministic and prints the result.
+        Returns:
+            True: if matrix is not deterministic
+            False: if matrix is not deterministic
+        '''
+        return self._int.is_deterministic()
+    
+    def get_sensory_data_float(self):
+        '''
+        Get sensory feedback as a float between 0-1. Calculate the distance between the joint and its home position and
+        scale the distance between 0-1. Returns the average result of every joint.
+
+        Returns:
+            float between 0 and 1
+            1 = joint is at its home position
+            0 = joint is as far away from its home position as possible
+        
+        '''
+        return self._ext.get_sensory_data_float()
+
+#----- Teemu's and Rafi's code ends here ---------------------------------------------  
 
     def get_arm_position(self):
         """ Get current arm positions
@@ -144,5 +202,4 @@ class robot_arm:
         """
         return self._int.delete(n,m,k)
     
-
 

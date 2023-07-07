@@ -30,17 +30,22 @@ print("------------------THREE ARMS------------------")
 n = 3
 p = [0,178,182]  #[0,178,182]
 l = [3,2,1]
-o = [[1.5,1],0.5,[1.5,-1.5],0.5]
+o = [[1.5,1],0.4,[1.5,-1.5],0.8]
 d = 5
 feedback = [(3.0, 0.0),(1.0,0.07),(2.0,0.07)]
 #feedback = [(2.6, -1.5), (4.38, -2.41), (5.25, -2.91)] 
 #([330, 3, 357], [(2.6, -1.5), (4.38, -2.41), (5.25, -2.91)])
+
 obj = External(n, p, l, o, d, feedback)
 
 print("Moved to position: ")
 print(obj.get_position())
 print("Reached destination: ")
 print(obj.get_sensory_data())
+
+#-----teemu ja rafin koodi----
+obj.distance_from_obstacle()
+#-----------------------------
 
 
 obj.visualise_arm()
