@@ -4,7 +4,6 @@ from external import External
 from memory import Memory
 from statistics import mode  # for counting charecter reappearence in is_deterministic() method
 import matplotlib.pyplot as plt # for draw_graph_from_tm() method
-import graphviz
 from matplotlib import image as mpimg
 
 class robot_arm:
