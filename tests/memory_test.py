@@ -3,6 +3,8 @@ import pandas as pd
 import io
 import sys
 
+# TODO: rewrite so that this uses pytest functionality (capsys, not calling the function manually) 
+
 def test_make_list_from_data():
     memory_step = Memory(0, 0, False)
     expected = [0, 0, False]

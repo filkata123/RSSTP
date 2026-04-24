@@ -97,7 +97,9 @@ class External:
             else:
                 arms.append(LineString([(coordinates[i-1][0], coordinates[i-1][1]), (coordinates[i][0], coordinates[i][1])]))
 
+        
         if (n_arms > 1):
+                
                 # Ensure that arms are dont clip
                 if (self._p[joint] <= 181 + self._d and self._p[joint] >= 179 - self._d):
                     if(position[joint] <= 181 + self._d and position[joint] >= 179 - self._d):
@@ -108,6 +110,7 @@ class External:
                         return collision, obstacle_collision, collided_arm, collided_object
                 # checking collision between arms
                 for i in range(n_arms):
+
                     # make sure adjacent arms cant be on top of each other
                     if (position[i] <= 181 and position[i] >= 179 ):
                         collision = True
@@ -161,12 +164,10 @@ class External:
                 joints_in_home_position = joints_in_home_position + 1
         
         #TODO change return to float in future implementations
-        #RETURNS BOOLEAN:
-        
         if joints_in_home_position == self._n:
             return True
         else:
-            return False    
+            return False
 
     def get_position(self):
         """ Get p and also the actual geometry of the arm, i.e. the coordinates of the joints. 
@@ -236,7 +237,7 @@ class External:
             plt.gca().add_patch(circle)        
 
         plt.grid()
-        plt.figure(1)#Teemu and Rafi
+        plt.figure(1) #Teemu and Rafi
         plt.pause(0.1) # value can be changed
         plt.clf()
 
@@ -246,12 +247,13 @@ class External:
         '''
         Calculates the distance between the tip of the arm and obstacles.
         Prints the distance for every joint and obstacle individually.
-        Returns a list containing list of distances for evvry joint.
-        e.g. [[joint 0 obstacle 0, joint 0 obstacle 1], [joint 1 obstacle 0, joint 1 obstacle 1]]
+
+        Returns:
+            list: list of distances for every joint, e.g. [[joint 0 obstacle 0, joint 0 obstacle 1], [joint 1 obstacle 0, joint 1 obstacle 1]]
         '''
         #get coordinates of the arm
         coordinates = self._calculate_coordinates(self._p)
-        distances = []#list of distances for all joints for all obstacles
+        distances = [] #list of distances for all joints for all obstacles
 
         for i in range(0, len(coordinates)):            #for every joint
             distance_for_joint = []#list of distances for a single joint for all obstacles.
@@ -263,7 +265,7 @@ class External:
                 distance_total = math.sqrt(distance_x**2 + distance_y**2) - self._o[k+1]
                 distance_for_joint.append(distance_total)
 
-                print("Distance between joint {} and obstacle {}: {}".format(i, k, distance_total))#obstacles are numbered 0, 2, 4,...
+                print("Distance between joint {} and obstacle {}: {}".format(i, k, distance_total)) #obstacles are numbered 0, 2, 4,...
             distances.append(distance_for_joint)
 
         return distances

@@ -8,15 +8,21 @@ class Memory():
 
     def __init__(self, previous_action, internal_state, sensation):
         ''' Initializes an instance of Memory class.
-        # attribute initialize'''
+        
+        Args:
+            previous_action : previous action
+            internal_state : internal state
+            sensation : sensation
+        '''
         self.previous_action = previous_action
         self.internal_state = internal_state
         self.sensation = sensation
 
     def make_list_from_data(self):
         '''
-        Makes a data list including of 3 values: previous action, internal state and sensation.
-        Returns data list which can be appended to memory list.
+        Makes a data list that includes 3 values: previous action, internal state and sensation.
+        Returns:
+            list : data list which can be appended to memory list.
         '''
         data_list = []
         data_list.append(self.previous_action)
@@ -35,6 +41,9 @@ class Memory():
     def make_dataframe(data):
         '''
         Makes Pandas dataframe from memory list. Memory dataframe is used later in compare() method.
+
+        Returns:
+            pd.DataFrame : memory dataframe
         '''
         dataframe = pd.DataFrame(data, columns=['Previous action', 'Internal state', 'Sensation'])
         print("Full memory as a dataframe:")
@@ -47,12 +56,19 @@ class Memory():
         Makes two sub memories from memory (dataframe) at indexes n and m. Compares the sub memories to each other.
         Prints 'Is different' if previous actions were the same but internal states or sensations are different.
         Otherwise prints 'Unknown'.
+        Returns -1 if invalid argument
+                0 if "Unknown: Previous action was different"
+                1 if "Is different: Internal state is different"
+                2 if "Is different: Sensation is different"
+                3 if "Unknown: Sub memories are identical"
+
+        Args:
+            n (int) : index n where a submemory would be created
+            m (int) : index m where a submemory would be created
+            dataframe (pd.DataFrame): memory dataframe
+        
         Returns:
-            -1 if invalid argument
-            0 if "Unknown: Previous action was different"
-            1 if "Is different: Internal state is different"
-            2 if "Is different: Sensation is different"
-            3 if "Unknown: Sub memories are identical"
+            int : return code
         '''
         if ((n > (len(dataframe)-1)) or (n < 0)) or ((m > (len(dataframe)-1)) or (m < 0)):
             print("Invalid arguments n, m must be higher than 0 and lower than memory length.") 
@@ -104,6 +120,10 @@ class Memory():
     def compare_memory(n, m):
         '''
         Used for testing Memory.compare() method. Makes a dataframe from the memory and calls compare() with parameters.
+
+        Args:
+            n (int) : index n where a submemory would be created
+            m (int) : index m where a submemory would be created
           Called at the end of demo_msrgym.py.
         '''
         dataframe = Memory.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory

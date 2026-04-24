@@ -39,7 +39,7 @@ class robot_arm:
             self._ext.update(action)
 
             print("______________________________________________________________________________")
-            if(self.visualise_ext):                
+            if(self.visualise_ext):       
                 self._ext.visualise_arm()
   
             if(self.visualise_int):
@@ -66,7 +66,7 @@ class robot_arm:
         Used for testing Memory.compare() method. Makes a dataframe from the memory and calls compare() with parameters.
           Called at the end of demo_msrgym.py.
         '''
-        return Memory.compare_memory(n, m)
+        return Memory.compare_memory(n, m) # TODO: Figure out why is memory a static object? 
 
     def draw_graph_from_tm(self, tm):
         '''Draws and displays a graph from transition matrix.
@@ -77,7 +77,7 @@ class robot_arm:
             there is a link from i to j -> add edge [i, j] to Graph labeled with the action(s).
             Note: if a node has no links to or from any other nodes, then the node will not be drawn!
         '''
-        return self._int.draw_graph_from_tm(tm)
+        return self._int.draw_graph_from_tm(tm) # TODO: Return is not needed
 
     def is_deterministic(self):
         '''

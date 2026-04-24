@@ -271,14 +271,16 @@ class Internal:
 # Teemu's and Rafi's code: -------------
 
     def draw_graph_from_tm(self, tm):
-        '''Draws and displays a graph from transition matrix.
-            Takes transition matrix (tm) as an argument.
-            Logic: 
+        '''Draws and displays a graph from transition matrix. 
             Check if the matrix index [i][j] is empty. If the index is empty, that means that
             there is no link from i to j. If the index is not empty, 
             there is a link from i to j -> add edge [i, j] to Graph labeled with the action(s).
 
             Note: if a node has no links to or from any other nodes, then the node will not be drawn!
+
+            Args:
+                tm: transition matrix
+
         '''
         
         G = graphviz.Digraph('transition_matrix_graph', filename='tm_graph', format="png")
@@ -300,8 +302,7 @@ class Internal:
         '''
         Checks if the matrix is deterministic and prints the result.
         Returns:
-            True: if matrix is not deterministic
-            False: if matrix is not deterministic
+            Bool: True if matrix deterministic, False otherwise
         '''
         # test_matrix = [[[0,1],[2]],
         #                [[0],[4,3], [2,1]],

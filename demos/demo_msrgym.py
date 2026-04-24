@@ -17,7 +17,7 @@ try:
     
     print("*" * 20 + " Initial set of actions: 1 state " + "*" * 20)
     for x in range (7):
-        arm.update_position(right)    
+        arm.update_position(right)
     for x in range (9):
         arm.update_position(left)
 
