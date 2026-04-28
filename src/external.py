@@ -1,7 +1,8 @@
 import math
 
 from shapely.geometry import LineString, Point
-import matplotlib.pyplot as plt
+
+from visualization import Visualizer
 
 class External:
     def __init__(self, n, p, l, o, d, feedback):
@@ -221,25 +222,8 @@ class External:
         """
 
         coordinates = self._calculate_coordinates(self._p)
-        x_coordinates=[0]
-        y_coordinates=[0]
-
-        for coordinate in coordinates:
-            x_coordinates.append(coordinate[0])
-            y_coordinates.append(coordinate[1])
-
-        plt.ion()
-        plt.plot(x_coordinates, y_coordinates)
-        plt.axis([-5, 5.5, -5, 5])
-
-        for i in range(0,len(self._o),2):
-            circle = plt.Circle(self._o[i],self._o[i+1], color='#e2e2e2')
-            plt.gca().add_patch(circle)        
-
-        plt.grid()
-        plt.figure(1) #Teemu and Rafi
-        plt.pause(0.1) # value can be changed
-        plt.clf()
+        
+        Visualizer.plot_arm(coordinates, self._o)
 
 
 # ---Teemu ja rafin koodi-----

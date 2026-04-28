@@ -1,11 +1,9 @@
 import numpy as np
 import random
 import copy
-
-import matplotlib.pyplot as plt # for draw_graph_from_tm() method
-import graphviz
-from matplotlib import image as mpimg
 from statistics import mode  # for counting charecter reappearence in is_deterministic() method
+
+from visualization import Visualizer
 
 class Internal:
     def __init__(self, actions):
@@ -272,31 +270,12 @@ class Internal:
 
     def draw_graph_from_tm(self, tm):
         '''Draws and displays a graph from transition matrix. 
-            Check if the matrix index [i][j] is empty. If the index is empty, that means that
-            there is no link from i to j. If the index is not empty, 
-            there is a link from i to j -> add edge [i, j] to Graph labeled with the action(s).
-
-            Note: if a node has no links to or from any other nodes, then the node will not be drawn!
-
+        
             Args:
                 tm: transition matrix
 
         '''
-        
-        G = graphviz.Digraph('transition_matrix_graph', filename='tm_graph', format="png")
-        G.attr(rankdir='LR', size='20')
-
-        for i in range(len(tm)):     #for every row
-            for j in range(len(tm[i])):     #for every column
-                if tm[i][j]:     #if index is not empty
-                    G.edge(str(i), str(j), label=str(tm[i][j])) #add edge: index (i, j) with label=actions 
-
-        G.render()  #this makes the png file
-        image = mpimg.imread("tm_graph.png")
-        plt.imshow(image)
-        plt.show()
-        plt.figure(2)
-        plt.clf()
+        Visualizer.plot_transition_graph(tm)
 
     def is_deterministic(self):
         '''

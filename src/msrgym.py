@@ -2,9 +2,6 @@
 from internal import Internal
 from external import External
 from memory import Memory
-from statistics import mode  # for counting charecter reappearence in is_deterministic() method
-import matplotlib.pyplot as plt # for draw_graph_from_tm() method
-from matplotlib import image as mpimg
 
 class robot_arm:
     
@@ -70,14 +67,8 @@ class robot_arm:
 
     def draw_graph_from_tm(self, tm):
         '''Draws and displays a graph from transition matrix.
-            Takes transition matrix (tm) as an argument.
-            Logic: 
-            Check if the matrix index [i][j] is empty. If the index is empty, that means that
-            there is no link from i to j. If the index is not empty, 
-            there is a link from i to j -> add edge [i, j] to Graph labeled with the action(s).
-            Note: if a node has no links to or from any other nodes, then the node will not be drawn!
         '''
-        return self._int.draw_graph_from_tm(tm) # TODO: Return is not needed
+        self._int.draw_graph_from_tm(tm)
 
     def is_deterministic(self):
         '''
