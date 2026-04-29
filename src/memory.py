@@ -4,54 +4,36 @@ import pandas as pd
 class Memory():
     # default attribute here (class object attrubute)
 
-    memory = [] # This list works as the robotic arm's memory.
-
-    def __init__(self, previous_action, internal_state, sensation):
+    def __init__(self, ):
         ''' Initializes an instance of Memory class.
-        
+        '''
+        self.memory = [] # This list works as the robotic arm's memory.
+
+    def update_memory(self, previous_action, internal_state, sensation):
+        ''' Add new data to memory.
         Args:
             previous_action : previous action
             internal_state : internal state
             sensation : sensation
         '''
-        self.previous_action = previous_action
-        self.internal_state = internal_state
-        self.sensation = sensation
+        self.memory.append([previous_action, internal_state, sensation])
 
-    def make_list_from_data(self):
+    def get_memory_size(self):
         '''
-        Makes a data list that includes 3 values: previous action, internal state and sensation.
-        Returns:
-            list : data list which can be appended to memory list.
+        Return length of memory list.
+        Retruns:
+            int : length of memory
         '''
-        data_list = []
-        data_list.append(self.previous_action)
-        data_list.append(self.internal_state)
-        data_list.append(self.sensation)
-        return data_list
+        return len(self.memory)
     
     def print_memory(self):
         '''
-          Prints all elements of the memory by numbered 
+          Prints all elements of the memory by number 
         '''      
-        for element in enumerate(Memory.memory):
+        for element in enumerate(self.memory):
             print(element)
 
-    @staticmethod
-    def make_dataframe(data):
-        '''
-        Makes Pandas dataframe from memory list. Memory dataframe is used later in compare() method.
-
-        Returns:
-            pd.DataFrame : memory dataframe
-        '''
-        dataframe = pd.DataFrame(data, columns=['Previous action', 'Internal state', 'Sensation'])
-        print("Full memory as a dataframe:")
-        print(dataframe)
-        return dataframe
-
-    @staticmethod
-    def compare(n, m, dataframe):
+    def compare(self, n, m):
         '''
         Makes two sub memories from memory (dataframe) at indexes n and m. Compares the sub memories to each other.
         Prints 'Is different' if previous actions were the same but internal states or sensations are different.
@@ -65,11 +47,12 @@ class Memory():
         Args:
             n (int) : index n where a submemory would be created
             m (int) : index m where a submemory would be created
-            dataframe (pd.DataFrame): memory dataframe
         
         Returns:
             int : return code
         '''
+        dataframe = pd.DataFrame(self.memory, columns=['Previous action', 'Internal state', 'Sensation'])
+
         if ((n > (len(dataframe)-1)) or (n < 0)) or ((m > (len(dataframe)-1)) or (m < 0)):
             print("Invalid arguments n, m must be higher than 0 and lower than memory length.") 
             return -1
@@ -93,12 +76,12 @@ class Memory():
         #print(sub_memory_1)
         #print(sub_memory_2)
         if not (sub_memory_1.equals(sub_memory_2)): #if sub memories are not identical
-
             #make a comparison dataframe of the sub memories
             comparison = sub_memory_1.compare(sub_memory_2, keep_shape=True)
             #print(comparison)
 
             #Go through the comparison dataframe to find not 'NaN' value
+            # TODO: This implementation only tells us the first different value, rather than all. Could lead to confusion.
             for i in range(0, len(comparison), 1):
                 for j in range(0, 5, 2):
                     if pd.notnull(comparison.iloc[i, j]):
@@ -115,19 +98,5 @@ class Memory():
         else:
             print("Unknown: Sub memories are identical")       
             return 3
-
-    @staticmethod
-    def compare_memory(n, m):
-        '''
-        Used for testing Memory.compare() method. Makes a dataframe from the memory and calls compare() with parameters.
-
-        Args:
-            n (int) : index n where a submemory would be created
-            m (int) : index m where a submemory would be created
-          Called at the end of demo_msrgym.py.
-        '''
-        dataframe = Memory.make_dataframe(Memory.memory)   #make (pandas) dataframe from memory
-        value = Memory.compare(n, m, dataframe)
-        return value
 
 

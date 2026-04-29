@@ -33,7 +33,7 @@ try:
         #print(Memory.memory)
 
         # Call compare_memory() as many times as there are element in Memory.memory
-        for y in range(len(Memory.memory)):
+        for y in range(arm.get_memory_size()):
             # Set arguments n and m for compare_memory()
             n = x-y
             m = x-y-1

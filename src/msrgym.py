@@ -21,6 +21,7 @@ class robot_arm:
         """
         self._ext = External(joints_n, initial_position, arm_lengths, obstacles, arm_steps, goal_position)
         self._int = Internal(actions)
+        self._mem = Memory()
 
         self.visualise_ext = visualise_ext
         self.visualise_int = visualise_int
@@ -53,20 +54,29 @@ class robot_arm:
             # -----------Teemu's & Rafi's code: --------------------------------------------------------
 
             #Initialize Memory() class and update data to memory list
-            memory_step = Memory(action, self.get_current_internal_state(), self.is_desired_position_reached())
-            Memory.memory.append(memory_step.make_list_from_data())      #updates data_list element data to memory list
+            self._mem.update_memory(action, self.get_current_internal_state(), self.is_desired_position_reached())
+            #memory_step = Memory(action, self.get_current_internal_state(), self.is_desired_position_reached())
+            #Memory.memory.append(memory_step.make_list_from_data())      #updates data_list element data to memory list
             self.is_deterministic()     #check and print determinism
             self._ext.distance_from_obstacle()  #check and print distances from obstacles
 
     def compare_memory(self, n, m):
         '''
-        Used for testing Memory.compare() method. Makes a dataframe from the memory and calls compare() with parameters.
-          Called at the end of demo_msrgym.py.
+        Helper function for compare() function of Memory class
+
+        Args:
+            n (int) : index n where a submemory would be created
+            m (int) : index m where a submemory would be created
+        Returns:
+            int : return code
         '''
-        return Memory.compare_memory(n, m) # TODO: Figure out why is memory a static object? 
+        return self._mem.compare(n, m)
 
     def draw_graph_from_tm(self, tm):
         '''Draws and displays a graph from transition matrix.
+        
+        Args:
+            tm: transition matrix
         '''
         self._int.draw_graph_from_tm(tm)
 
@@ -74,8 +84,7 @@ class robot_arm:
         '''
         Checks if the matrix is deterministic and prints the result.
         Returns:
-            True: if matrix is not deterministic
-            False: if matrix is not deterministic
+            Bool: True if matrix is not deterministic, False otherwise
         '''
         return self._int.is_deterministic()
     
@@ -85,14 +94,22 @@ class robot_arm:
         scale the distance between 0-1. Returns the average result of every joint.
 
         Returns:
-            float between 0 and 1
-            1 = joint is at its home position
+            float:
+            1 = joint is at its home position;
             0 = joint is as far away from its home position as possible
         
         '''
         return self._ext.get_sensory_data_float()
 
 #----- Teemu's and Rafi's code ends here ---------------------------------------------  
+
+    def get_memory_size(self):
+        '''
+        Return length of memory list.
+        Retruns:
+            int : length of memory
+        '''
+        return self._mem.get_memory_size()
 
     def get_arm_position(self):
         """ Get current arm positions

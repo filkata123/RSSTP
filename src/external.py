@@ -259,8 +259,8 @@ class External:
         Get sensory feedback as a float between 0-1. Calculate the distance between the joint and its home position and
         scale the distance between 0-1. Returns the average result of every joint.
         Returns:
-            float between 0 and 1
-            1 = joint is at its home position
+            float :
+            1 = joint is at its home position;
             0 = joint is as far away from its home position as possible
         
         '''
@@ -269,7 +269,7 @@ class External:
 
         for i in range(self._n):   # for every joint
             # max_distance is used for scaling the distance between 0-1
-            # max_distance = (sensory feedback point's distance from origo) + (full arm length)
+            # max_distance = (sensory feedback point's distance from origin) + (full arm length)
 
             # sensory feedback point's distance from origo:
             max_distance = math.sqrt(self._feedback[i][0]**2 + self._feedback[i][1]**2)
