@@ -58,14 +58,34 @@ class Visualizer:
         Visualizer._ax_arm.grid()
         Visualizer._figure.canvas.draw_idle()
         plt.pause(0.01)
+
+    @staticmethod
+    def build_transition_graph(tm):
+        """Build and return a graphviz Digraph from a transition matrix.
+            Check if the matrix index [i][j] is empty. If the index is empty, that means that
+            there is no link from i to j. If the index is not empty, 
+            there is a link from i to j -> add edge [i, j] to Graph labeled with the action(s).
+        
+        Args:
+            tm (NDArray): Transition matrix with shape (n, n) containing action lists
+        
+        Returns:
+            graphviz.Digraph: The constructed graph
+        """
+        G = graphviz.Digraph('transition_matrix_graph', filename='tm_graph', format="png")
+        G.attr(rankdir='LR', size='20')
+        
+        for i in range(len(tm)):
+            for j in range(len(tm[i])):
+                if tm[i][j]:
+                    G.edge(str(i), str(j), label=str(tm[i][j]))
+        
+        return G
     
     @staticmethod
     def plot_transition_graph(tm):
         """Visualize the transition matrix as a directed graph.
-            Check if the matrix index [i][j] is empty. If the index is empty, that means that
-            there is no link from i to j. If the index is not empty, 
-            there is a link from i to j -> add edge [i, j] to Graph labeled with the action(s).
-
+            
             Note: if a node has no links to or from any other nodes, then the node will not be drawn!
         
         Args:
@@ -75,14 +95,7 @@ class Visualizer:
         
         Visualizer._ax_graph.clear()
         
-        G = graphviz.Digraph('transition_matrix_graph', filename='tm_graph', format="png")
-        G.attr(rankdir='LR', size='20')
-        
-        for i in range(len(tm)):
-            for j in range(len(tm[i])):
-                if tm[i][j]:
-                    G.edge(str(i), str(j), label=str(tm[i][j]))
-        
+        G = Visualizer.build_transition_graph(tm)
         G.render()  # creates tm_graph.png
         
         image = mpimg.imread("tm_graph.png")

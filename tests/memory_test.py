@@ -1,82 +1,87 @@
 from memory import Memory
-import pandas as pd
-import io
-import sys
-
-# TODO: rewrite so that this uses pytest functionality (capsys, not calling the function manually) 
-
-def test_make_list_from_data():
-    memory_step = Memory(0, 0, False)
-    expected = [0, 0, False]
-
-    assert memory_step.make_list_from_data() == expected
-
-test_make_list_from_data()
-
-def test_print_memory():
-    #initializing memory list with three elements. memory_step is needed to call the method.
-    memory_step = Memory(1, 0, False)
-    Memory.memory.append(memory_step.make_list_from_data())
-    memory_step = Memory(0, 1, False)
-    Memory.memory.append(memory_step.make_list_from_data())
-    memory_step = Memory(0, 2, True)
-    Memory.memory.append(memory_step.make_list_from_data())
-
-    # from https://stackoverflow.com/questions/33767627/python-write-unittest-for-console-print
-    capturedOutput = io.StringIO()                  # Create StringIO object
-    sys.stdout = capturedOutput
-    memory_step.print_memory()
-    sys.stdout = sys.__stdout__
-    expected = "(0, [1, 0, False])\n(1, [0, 1, False])\n(2, [0, 2, True])\n"
-
-    assert capturedOutput.getvalue() == expected
-
-test_print_memory()
-
-def test_make_dataframe():
-    test_data = []
-    test_data.append([0, 0, False])
-    test_data.append([0, 0, False])
-    test_data.append([1, 2, True])
-    expected = pd.DataFrame(test_data, columns=['Previous action', 'Internal state', 'Sensation'])
-
-    assert Memory.make_dataframe(test_data).equals(expected)
-
-test_make_dataframe()
 
 #test_compare when previous actions are different
-def test_compare1():
-    test_memory = [[0, 0, False], [1, 1, True], [0, 2, False]]
-    dataframe = pd.DataFrame(test_memory, columns=['Previous action', 'Internal state', 'Sensation'])
+def test_compare_different_actions():
+    mem = Memory()
+    mem.update_memory(0, 0, False)
+    mem.update_memory(1, 1, True)
+    mem.update_memory(0, 2, False)
 
-    assert Memory.compare(1, 2, dataframe) == 0
-
-test_compare1()
+    assert mem.compare(1, 2) == 0
 
 #test_compare when previous actions are the same, but internal states are different
-def test_compare2():
-    test_memory = [[0, 0, False], [0, 1, True], [0, 2, False]]
-    dataframe = pd.DataFrame(test_memory, columns=['Previous action', 'Internal state', 'Sensation'])
+def test_compare_different_states():
+    mem = Memory()
+    mem.update_memory(0, 0, False)
+    mem.update_memory(0, 1, True)
+    mem.update_memory(0, 2, False)
 
-    assert Memory.compare(1, 2, dataframe) == 1
-
-test_compare2()
+    assert mem.compare(1, 2) == 1
 
 #test_compare when previous actions and internal states are the same, but sensations are different
-def test_compare3():
-    test_memory = [[0, 0, False], [0, 1, True], [0, 1, False]]
-    dataframe = pd.DataFrame(test_memory, columns=['Previous action', 'Internal state', 'Sensation'])
+def test_compare_different_sensations():
+    mem = Memory()
+    mem.update_memory(0, 0, False)
+    mem.update_memory(0, 1, True)
+    mem.update_memory(0, 1, False)
 
-    assert Memory.compare(1, 2, dataframe) == 2
-
-test_compare3()
+    assert mem.compare(1, 2) == 2
 
 #test_compare when previous actions, internal states, and sensations are the same
-def test_compare4():
-    test_memory = [[0, 0, False], [0, 1, True], [0, 1, True]]
-    dataframe = pd.DataFrame(test_memory, columns=['Previous action', 'Internal state', 'Sensation'])
+def test_compare_same():
+    mem = Memory()
+    mem.update_memory(0, 0, False)
+    mem.update_memory(0, 1, True)
+    mem.update_memory(0, 1, True)
 
-    assert Memory.compare(1, 2, dataframe) == 3
+    assert mem.compare(1, 2) == 3
 
-test_compare4()
+# n > m tests
+def test_compare_n_greater_than_m_identical():
+    mem = Memory()
+    mem.update_memory(0, 0, False)
+    mem.update_memory(0, 1, True)
+    mem.update_memory(0, 1, True)
+    assert mem.compare(2, 1) == 3  
+
+def test_compare_n_greater_than_m_different():
+    mem = Memory()
+    mem.update_memory(0, 0, False)
+    mem.update_memory(0, 1, True)
+    mem.update_memory(0, 2, False)
+    assert mem.compare(2, 1) == 1
+
+# Test invalid inputs
+def test_compare_invalid_n_too_large():
+    mem = Memory()
+    mem.update_memory(0, 0, False)
+    mem.update_memory(0, 1, True)
+    assert mem.compare(5, 1) == -1
+
+def test_compare_invalid_m_too_large():
+    mem = Memory()
+    mem.update_memory(0, 0, False)
+    mem.update_memory(0, 1, True)
+    assert mem.compare(0, 5) == -1
+
+def test_compare_invalid_negative_n():
+    mem = Memory()
+    mem.update_memory(0, 0, False)
+    assert mem.compare(-1, 0) == -1
+
+def test_compare_invalid_negative_m():
+    mem = Memory()
+    mem.update_memory(0, 0, False)
+    assert mem.compare(0, -1) == -1
+
+def test_compare_n_equals_m():
+    # n == m is explicitly returned as -1
+    mem = Memory()
+    mem.update_memory(0, 0, False)
+    mem.update_memory(0, 1, True)
+    assert mem.compare(1, 1) == -1
+
+def test_compare_empty_memory():
+    mem = Memory()
+    assert mem.compare(0, 1) == -1
 

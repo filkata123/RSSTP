@@ -25,13 +25,6 @@ class Memory():
             int : length of memory
         '''
         return len(self.memory)
-    
-    def print_memory(self):
-        '''
-          Prints all elements of the memory by number 
-        '''      
-        for element in enumerate(self.memory):
-            print(element)
 
     def compare(self, n, m):
         '''

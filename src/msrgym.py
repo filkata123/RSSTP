@@ -55,8 +55,6 @@ class robot_arm:
 
             #Initialize Memory() class and update data to memory list
             self._mem.update_memory(action, self.get_current_internal_state(), self.is_desired_position_reached())
-            #memory_step = Memory(action, self.get_current_internal_state(), self.is_desired_position_reached())
-            #Memory.memory.append(memory_step.make_list_from_data())      #updates data_list element data to memory list
             self.is_deterministic()     #check and print determinism
             self._ext.distance_from_obstacle()  #check and print distances from obstacles
 

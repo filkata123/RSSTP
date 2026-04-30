@@ -503,4 +503,26 @@ def test_transition_4():
 
     expected = [-1]
     assert (obj.transition(k) in expected)
+
+# Deterministic test
+def test_is_deterministic_1():
+    # transition matrix is not deterministic
+    obj = Internal(np.array([[[0,1],[2,5]],
+                             [[2,4],[1,2,3]]], dtype = object))
+    
+    assert obj.is_deterministic() == False
+
+def test_is_deterministic_2():
+    # transition matrix is deterministic
+    obj = Internal(np.array([[[0,1],[2,5]],
+                             [[2,4],[1,3]]], dtype = object))
+    
+    assert obj.is_deterministic() == True
+
+def test_is_deterministic_3():
+    # transition matrix is empty (and deterministic)
+    obj = Internal(np.array([[[],[]],
+                             [[],[]]], dtype = object))
+    
+    assert obj.is_deterministic() == True
     
