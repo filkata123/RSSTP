@@ -98,7 +98,6 @@ class External:
             else:
                 arms.append(LineString([(coordinates[i-1][0], coordinates[i-1][1]), (coordinates[i][0], coordinates[i][1])]))
 
-        
         if (n_arms > 1):
                 
                 # Ensure that arms are dont clip

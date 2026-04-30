@@ -1,7 +1,6 @@
 import numpy as np
 import random
 import copy
-from statistics import mode  # for counting charecter reappearence in is_deterministic() method
 
 from visualization import Visualizer
 
@@ -280,28 +279,19 @@ class Internal:
     def is_deterministic(self):
         '''
         Checks if the matrix is deterministic and prints the result.
+        A matrix is non-deterministic if any row contains the same action more than once.
         Returns:
             Bool: True if matrix deterministic, False otherwise
         '''
-        # test_matrix = [[[0,1],[2]],
-        #                [[0],[4,3], [2,1]],
-        #                [[7],[0,7], [2,1]],
-        #                [[0,0],[1,0]]]
-
-        transition_matrix = self.get_transition_matrix()
-
-        # for i in test_matrix:
-        for i in transition_matrix:
+        for i in self.get_transition_matrix():
             action_by_matrix_row =[] #this list keeps track of actions in a matrix row
             for j in i:
                 for k in j:
                     action_by_matrix_row.append(k)  #add actions to the list
 
             if action_by_matrix_row:    # if list is not empty
-                # counts how many times the most common action has appeared in the matrix row
-                identical_action_counter = action_by_matrix_row.count(mode(action_by_matrix_row)) 
-
-                if identical_action_counter >= 2:   #if an action appears more than one time per row, that means that the matrix is not deterministic
+                #if an action appears more than one time per row, that means that the matrix is not deterministic
+                if len(action_by_matrix_row) != len(set(action_by_matrix_row)):   
                     print("Transition matrix is not deterministic")
                     return False
         print("Transition matrix is deterministic")
