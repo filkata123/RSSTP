@@ -1,5 +1,7 @@
+
 from internal import Internal
 from external import External
+from memory import Memory
 
 class robot_arm:
     
@@ -17,9 +19,9 @@ class robot_arm:
             visualise_ext (bool - optional): Whether arm movement should be visualized. Default: False
             visualise_int (bool - optional): Whether transition matrix should be visualized. Default: False
         """
-
         self._ext = External(joints_n, initial_position, arm_lengths, obstacles, arm_steps, goal_position)
         self._int = Internal(actions)
+        self._mem = Memory()
 
         self.visualise_ext = visualise_ext
         self.visualise_int = visualise_int
@@ -30,21 +32,82 @@ class robot_arm:
         Args:
             action (int): e.g. 0 = left 1 = right 
         """
+        
         if self._int.transition(action) >= 0:
             self._ext.update(action)
 
             print("______________________________________________________________________________")
-            if(self.visualise_ext):
+            if(self.visualise_ext):       
                 self._ext.visualise_arm()
+  
             if(self.visualise_int):
+                self.draw_graph_from_tm(self.get_transition_matrix())   # Teemu and Rafi
                 print("Transition matrix: ") 
                 print(self.get_transition_matrix())
             print("Updated position: " + str(self.get_arm_position()))
             print("Internal state after update: " + str(self.get_current_internal_state()))
             print("\n")
-
+            print(f"Sensory feedback float: {self._ext.get_sensory_data_float()}")  # Teemu and Rafi
             if self.is_desired_position_reached():
                 print("Home positon reached")
+            
+            # -----------Teemu's & Rafi's code: --------------------------------------------------------
+
+            #Initialize Memory() class and update data to memory list
+            self._mem.update_memory(action, self.get_current_internal_state(), self.is_desired_position_reached())
+            self.is_deterministic()     #check and print determinism
+            self._ext.distance_from_obstacle()  #check and print distances from obstacles
+
+    def compare_memory(self, n, m):
+        '''
+        Helper function for compare() function of Memory class
+
+        Args:
+            n (int) : index n where a submemory would be created
+            m (int) : index m where a submemory would be created
+        Returns:
+            int : return code
+        '''
+        return self._mem.compare(n, m)
+
+    def draw_graph_from_tm(self, tm):
+        '''Draws and displays a graph from transition matrix.
+        
+        Args:
+            tm: transition matrix
+        '''
+        self._int.draw_graph_from_tm(tm)
+
+    def is_deterministic(self):
+        '''
+        Checks if the matrix is deterministic and prints the result.
+        Returns:
+            Bool: True if matrix is not deterministic, False otherwise
+        '''
+        return self._int.is_deterministic()
+    
+    def get_sensory_data_float(self):
+        '''
+        Get sensory feedback as a float between 0-1. Calculate the distance between the joint and its home position and
+        scale the distance between 0-1. Returns the average result of every joint.
+
+        Returns:
+            float:
+            1 = joint is at its home position;
+            0 = joint is as far away from its home position as possible
+        
+        '''
+        return self._ext.get_sensory_data_float()
+
+#----- Teemu's and Rafi's code ends here ---------------------------------------------  
+
+    def get_memory_size(self):
+        '''
+        Return length of memory list.
+        Retruns:
+            int : length of memory
+        '''
+        return self._mem.get_memory_size()
 
     def get_arm_position(self):
         """ Get current arm positions
@@ -144,5 +207,4 @@ class robot_arm:
         """
         return self._int.delete(n,m,k)
     
-
 

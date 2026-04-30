@@ -9,6 +9,8 @@ setup(
     install_requires=[
         'numpy>=1.23.4',
         'shapely>=1.8.5.post1',
-        'matplotlib>=3.6.2'
+        'matplotlib>=3.6.2',
+        'graphviz>=0.21',
+        'pandas>=2.3.3'
     ],
 )

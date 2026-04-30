@@ -3,7 +3,7 @@ Repository for the Robotic Sensorimotor System Testing Platform (RSSTP) project,
 
 
 ## Installation
-Python 3.10 is necessary for this library to work.
+Python 3.10 is necessary for this library to work. You must also have [graphviz](https://graphviz.org/download/) downloaded on your system.
 
 ``` shell
 python -m venv venv

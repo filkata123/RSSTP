@@ -1,6 +1,9 @@
 import numpy as np
 import random
 import copy
+
+from visualization import Visualizer
+
 class Internal:
     def __init__(self, actions):
         """ Internal constructor
@@ -260,3 +263,36 @@ class Internal:
         return 1
 
     #TODO: Get list of all states
+
+
+# Teemu's and Rafi's code: -------------
+
+    def draw_graph_from_tm(self, tm):
+        '''Draws and displays a graph from transition matrix. 
+        
+            Args:
+                tm: transition matrix
+
+        '''
+        Visualizer.plot_transition_graph(tm)
+
+    def is_deterministic(self):
+        '''
+        Checks if the matrix is deterministic and prints the result.
+        A matrix is non-deterministic if any row contains the same action more than once.
+        Returns:
+            Bool: True if matrix deterministic, False otherwise
+        '''
+        for i in self.get_transition_matrix():
+            action_by_matrix_row =[] #this list keeps track of actions in a matrix row
+            for j in i:
+                for k in j:
+                    action_by_matrix_row.append(k)  #add actions to the list
+
+            if action_by_matrix_row:    # if list is not empty
+                #if an action appears more than one time per row, that means that the matrix is not deterministic
+                if len(action_by_matrix_row) != len(set(action_by_matrix_row)):   
+                    print("Transition matrix is not deterministic")
+                    return False
+        print("Transition matrix is deterministic")
+        return True
